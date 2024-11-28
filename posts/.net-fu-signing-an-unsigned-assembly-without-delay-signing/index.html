@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns#">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>.NET-fu: Signing an Unsigned Assembly (without Delay Signing) &middot; OJ Reeves</title>
+        <meta name="description" content="This article is also available in Italian.
+
+
+
+The code-base that I am currently working with consists of a large set of binaries that are all signed. The savvy .NET devs out there will know that any assembly that&rsquo;s used/referenced by a signed assembly must also be signed.
+
+This is an issue when dealing with third-party libraries that are not signed. Sometimes you&rsquo;ll be lucky enough to be dealing with vendor that is happy to provide a set of signed assemblies, other times you won&rsquo;t. If your scenario fits the latter (as a recent one did for my colleagues and I), you need to sign the assemblies yourself. Here&rsquo;s how.">
+        <meta name="HandheldFriendly" content="True">
+        <meta name="MobileOptimized" content="320">
+        <meta name="generator" content="Hugo 0.55.6" />
+        <meta name="robots" content="index,follow">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta property="og:title" content=".NET-fu: Signing an Unsigned Assembly (without Delay Signing)">
+<meta property="og:description" content="This article is also available in Italian.
+
+
+
+The code-base that I am currently working with consists of a large set of binaries that are all signed. The savvy .NET devs out there will know that any assembly that&rsquo;s used/referenced by a signed assembly must also be signed.
+
+This is an issue when dealing with third-party libraries that are not signed. Sometimes you&rsquo;ll be lucky enough to be dealing with vendor that is happy to provide a set of signed assemblies, other times you won&rsquo;t. If your scenario fits the latter (as a recent one did for my colleagues and I), you need to sign the assemblies yourself. Here&rsquo;s how.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="/posts/.net-fu-signing-an-unsigned-assembly-without-delay-signing/">
+        <link rel="stylesheet" href="/dist/styles.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300&subset=latin,cyrillic-ext,latin-ext,cyrillic">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+        
+        
+        
+    </head>
+    <body>
+        
+
+        <div id="wrapper">
+            <header class="site-header">
+                <div class="container">
+                    <div class="site-title-wrapper">
+                        
+                            <h1 class="site-title">
+                                <a title="OJ&#39;s Perspective" href="/">OJ&#39;s Perspective</a>
+                            </h1>
+                        
+                        <a class="button-square" href="/index.xml"><i class="fa fa-rss"></i></a>
+                        
+                            <a class="button-square button-social hint--top" data-hint="Twitter" title="Twitter" href="https://twitter.com/TheColonial" rel="me">
+                                <i class="fa fa-twitter"></i>
+                            </a>
+                        
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Github" title="Github" href="https://github.com/OJ" rel="me">
+                                <i class="fa fa-github-alt"></i>
+                            </a>
+                        
+                        
+                        
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Email" title="Email" href="mailto:oj@buffered.io">
+                                <i class="fa fa-envelope"></i>
+                            </a>
+                        
+                    </div>
+
+                    <ul class="site-nav">
+                        
+    <li class="site-nav-item">
+        <a title="Home" href="/">Home</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Live Streaming" href="/streaming/">Live Streaming</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="About" href="/about/">About</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Contact" href="/contact/">Contact</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Tags" href="/tags/">Tags</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Categories" href="/categories/">Categories</a>
+    </li>
+
+                    </ul>
+                </div>
+            </header>
+
+            <div id="container">
+
+
+<div class="container">
+    <article class="post-container" itemscope="" itemtype="http://schema.org/BlogPosting">
+        <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">.NET-fu: Signing an Unsigned Assembly (without Delay Signing)</h1>
+    
+    <p class="post-date">
+        <span>Published <time datetime="2008-07-09" itemprop="datePublished">2008-07-09</time></span>
+        <span>by</span>
+        <span itemscope="" itemprop="author" itemtype="https://schema.org/Person">
+            <span itemprop="name">
+                <a href="#" itemprop="url" rel="author">OJ Reeves</a>
+            </span>
+        </span>
+    </p>
+    
+        <p class="post-reading post-line">
+            <span>Read time: 6 min</span>
+        </p>
+    
+</header>
+
+        <div class="post-content clearfix" itemprop="articleBody">
+    
+
+    <p>This article is also available in <a href="http://www.otherbit.com/modules/blog/BlogContent.aspx?ID=174" title=".NET-FU : come trasformare in SIGNED un assembly UNSIGNED (senza ricorrere al DELAY SIGNING)">Italian</a>.</p>
+
+<hr />
+
+<p>The code-base that I am currently working with consists of a large set of binaries that are all <a href="http://msdn.microsoft.com/en-us/library/xc31ft41.aspx" title="Sign an Assembly with a Strong Name">signed</a>. The savvy .NET devs out there will know that any assembly that&rsquo;s used/referenced by a signed assembly must <em>also</em> be signed.</p>
+
+<p>This is an issue when dealing with third-party libraries that are not signed. Sometimes you&rsquo;ll be lucky enough to be dealing with vendor that is happy to provide a set of signed assemblies, other times you won&rsquo;t. If your scenario fits the latter (as a recent one did for my colleagues and I), you need to sign the assemblies yourself. Here&rsquo;s how.</p>
+
+<p><em>Note:</em> <a href="http://msdn.microsoft.com/en-us/library/t07a3dye(VS.80).aspx" title="Delay Signing an Assembly">delay signing</a> is not covered in this article.</p>
+
+<h2 id="scenario-1-foo-and-bar">Scenario 1 - Foo and Bar</h2>
+
+<ul>
+<li><code>Foo</code> is the component that you&rsquo;re building which has to be signed.</li>
+<li><code>Bar</code> is the third-party component that you&rsquo;re forced to use that <em>isn&rsquo;t</em>.</li>
+</ul>
+
+<p><img src="/uploads/2008/07/foobar.png" alt="Relationship between Foo and Bar" /></p>
+
+<p>Grab <a href="/uploads/2008/07/bar.zip" title="Project/Binary for Bar">Bar.dll and project</a> along with <a href="/uploads/2008/07/foobar.zip" title="Project/Binary for Foo">Foo.dll and project</a> to see a source sample.</p>
+
+<p>You&rsquo;ll notice <em>Foo</em> has a .snk which is used to sign <em>Foo.dll.</em> When you attempt to compile <em>Foo</em> you get the following error message:</p>
+
+<blockquote>
+<p>Assembly generation failed &ndash; Referenced assembly &lsquo;Bar&rsquo; does not have a strong name.</p>
+</blockquote>
+
+<p>We need to sign <em>Bar</em> in order for <em>Foo</em> to compile.</p>
+
+<p><img src="/uploads/2008/07/step1.jpg" style="float: right; margin-left: 5px; margin-bottom: 2px;" alt="Disassemble Bar" /></p>
+
+<h3 id="step-1-disassemble-bar">Step 1 - Disassemble Bar</h3>
+
+<p>We need to open a command prompt which has the .NET framework binaries in the PATH environment variable. The easiest way to do this is to open a Visual Studio command prompt (which is usually under the &ldquo;Visual Studio Tools&rdquo; subfolder of &ldquo;Visual Studio 20XX&rdquo; in your programs menu). Change directory so that you&rsquo;re in the folder which contains <em>Bar.dll</em>.</p>
+
+<p>Use <a href="http://msdn.microsoft.com/en-us/library/f7dy01k1(VS.80).aspx" title="MSIL Disassembly">ildasm</a> to disassemble the file using the <code>/all</code> and <code>/out</code>, like so:</p>
+
+<pre><code>C:\Foo\bin&gt; ildasm /all /out=Bar.il Bar.dll
+</code></pre>
+
+<p>The result of the command is a new file, <em>Bar.il</em>, which contains a dissassembled listing of <em>Bar.dll</em>.</p>
+
+<p><img src="/uploads/2008/07/step2.jpg" style="float: right; margin-left: 5px; margin-bottom: 2px;" alt="Rebuild and Sign Bar" /></p>
+
+<h3 id="step-2-rebuild-and-sign-bar">Step 2 - Rebuild and Sign Bar</h3>
+
+<p>We can now use <a href="http://msdn.microsoft.com/en-us/library/496e4ekx.aspx" title="MSIL Assembler">ilasm</a> to reassemble <em>Bar.il</em> back into <em>Bar.dll</em>, but at the same time specify a strong-name key to use to sign the resulting assembly. We pass in the value <em>Foo.snk</em> to the <code>/key</code> switch on the command line, like so:
+<div style="clear:both;"></div></p>
+
+<pre><code>C:\Foo\bin&gt; ilasm /dll /key=Foo.snk Bar.il
+
+Microsoft (R) .NET Framework IL Assembler.  Version 2.0.50727.1434
+Copyright (c) Microsoft Corporation.  All rights reserved.
+Assembling 'Bar.il'  to DLL --&gt; 'Bar.dll'
+Source file is ANSI
+
+Assembled method Bar.Bar::get_SecretMessage
+Assembled method Bar.Bar::.ctor
+Creating PE file
+
+Emitting classes:
+Class 1:        Bar.Bar
+
+Emitting fields and methods:
+Global
+Class 1 Methods: 2;
+Resolving local member refs: 1 -&gt; 1 defs, 0 refs, 0 unresolved
+
+Emitting events and properties:
+Global
+Class 1 Props: 1;
+Resolving local member refs: 0 -&gt; 0 defs, 0 refs, 0 unresolved
+Writing PE file
+Signing file with strong name
+Operation completed successfully
+</code></pre>
+
+<p><em>Bar.dll</em> is now signed! All we have to do is reopen <em>Foo</em>&rsquo;s project, remove the reference to <em>Bar.dll</em>, re-add the reference to the new signed assembly and rebuild. Sorted!</p>
+
+<h2 id="scenario-2-foo-bar-and-baz">Scenario 2 - Foo, Bar and Baz</h2>
+
+<ul>
+<li><code>Foo</code> is the component that you&rsquo;re building which has to be signed.</li>
+<li><code>Bar</code> is the third-party component that you&rsquo;re forced to use that <em>isn&rsquo;t</em>.</li>
+<li><code>Baz</code> is another third-party component that is required in order for you to use <em>Bar</em>.</li>
+</ul>
+
+<p><img src="/uploads/2008/07/foobarbaz.png" alt="Relationship between Foo, Bar and Baz"/></p>
+
+<p>Grab <a href="/uploads/2008/07/baz.zip" title="Project/Binary for Baz"><em>Baz.dll</em> and project</a>, <a href="/uploads/2008/07/barbaz.zip" title="Project/Binary for Bar"><em>Bar.dll</em> and project</a> along with <a href="/uploads/2008/07/foobarbaz.zip" title="Project/Binary for Foo"><em>Foo.dll</em> and project</a> for a sample source.</p>
+
+<p>When you attempt to build <em>Foo</em> you get the same error as you do in the previous scenario. Bear in mind that this time, <strong>both</strong> <em>Bar.dll</em> and <em>Baz.dll</em> need to be signed. So first of all, follow the steps in <strong>Scenario 1</strong> for both <em>Bar.dll</em> and <em>Baz.dll</em>.</p>
+
+<p>Done? OK. When you attempt to build <em>Foo.dll</em> after pointing the project at the new <em>Bar.dll</em> no compiler errors will be shown. Don&rsquo;t get too excited :)</p>
+
+<p>When you attempt to <strong>use</strong> <em>Foo.dll</em> your world will come crashing down. The reason is because <em>Bar.dll</em> was originally built with a reference to an <u>unsigned version</u> of <em>Baz.dll</em>. Now that <em>Baz.dll</em> is signed we need to force <em>Bar.dll</em> to reference the <strong>signed</strong> version of <em>Baz.dll</em>.</p>
+
+<p><img src="/uploads/2008/07/step3.jpg" style="float: right; margin-left: 5px; margin-bottom: 2px;" alt="Hack the Disassembled IL" /></p>
+
+<h3 id="step-1-hack-the-disassembled-il">Step 1 - Hack the Disassembled IL</h3>
+
+<p>Just like we did in the previous steps we need to disassemble the binary that we need to fix. This time, make sure you disassemble the new binary that you created in the previous step (this binary has been signed, and will contain the signature block for the strong name). Once <em>Bar.il</em> has been created using ildasm, open it up in a <a href="http://www.vim.org/" title="VIM - @secretGeek loves it... no really, he does!">text editor</a>.</p>
+
+<p>Search for the reference to <em>Baz</em> &ndash; this should be located a fair way down the file, somewhere near the top of the actual code listing, just after the comments. Here&rsquo;s what it looks like on my machine:</p>
+
+<pre><code>.assembly extern /*23000002*/ Baz
+{
+  .ver 1:0:0:0
+}
+</code></pre>
+
+<p>This external assembly reference is missing the all-important public key token reference. Before we can add it, we need to know what the public key token is for <em>Bar.dll</em>. To determine this, we can use the <a href="http://msdn.microsoft.com/en-us/library/k5b5tt23(VS.80).aspx" title="Strong Name Tool">sn.exe</a> utility, like so:</p>
+
+<pre><code>C:\Foo\bin&gt; sn -Tp Baz.dll
+
+Microsoft (R) .NET Framework Strong Name Utility  Version 3.5.21022.8
+Copyright (c) Microsoft Corporation.  All rights reserved.
+
+Public key is
+0024000004800000940000000602000000240000525341310004000001000100a59cd85e10658d
+9229d54de16c69d0b53b31f60bb4404b86eb3b8804203aca9d65412a249dfb8e7b9869d09ce80b
+0d9bdccd4943c0004c4e76b95fdcdbc6043765f51a1ee331fdd55ad25400d496808b792723fc76
+dee74d3db67403572cddd530cadfa7fbdd974cef7700be93c00c81121d978a3398b07a9dc1077f
+b331ca9c
+
+Public key token is 2ed7bbec811020ec
+</code></pre>
+
+<p>Now we return to <em>Bar.il</em> and modify the assembly reference so that the public key token is specified. This is what it should look like after modification:</p>
+
+<pre><code>.assembly extern /*23000002*/ Baz
+{
+  .publickeytoken = (2E D7 BB EC 81 10 20 EC )
+  .ver 1:0:0:0
+}
+</code></pre>
+
+<p>Save your changes.</p>
+
+<p><img src="/uploads/2008/07/step4.jpg" style="float: right; margin-left: 5px; margin-bottom: 2px;" alt="Reassemble Bar" /></p>
+
+<h3 id="step-2-reassemble-bar">Step 2 - Reassemble Bar</h3>
+
+<p>This step is just a repeat of previous steps. We are again using ilasm to reassemble <em>Bar.dll</em>, but this time from the new &ldquo;hacked&rdquo; <em>Bar.il</em> file. We must use the exact same command line as we did previously, and we still need to specify the <em>Foo.snk</em> for signing the assembly. To save you having to scroll up, here it is again:</p>
+
+<pre><code>C:\Foo\bin&gt; ilasm /dll /key=Foo.snk Bar.il
+
+Microsoft (R) .NET Framework IL Assembler.  Version 2.0.50727.1434
+Copyright (c) Microsoft Corporation.  All rights reserved.
+Assembling 'Bar.il'  to DLL --&gt; 'Bar.dll'
+Source file is ANSI
+
+Assembled method Bar.Bar::get_SecretMessage
+Assembled method Bar.Bar::.ctor
+Creating PE file
+
+Emitting classes:
+Class 1:        Bar.Bar
+
+Emitting fields and methods:
+Global
+Class 1 Fields: 1;      Methods: 2;
+Resolving local member refs: 3 -&gt; 3 defs, 0 refs, 0 unresolved
+
+Emitting events and properties:
+Global
+Class 1 Props: 1;
+Resolving local member refs: 0 -&gt; 0 defs, 0 refs, 0 unresolved
+Writing PE file
+Signing file with strong name
+Operation completed successfully
+</code></pre>
+
+<p>Open up <em>Foo</em>&rsquo;s project, remove and re-add the reference to <em>Bar.dll</em>, making sure you point to the new version that you just created. <em>Foo.dll</em> will not only build, but this time it will run!</p>
+
+<h2 id="disclaimer">Disclaimer</h2>
+
+<p>&ldquo;Hacking&rdquo; third-party binaries in this manner <strong><em>may</em> breach the license agreement</strong> of those binaries. Please make sure that you are not breaking the license agreement before adopting this technique.</p>
+
+<p>I hope this helps!</p>
+</div>
+
+        <footer class="post-footer clearfix">
+    
+        <p class="post-tags">
+            <span>Tagged:</span>
+            
+            
+                <a href="/tags/.net/">.net</a>, 
+            
+                <a href="/tags/disassemble/">disassemble</a>, 
+            
+                <a href="/tags/ilasm/">ilasm</a>, 
+            
+                <a href="/tags/ildasm/">ildasm</a>, 
+            
+                <a href="/tags/msil/">MSIL</a>, 
+            
+                <a href="/tags/sign/">sign</a>, 
+            
+                <a href="/tags/snk/">snk</a>, 
+            
+                <a href="/tags/strong-name/">strong name</a>
+            
+        </p>
+    
+
+    <div class="share">
+        
+            <a class="icon-twitter" href="https://twitter.com/share?text=.NET-fu%3a%20Signing%20an%20Unsigned%20Assembly%20%28without%20Delay%20Signing%29&url=%2fposts%2f.net-fu-signing-an-unsigned-assembly-without-delay-signing%2f"
+                onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                <i class="fa fa-twitter"></i>
+                <span class="hidden">Twitter</span>
+            </a>
+        
+
+        
+            <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=%2fposts%2f.net-fu-signing-an-unsigned-assembly-without-delay-signing%2f"
+                onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                <i class="fa fa-facebook"></i>
+                <span class="hidden">Facebook</span>
+            </a>
+        
+
+        
+            <a class="icon-google-plus" href="https://plus.google.com/share?url=%2fposts%2f.net-fu-signing-an-unsigned-assembly-without-delay-signing%2f"
+              onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+              <i class="fa fa-google-plus"></i>
+                <span class="hidden">Google+</span>
+            </a>
+        
+        
+    </div>
+</footer>
+
+        
+    <div class="comments">
+        
+    </div>
+
+    </article>
+</div>
+
+            </div>
+        </div>
+
+        <footer class="footer">
+            <div class="container">
+                <div class="site-title-wrapper">
+                    <h1 class="site-title">
+                        <a title="OJ&#39;s Perspective" href="/">OJ&#39;s Perspective</a>
+                    </h1>
+                    <a class="button-square button-jump-top js-jump-top" href="#">
+                        <i class="fa fa-angle-up"></i>
+                    </a>
+                </div>
+
+                <p class="footer-copyright">
+                    <span>&copy; 2019 / Powered by <a href="https://gohugo.io/">Hugo</a></span>
+                </p>
+                <p class="footer-copyright">
+                    <span><a href="https://github.com/roryg/ghostwriter">Ghostwriter theme</a> By <a href="http://jollygoodthemes.com">JollyGoodThemes</a></span>
+                    <span>/ <a href="https://github.com/jbub/ghostwriter">Ported</a> to Hugo By <a href="https://github.com/jbub">jbub</a></span>
+                </p>
+            </div>
+        </footer>
+
+        <script src="/js/jquery-1.11.3.min.js"></script>
+        <script src="/js/jquery.fitvids.js"></script>
+        
+        
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        
+        
+        <script src="/js/scripts.js"></script>
+    </body>
+</html>
+

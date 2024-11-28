@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns#">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Sorting Algorithms: The Gnome Sort &middot; OJ Reeves</title>
+        <meta name="description" content="After a bit of down time for personal reasons, here is the fourth post in the series on sorting algorithms. This time round we&rsquo;re taking a good look at the Gnome Sort.
+
+People often do a double-take when hearing the term &ldquo;Gnome Sort&rdquo; because it&rsquo;s not that common. The Gnome Sort is extremely simple, and is very similar to the principle behind the Insertion Sort (which we&rsquo;ll be covering soon).
+
+The Gnome Sort is yet another comparison and exchange sort which has elements that are similar to the Bubble Sort. If you haven&rsquo;t read up on the Bubble Sort, be sure to do that before reading this article as it may help with your understanding.">
+        <meta name="HandheldFriendly" content="True">
+        <meta name="MobileOptimized" content="320">
+        <meta name="generator" content="Hugo 0.55.6" />
+        <meta name="robots" content="index,follow">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta property="og:title" content="Sorting Algorithms: The Gnome Sort">
+<meta property="og:description" content="After a bit of down time for personal reasons, here is the fourth post in the series on sorting algorithms. This time round we&rsquo;re taking a good look at the Gnome Sort.
+
+People often do a double-take when hearing the term &ldquo;Gnome Sort&rdquo; because it&rsquo;s not that common. The Gnome Sort is extremely simple, and is very similar to the principle behind the Insertion Sort (which we&rsquo;ll be covering soon).
+
+The Gnome Sort is yet another comparison and exchange sort which has elements that are similar to the Bubble Sort. If you haven&rsquo;t read up on the Bubble Sort, be sure to do that before reading this article as it may help with your understanding.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="/posts/sorting-algorithms-the-gnome-sort/">
+        <link rel="stylesheet" href="/dist/styles.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300&subset=latin,cyrillic-ext,latin-ext,cyrillic">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+        
+        
+        
+    </head>
+    <body>
+        
+
+        <div id="wrapper">
+            <header class="site-header">
+                <div class="container">
+                    <div class="site-title-wrapper">
+                        
+                            <h1 class="site-title">
+                                <a title="OJ&#39;s Perspective" href="/">OJ&#39;s Perspective</a>
+                            </h1>
+                        
+                        <a class="button-square" href="/index.xml"><i class="fa fa-rss"></i></a>
+                        
+                            <a class="button-square button-social hint--top" data-hint="Twitter" title="Twitter" href="https://twitter.com/TheColonial" rel="me">
+                                <i class="fa fa-twitter"></i>
+                            </a>
+                        
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Github" title="Github" href="https://github.com/OJ" rel="me">
+                                <i class="fa fa-github-alt"></i>
+                            </a>
+                        
+                        
+                        
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Email" title="Email" href="mailto:oj@buffered.io">
+                                <i class="fa fa-envelope"></i>
+                            </a>
+                        
+                    </div>
+
+                    <ul class="site-nav">
+                        
+    <li class="site-nav-item">
+        <a title="Home" href="/">Home</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Live Streaming" href="/streaming/">Live Streaming</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="About" href="/about/">About</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Contact" href="/contact/">Contact</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Tags" href="/tags/">Tags</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Categories" href="/categories/">Categories</a>
+    </li>
+
+                    </ul>
+                </div>
+            </header>
+
+            <div id="container">
+
+
+<div class="container">
+    <article class="post-container" itemscope="" itemtype="http://schema.org/BlogPosting">
+        <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Sorting Algorithms: The Gnome Sort</h1>
+    
+    <p class="post-date">
+        <span>Published <time datetime="2008-10-16" itemprop="datePublished">2008-10-16</time></span>
+        <span>by</span>
+        <span itemscope="" itemprop="author" itemtype="https://schema.org/Person">
+            <span itemprop="name">
+                <a href="#" itemprop="url" rel="author">OJ Reeves</a>
+            </span>
+        </span>
+    </p>
+    
+        <p class="post-reading post-line">
+            <span>Read time: 8 min</span>
+        </p>
+    
+</header>
+
+        <div class="post-content clearfix" itemprop="articleBody">
+    
+
+    <p><img src="/uploads/2008/10/gnome.jpg" alt="Gnome Sort" title="Gnome Sort" width="240" style="float: right; margin-left: 5px; margin-bottom: 5px;"/>After a bit of down time for personal reasons, here is the fourth post in the series on <a href="/category/sorting/" title="Sorting @ OJ's rants">sorting</a> algorithms. This time round we&rsquo;re taking a good look at the <strong>Gnome Sort</strong>.</p>
+
+<p>People often do a double-take when hearing the term &ldquo;Gnome Sort&rdquo; because it&rsquo;s not that common. The <strong>Gnome Sort</strong> is extremely simple, and is very similar to the principle behind the <strong>Insertion Sort</strong> (which we&rsquo;ll be covering soon).</p>
+
+<p>The Gnome Sort is yet another <em>comparison</em> and <em>exchange</em> sort which has elements that are similar to the <a href="/posts/sorting-algorithms-the-bubble-sort/" title="Sorting Algorithms: The Bubble Sort">Bubble Sort</a>. If you haven&rsquo;t read up on the Bubble Sort, be sure to do that before reading this article as it may help with your understanding.</p>
+
+<p>Let&rsquo;s get straight into it!</p>
+
+<p><h2>Common Terms</h2>
+<ul>
+<li><em>Data set</em> - the array or list of items that is to be sorted.</li>
+<li><em>n</em> - the number of elements in the <em>data set</em>.</li>
+<li><em>Bubble</em> - perform a <strong>Bubble Sort-like</strong> shuffle of an item in a given direction.</li>
+</ul></p>
+
+<p><h2>The Algorithm</h2>
+The first principle to bear in mind when doing a <strong>Gnome Sort</strong> is that as the algorithm progresses, all items to the left of the <em>current</em> item are always in order. Each iteration of the algorithm moves the current item to the correct spot with respect to the previously sorted items.</p>
+
+<p>The first part of the algorithm looks at the first two items in the <em>data set</em> and swaps them around if they are in the wrong order. Then, for each iteration thereafter, the next item is <em>bubbled backwards</em> towards to head of the list until a value is encountered which is less than the current item (or the head of the list is reached). At this point, the current item is left alone, and the sort continues from the next item.</p>
+
+<p><h2>The Example</h2>
+<div>
+<style type="text/css">
+span.eg { font-family: Courier new; font-size: 12px; display: block; }
+span.eg b { color: Red; }
+span.eg u { color: Green; }
+span.eg i { color: Blue; }
+</style>
+</div></p>
+
+<p>As per usual we will use the same initial <em>data set</em> that we used for the Bubble Sort and Cocktail Sort to aid in highlighting the differences.</p>
+
+<p>The initial set looks like this:</p>
+
+<p><span class="eg">33 98 74 13 55 20 77 45 64 83</span></p>
+
+<p>The first step is to compare the firs two values:</p>
+
+<p><span class="eg"><b>33</b> <b>98</b> 74 13 55 20 77 45 64 83</span></p>
+
+<p>Given that they are in the correct order we leave this two values alone. We can say that two items in the <em>data set</em> are <strong>in order</strong>.</p>
+
+<p>Next we look at the item immediately after the <strong>in order</strong> items and compare that to the last sorted item:</p>
+
+<p><span class="eg">33 <b>98</b> <b>74</b> 13 55 20 77 45 64 83</span></p>
+
+<p>We can see that these two are not in the correct order, so we swap them:</p>
+
+<p><span class="eg">33 <i>74</i> <i>98</i> 13 55 20 77 45 64 83</span></p>
+
+<p>Given that we had to swap the values in the previous step, we can&rsquo;t assume that the current item is in the right location with respect to the other <strong>in order</strong> items, and hence we need to continue to work backwards. We compare the current item to the preceeding item in the <em>data set</em>:</p>
+
+<p><span class="eg"><b>33</b> <b>74</b> 98 13 55 20 77 45 64 83</span></p>
+
+<p>These two values are in the correct order, so we can now stop this iteration. At this point, the first three items in the set are sorted with respect to each other. Next, we move to the fourth item, and compare that with the last of the <strong>in order</strong> items:</p>
+
+<p><span class="eg">33 74 <b>98</b> <b>13</b> 55 20 77 45 64 83</span></p>
+
+<p>They&rsquo;re out of order, so we swap them:</p>
+
+<p><span class="eg">33 74 <i>13</i> <i>98</i> 55 20 77 45 64 83</span></p>
+
+<p>&hellip; and we keep <em>bubbling backwards</em> until we reach either a value that is smaller or the head of the list:</p>
+
+<p><span class="eg">33 <b>74</b> <b>13</b> 98 55 20 77 45 64 83</span>
+<span class="eg">33 <i>13</i> <i>74</i> 98 55 20 77 45 64 83</span>
+<span class="eg"><b>33</b> <b>13</b> 74 98 55 20 77 45 64 83</span>
+<span class="eg"><i>13</i> <i>33</i> 74 98 55 20 77 45 64 83</span></p>
+
+<p>Here we can see that 13 was the smallest number, so it was bubbled all the way to the head of the list. We then move on to the next iteration where we again compare the next item with the head of the list, and again <em>bubble backwards</em> until we reach the correct location. Here is a summary of the steps for the next iteration:</p>
+
+<p><span class="eg">13 33 74 <b>98</b> <b>55</b> 20 77 45 64 83</span>
+<span class="eg">13 33 74 <i>55</i> <i>98</i> 20 77 45 64 83</span>
+<span class="eg">13 33 <b>74</b> <b>55</b> 98 20 77 45 64 83</span>
+<span class="eg">13 33 <i>55</i> <i>74</i> 98 20 77 45 64 83</span>
+<span class="eg">13 <b>33</b> <b>55</b> 74 98 20 77 45 64 83</span></p>
+
+<p>55 is now in the correct spot with regards to the other pre-sorted items, so we move onto the next item. At this point it should be fairly obvious what&rsquo;s going on, so I shall show a summary for the rest of the example:</p>
+
+<p><span class="eg">13 33 55 74 <b>98</b> <b>20</b> 77 45 64 83</span>
+<span class="eg">13 33 55 74 <i>20</i> <i>98</i> 77 45 64 83</span>
+<span class="eg">13 33 55 <b>74</b> <b>20</b> 98 77 45 64 83</span>
+<span class="eg">13 33 55 <i>20</i> <i>74</i> 98 77 45 64 83</span>
+<span class="eg">13 33 <b>55</b> <b>20</b> 74 98 77 45 64 83</span>
+<span class="eg">13 33 <i>20</i> <i>55</i> 74 98 77 45 64 83</span>
+<span class="eg">13 <b>33</b> <b>20</b> 55 74 98 77 45 64 83</span>
+<span class="eg">13 <i>20</i> <i>33</i> 55 74 98 77 45 64 83</span>
+<span class="eg"><b>13</b> <b>20</b> 33 55 74 98 77 45 64 83</span>
+<span class="eg">13 20 33 55 74 <b>98</b> <b>77</b> 45 64 83</span>
+<span class="eg">13 20 33 55 74 <i>77</i> <i>98</i> 45 64 83</span>
+<span class="eg">13 20 33 55 <b>74</b> <b>77</b> 98 45 64 83</span>
+<span class="eg">13 20 33 55 74 77 <b>98</b> <b>45</b> 64 83</span>
+<span class="eg">13 20 33 55 74 77 <i>45</i> <i>98</i> 64 83</span>
+<span class="eg">13 20 33 55 74 <b>77</b> <b>45</b> 98 64 83</span>
+<span class="eg">13 20 33 55 74 <i>45</i> <i>77</i> 98 64 83</span>
+<span class="eg">13 20 33 55 <b>74</b> <b>45</b> 77 98 64 83</span>
+<span class="eg">13 20 33 55 <i>45</i> <i>74</i> 77 98 64 83</span>
+<span class="eg">13 20 33 <b>55</b> <b>45</b> 74 77 98 64 83</span>
+<span class="eg">13 20 33 <i>45</i> <i>55</i> 74 77 98 64 83</span>
+<span class="eg">13 20 <b>33</b> <b>45</b> 55 74 77 98 64 83</span>
+<span class="eg">13 20 33 45 55 74 77 <b>98</b> <b>64</b> 83</span>
+<span class="eg">13 20 33 45 55 74 77 <i>64</i> <i>98</i> 83</span>
+<span class="eg">13 20 33 45 55 74 <b>77</b> <b>64</b> 98 83</span>
+<span class="eg">13 20 33 45 55 74 <i>64</i> <i>77</i> 98 83</span>
+<span class="eg">13 20 33 45 55 <b>74</b> <b>64</b> 77 98 83</span>
+<span class="eg">13 20 33 45 55 <i>64</i> <i>74</i> 77 98 83</span>
+<span class="eg">13 20 33 45 <b>55</b> <b>64</b> 74 77 98 83</span>
+<span class="eg">13 20 33 45 55 64 74 77 <b>98</b> <b>83</b></span>
+<span class="eg">13 20 33 45 55 64 74 77 <i>83</i> <i>98</i></span>
+<span class="eg">13 20 33 45 55 64 74 <b>77</b> <b>83</b> 98</span>
+<span class="eg"><u>13</u> <u>20</u> <u>33</u> <u>45</u> <u>55</u> <u>64</u> <u>74</u> <u>77</u> <u>83</u> <u>98</u></span></p>
+
+<p>Note that we do not know for sure that an item is in the correct location until the entire set has been sorted.</p>
+
+<p><h2>The Implementation</h2>
+Here is a sample implementation written in <a href="http://en.wikipedia.org/wiki/C_Sharp" title="C Sharp">C#</a>. It is heavily commented in the hope that it will aid in understanding how the algorithm works:</p>
+
+<pre><code>/// &lt;summary&gt;
+/// Example implementation of the Gnome Sort algorithm.
+/// &lt;/summary&gt;
+/// &lt;param name=&quot;dataSet&quot;&gt;Array of items to be sorted.&lt;/param&gt;
+static void GnomeSort(int[] dataSet)
+{
+    // start at the second item
+    int i = 1;
+
+    // keep track of the 'next' item so we
+    // can jump to it when the current iteration
+    // is finished.
+    int j = 2;
+
+    // loop until we reach the end of the data set
+    while (i &lt; dataSet.Length)
+    {
+        // swap if required
+        if (dataSet[i - 1] &gt; dataSet[i])
+        {
+            Swap(dataSet, i - 1, i);
+
+            // move backwards through the sorted items
+            // until we find the rightful spot.
+            --i;
+
+            // stop at the head of the list
+            if (i == 0)
+            {
+                // jump to the next item in the set
+                i = j++;
+            }
+        }
+        else
+        {
+            // jump to the next item in the set
+            i = j++;
+        }
+    }
+}
+</code></pre>
+
+<p><h2>The Complexity</h2>
+This is not a very efficient algorithm. It&rsquo;s time and space complexity are exactly that of the <a href="/posts/sorting-algorithms-the-bubble-sort/" title="Sorting Algorithms: The Bubble Sort">Bubble Sort</a>. That is, the time complexity is O(n<sup>2</sup>), and space complexity for in-place sorting is O(1).</p>
+
+<p><a name="GnomeSortBitBucket"></a>
+<h2>Other Implementations</h2>
+I&rsquo;m slowly gathering a collection of implementations of all the sorting algorithms, including the ones listed above, that I&rsquo;m covering in this series and posting them up on <a href="http://www.bitbucket.org/OJ/sorting/overview/" title="Sorting @ OJ's BitBucket">BitBucket</a>. The Gnome Sort implementations can be found <a href=http://www.bitbucket.org/OJ/sorting/src/3f2af8511799/04-GnomeSort/" title="GnomeSort @ OJ's BitBucket">here</a>.</p>
+
+<p><em>Note: You&rsquo;ll need <a href="http://www.selenic.com/mercurial/" title="Mercurial">Mercurial</a> if you want to pull directly from the repository, otherwise you&rsquo;ll have to copy and paste from the web.</em></p>
+
+<p><h2>References and Other Information</h2>
+<ol>
+<li><a href="http://en.wikipedia.org/wiki/Gnome_sort" title="Gnome sort">Wikipedia - Gnome sort</a></li>
+</ol>
+Next up, we&rsquo;ll be looking at the first of the mind-bending algorithms: the <strong>Quick Sort</strong>.</p>
+
+<p><h2>Disclaimer</h2>
+I&rsquo;m no expert, nor an authority. The post above is based on my experience and a bit of research. If you find something wrong with anything I&rsquo;ve said please let me know. Comments and feedback are greatly appreciated.</p>
+
+<p><em>Note: For those reading this article in an RSS reader, you may find the colours do not appear in the examples properly. For some reason the feed is stripping out some of the formatting. I will do my best to fix this up soon.</em></p>
+</div>
+
+        <footer class="post-footer clearfix">
+    
+        <p class="post-tags">
+            <span>Tagged:</span>
+            
+            
+                <a href="/tags/gnome-sort/">Gnome Sort</a>, 
+            
+                <a href="/tags/sorting/">Sorting</a>
+            
+        </p>
+    
+
+    <div class="share">
+        
+            <a class="icon-twitter" href="https://twitter.com/share?text=Sorting%20Algorithms%3a%20The%20Gnome%20Sort&url=%2fposts%2fsorting-algorithms-the-gnome-sort%2f"
+                onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                <i class="fa fa-twitter"></i>
+                <span class="hidden">Twitter</span>
+            </a>
+        
+
+        
+            <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=%2fposts%2fsorting-algorithms-the-gnome-sort%2f"
+                onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                <i class="fa fa-facebook"></i>
+                <span class="hidden">Facebook</span>
+            </a>
+        
+
+        
+            <a class="icon-google-plus" href="https://plus.google.com/share?url=%2fposts%2fsorting-algorithms-the-gnome-sort%2f"
+              onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+              <i class="fa fa-google-plus"></i>
+                <span class="hidden">Google+</span>
+            </a>
+        
+        
+    </div>
+</footer>
+
+        
+    <div class="comments">
+        
+    </div>
+
+    </article>
+</div>
+
+            </div>
+        </div>
+
+        <footer class="footer">
+            <div class="container">
+                <div class="site-title-wrapper">
+                    <h1 class="site-title">
+                        <a title="OJ&#39;s Perspective" href="/">OJ&#39;s Perspective</a>
+                    </h1>
+                    <a class="button-square button-jump-top js-jump-top" href="#">
+                        <i class="fa fa-angle-up"></i>
+                    </a>
+                </div>
+
+                <p class="footer-copyright">
+                    <span>&copy; 2019 / Powered by <a href="https://gohugo.io/">Hugo</a></span>
+                </p>
+                <p class="footer-copyright">
+                    <span><a href="https://github.com/roryg/ghostwriter">Ghostwriter theme</a> By <a href="http://jollygoodthemes.com">JollyGoodThemes</a></span>
+                    <span>/ <a href="https://github.com/jbub/ghostwriter">Ported</a> to Hugo By <a href="https://github.com/jbub">jbub</a></span>
+                </p>
+            </div>
+        </footer>
+
+        <script src="/js/jquery-1.11.3.min.js"></script>
+        <script src="/js/jquery.fitvids.js"></script>
+        
+        
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        
+        
+        <script src="/js/scripts.js"></script>
+    </body>
+</html>
+

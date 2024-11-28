@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns#">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Web Application Development with Merb, MySQL and Tiny &middot; OJ Reeves</title>
+        <meta name="description" content="I&rsquo;ve been thinking about building a web application or two for a while, but I haven&rsquo;t yet found the time to invest. I don&rsquo;t think this is going to change very soon either. I&rsquo;m not the kind of person who usually likes to get stuck into something unless I know I&rsquo;ve got a couple of hours up my sleeve so that I feel I can get something done, and this has been preventing me from doing anything because I don&rsquo;t ever feel like I have a couple of hours spare. Having a child means that you could have as little as 5 minutes before all hell breaks loose.
+
+Instead of whinging about it, I&rsquo;ve decided to go against my usual grain and take those 5 minute chunks as a chance to do something. This is the first step :)">
+        <meta name="HandheldFriendly" content="True">
+        <meta name="MobileOptimized" content="320">
+        <meta name="generator" content="Hugo 0.55.6" />
+        <meta name="robots" content="index,follow">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta property="og:title" content="Web Application Development with Merb, MySQL and Tiny">
+<meta property="og:description" content="I&rsquo;ve been thinking about building a web application or two for a while, but I haven&rsquo;t yet found the time to invest. I don&rsquo;t think this is going to change very soon either. I&rsquo;m not the kind of person who usually likes to get stuck into something unless I know I&rsquo;ve got a couple of hours up my sleeve so that I feel I can get something done, and this has been preventing me from doing anything because I don&rsquo;t ever feel like I have a couple of hours spare. Having a child means that you could have as little as 5 minutes before all hell breaks loose.
+
+Instead of whinging about it, I&rsquo;ve decided to go against my usual grain and take those 5 minute chunks as a chance to do something. This is the first step :)">
+<meta property="og:type" content="article">
+<meta property="og:url" content="/posts/web-application-development-with-merb-mysql-and-tiny/">
+        <link rel="stylesheet" href="/dist/styles.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300&subset=latin,cyrillic-ext,latin-ext,cyrillic">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+        
+        
+        
+    </head>
+    <body>
+        
+
+        <div id="wrapper">
+            <header class="site-header">
+                <div class="container">
+                    <div class="site-title-wrapper">
+                        
+                            <h1 class="site-title">
+                                <a title="OJ&#39;s Perspective" href="/">OJ&#39;s Perspective</a>
+                            </h1>
+                        
+                        <a class="button-square" href="/index.xml"><i class="fa fa-rss"></i></a>
+                        
+                            <a class="button-square button-social hint--top" data-hint="Twitter" title="Twitter" href="https://twitter.com/TheColonial" rel="me">
+                                <i class="fa fa-twitter"></i>
+                            </a>
+                        
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Github" title="Github" href="https://github.com/OJ" rel="me">
+                                <i class="fa fa-github-alt"></i>
+                            </a>
+                        
+                        
+                        
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Email" title="Email" href="mailto:oj@buffered.io">
+                                <i class="fa fa-envelope"></i>
+                            </a>
+                        
+                    </div>
+
+                    <ul class="site-nav">
+                        
+    <li class="site-nav-item">
+        <a title="Home" href="/">Home</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Live Streaming" href="/streaming/">Live Streaming</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="About" href="/about/">About</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Contact" href="/contact/">Contact</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Tags" href="/tags/">Tags</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Categories" href="/categories/">Categories</a>
+    </li>
+
+                    </ul>
+                </div>
+            </header>
+
+            <div id="container">
+
+
+<div class="container">
+    <article class="post-container" itemscope="" itemtype="http://schema.org/BlogPosting">
+        <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Web Application Development with Merb, MySQL and Tiny</h1>
+    
+    <p class="post-date">
+        <span>Published <time datetime="2008-04-06" itemprop="datePublished">2008-04-06</time></span>
+        <span>by</span>
+        <span itemscope="" itemprop="author" itemtype="https://schema.org/Person">
+            <span itemprop="name">
+                <a href="#" itemprop="url" rel="author">OJ Reeves</a>
+            </span>
+        </span>
+    </p>
+    
+        <p class="post-reading post-line">
+            <span>Read time: 6 min</span>
+        </p>
+    
+</header>
+
+        <div class="post-content clearfix" itemprop="articleBody">
+    
+
+    <p>I&rsquo;ve been thinking about building a web application or two for a while, but I haven&rsquo;t yet found the time to invest. I don&rsquo;t think this is going to change very soon either. I&rsquo;m not the kind of person who usually likes to get stuck into something unless I know I&rsquo;ve got a couple of hours up my sleeve so that I feel I can get something done, and this has been preventing me from doing anything because I don&rsquo;t ever feel like I have a couple of hours spare. Having a child means that you could have as little as 5 minutes before all hell breaks loose.</p>
+
+<p>Instead of whinging about it, I&rsquo;ve decided to go against my usual grain and take those 5 minute chunks as a chance to do something. This is the first step :)</p>
+
+<p>So, while I&rsquo;m not going to talk about the web application that I&rsquo;m going to be writing, I will be covering aspects of the development along with the tools and frameworks I&rsquo;ve decided to use.</p>
+
+<p>I&rsquo;ve decided to give <a href="http://merbivore.com/" title="Merb">Merb</a> a whirl as the base framework for writing my application, which works off the <a href="http://www.ruby-lang.org/" title="Ruby">Ruby</a> language. I&rsquo;ll also look into using <a href="http://code.macournoyer.com/thin/" title="Tiny - Yet another web server">Tiny</a> as the web server, but that&rsquo;ll be decided down the track. I&rsquo;ll be using <a href="http://www.mysql.com/" title="MySQL">MySQL</a> for the database back-end. I&rsquo;ll also be using <a href="http://www.selenic.com/mercurial/" title="Mercurial">Mercurial</a> for my VCS, and may well push to an <a href="http://subversion.tigris.org/" title="Subversion">SVN</a> repo on my server for backups and releases.</p>
+
+<p>All of my development will be done using <a href="http://www.vim.org/" title="VIM">VIM</a> as my text editor.</p>
+
+<p>Don&rsquo;t ask me to justify my choices for any of the above :) I can&rsquo;t be arsed. Suffice is to say that those were chosen as a compromise on speed, ease of development, time to market, etc.</p>
+
+<p>Since Merb is a new framework, I thought I&rsquo;d read up on some tutorials. Unfortunately, most of the tutorials are totally out of date and don&rsquo;t work with the latest version of Merb. So I thought it&rsquo;d be good to give back a little and write an updated tutorial on how I got Merb going with Tiny.</p>
+
+<p>To start with we need to download and install a bunch of stuff. I&rsquo;m using Windows for my dev environment (yeah, shut up, I can&rsquo;t hear your insults anyway ;)), so bear in mind that you might have to use &lsquo;sudo&rsquo; when installing gems, and you might need to use &lsquo;apt-get&rsquo;, &lsquo;emerge&rsquo; or &lsquo;dpkg&rsquo; depending on which platform you&rsquo;re using.</p>
+
+<p>Anyway, these are the steps that I took to get my environment ready:
+<ol>
+<li>Download and install MySQL for your platform (again, stacks of help on the web already).</li>
+<li>Download and install Ruby for your platform (there are stacks of how-tos out there to help with this). If you&rsquo;re using Windows, make sure that you add the ruby &lsquo;bin&rsquo; folder to your PATh environment variable so that you can invoke it from anywhere. Also make sure that you have enabled <a href="http://www.rubygems.org/" title="RubyGems">RubyGems</a>.</li>
+<li>Open a command prompt.</li>
+<li>Install Merb by typing: <em>gem install merb</em></li>
+<li>Install Tiny by typing: <em>gem install tiny</em></li>
+<li>Install your text editor of choice if you haven&rsquo;t already.</li>
+</ol></p>
+
+<p>You should now be ready to go as far as your environment is concerned. Next up, let&rsquo;s get a basic Merb application running. Start by creating a &ldquo;test&rdquo; application using the command:</p>
+
+<pre><code>merb-gen app test
+</code></pre>
+
+<p>This should create a folder called &ldquo;test&rdquo; with a collection of subfolders which contain the basic Merb application. Now, to make sure that everything is working, we should invoke our merb application with the &ldquo;tiny&rdquo; server adapter. First, change the directory to the application directory, and the invoke merb with the appropriate adapter using the following commands:</p>
+
+<pre><code>cd test
+merb -a thin
+</code></pre>
+
+<p>If all goes well you should see something like this appear in your console window:</p>
+
+<pre><code>~ Loaded DEVELOPMENT Environment...
+~ Compiling routes...
+~ Using 'share-nothing' cookie sessions (4kb limit per client)
+~ Using Thin adapter
+</code></pre>
+
+<p><a href="/uploads/2008/04/merb-empty-app.png" rel="lightbox[merb]"><img src="/uploads/2008/04/merb-empty-app.png" alt="Default Merb application render" title="Empty Merb Application" style="float: left; padding-right: 3px; padding-bottom: 3px;" width="120"/></a>Next, browse to <a href="http://localhost:4000">http://localhost:4000</a> and you should see something like the image on the left.</p>
+
+<p>If you can see that then you&rsquo;re ready to rock. If you can&rsquo;t then you need to make sure that you&rsquo;ve set up and installed everything properly. You should also make sure that your firewall software isn&rsquo;t blocking port 4000, otherwise nothing will come up!</p>
+
+<p>So the application works. The more perceptive of you may have realised that there&rsquo;s an error displayed on screen that says:<blockquote><p>Exception:
+No routes match the request, /</p></blockquote>
+In Merb, just like Rails, there is a router which tells the framework which controller and action to invoke based on the URL&rsquo;s given. The error is telling us that it doesn&rsquo;t know which controller and action to invoke when we browse to the root of the site. That&rsquo;s no surprise because we haven&rsquo;t yet created a controller/action, let alone pointed the root of the site at it.</p>
+
+<p>Let&rsquo;s do that now. Since this is a test application, let&rsquo;s just get a basic page rendered. Go back to your command window, make sure that your current path is still the &ldquo;test&rdquo; folder, then invoke the following:</p>
+
+<pre><code>merb-gen controller home
+</code></pre>
+
+<p>This should give us a controller skeleton ready to edit. Of the generated files, the ones we&rsquo;re interested in are:</p>
+
+<pre><code>app/controllers/home.rb
+app/views/home/index.html.erb
+</code></pre>
+
+<p>The content of the controller is very basic, and should look something like the following:</p>
+
+<pre><code>class Home &lt; Application
+
+  def index
+    render
+  end
+
+en
+</code></pre>
+
+<p>This is simply telling the framework to render the default view associated with the action. That is, render that which is stored in the home/index.html.erb file. The default content looks like this:</p>
+
+<pre><code>You're in index of the Home
+</code></pre>
+
+<p><a href="/uploads/2008/04/merb-default-home.png" rel="lightbox[merb]"><img src="/uploads/2008/04/merb-default-home.png" alt="This is the default content of an action which is associated with a controller." title="Default Merb index action render" width="120" style="float: right; padding-left: 3px; padding-bottom: 3px" /></a>If you killed off the merb server, fire it up again and browse to <a href="http://localhost:4000/home">http://localhost:4000/home</a>, you should see the site as shown on the right.</p>
+
+<p>Finally, let&rsquo;s make this the default location for the application when the user browses the root of the application. We do this by modifing the router configuration located in:</p>
+
+<pre><code>config/router.rb
+</code></pre>
+
+<p>Open this file in your text editor, and uncomment the second-last line of the file which allows you to match the root folder to a controller and action. Specify &ldquo;home&rdquo; as the controller, and leave &ldquo;index&rdquo; specified as the action. Your router.rb file should look like this:</p>
+
+<pre><code>Merb.logger.info(&quot;Compiling routes...&quot;)
+Merb::Router.prepare do |r|
+  # RESTful routes
+  # r.resources :posts
+
+  # This is the default route for /:controller/:action/:id
+  # This is fine for most cases.  If you're heavily using resource-based
+  # routes, you may want to comment/remove this line to prevent
+  # clients from calling your create or destroy actions with a GET
+  r.default_routes
+
+  # Change this for your home page to be available at /
+  r.match('/').to(:controller =&gt; 'home', :action =&gt;'index')
+end
+</code></pre>
+
+<p>Fire up your application by browsing to <a href="http://localhost:4000">http://localhost:4000</a> again, you should be greeted with the same screenshot shown above.</p>
+
+<p>Well done! You&rsquo;ve set up a merb application using tiny, and have managed to create a very basic site with the root folder mapped to a controller action.</p>
+
+<p>My next blog post in this little series will cover the creation of a database to use as the back-end of the application, along with a model which loads from the database and a basic view to render that model&rsquo;s information.</p>
+
+<p>Feedback welcome!</p>
+</div>
+
+        <footer class="post-footer clearfix">
+    
+        <p class="post-tags">
+            <span>Tagged:</span>
+            
+            
+                <a href="/tags/merb/">Merb</a>, 
+            
+                <a href="/tags/tiny/">tiny</a>, 
+            
+                <a href="/tags/web-development/">web development</a>
+            
+        </p>
+    
+
+    <div class="share">
+        
+            <a class="icon-twitter" href="https://twitter.com/share?text=Web%20Application%20Development%20with%20Merb%2c%20MySQL%20and%20Tiny&url=%2fposts%2fweb-application-development-with-merb-mysql-and-tiny%2f"
+                onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                <i class="fa fa-twitter"></i>
+                <span class="hidden">Twitter</span>
+            </a>
+        
+
+        
+            <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=%2fposts%2fweb-application-development-with-merb-mysql-and-tiny%2f"
+                onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                <i class="fa fa-facebook"></i>
+                <span class="hidden">Facebook</span>
+            </a>
+        
+
+        
+            <a class="icon-google-plus" href="https://plus.google.com/share?url=%2fposts%2fweb-application-development-with-merb-mysql-and-tiny%2f"
+              onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+              <i class="fa fa-google-plus"></i>
+                <span class="hidden">Google+</span>
+            </a>
+        
+        
+    </div>
+</footer>
+
+        
+    <div class="comments">
+        
+    </div>
+
+    </article>
+</div>
+
+            </div>
+        </div>
+
+        <footer class="footer">
+            <div class="container">
+                <div class="site-title-wrapper">
+                    <h1 class="site-title">
+                        <a title="OJ&#39;s Perspective" href="/">OJ&#39;s Perspective</a>
+                    </h1>
+                    <a class="button-square button-jump-top js-jump-top" href="#">
+                        <i class="fa fa-angle-up"></i>
+                    </a>
+                </div>
+
+                <p class="footer-copyright">
+                    <span>&copy; 2019 / Powered by <a href="https://gohugo.io/">Hugo</a></span>
+                </p>
+                <p class="footer-copyright">
+                    <span><a href="https://github.com/roryg/ghostwriter">Ghostwriter theme</a> By <a href="http://jollygoodthemes.com">JollyGoodThemes</a></span>
+                    <span>/ <a href="https://github.com/jbub/ghostwriter">Ported</a> to Hugo By <a href="https://github.com/jbub">jbub</a></span>
+                </p>
+            </div>
+        </footer>
+
+        <script src="/js/jquery-1.11.3.min.js"></script>
+        <script src="/js/jquery.fitvids.js"></script>
+        
+        
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        
+        
+        <script src="/js/scripts.js"></script>
+    </body>
+</html>
+

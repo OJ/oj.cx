@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns#">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Continued Meterpreter Development &middot; OJ Reeves</title>
+        <meta name="description" content="Active users of Metasploit will no doubt be aware that Meterpreter is still being actively developed and enhanced by a bunch of people. I&rsquo;m lucky enough to still be one of them! In this post I just want to cover a few things that have been done to it recently, and to give a bit of visbility of how I am able to continue contributing in the way that I do.">
+        <meta name="HandheldFriendly" content="True">
+        <meta name="MobileOptimized" content="320">
+        <meta name="generator" content="Hugo 0.55.6" />
+        <meta name="robots" content="index,follow">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta property="og:title" content="Continued Meterpreter Development">
+<meta property="og:description" content="Active users of Metasploit will no doubt be aware that Meterpreter is still being actively developed and enhanced by a bunch of people. I&rsquo;m lucky enough to still be one of them! In this post I just want to cover a few things that have been done to it recently, and to give a bit of visbility of how I am able to continue contributing in the way that I do.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="/posts/continued-meterpreter-development/">
+        <link rel="stylesheet" href="/dist/styles.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300&subset=latin,cyrillic-ext,latin-ext,cyrillic">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+        
+        
+        
+    </head>
+    <body>
+        
+
+        <div id="wrapper">
+            <header class="site-header">
+                <div class="container">
+                    <div class="site-title-wrapper">
+                        
+                            <h1 class="site-title">
+                                <a title="OJ&#39;s Perspective" href="/">OJ&#39;s Perspective</a>
+                            </h1>
+                        
+                        <a class="button-square" href="/index.xml"><i class="fa fa-rss"></i></a>
+                        
+                            <a class="button-square button-social hint--top" data-hint="Twitter" title="Twitter" href="https://twitter.com/TheColonial" rel="me">
+                                <i class="fa fa-twitter"></i>
+                            </a>
+                        
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Github" title="Github" href="https://github.com/OJ" rel="me">
+                                <i class="fa fa-github-alt"></i>
+                            </a>
+                        
+                        
+                        
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Email" title="Email" href="mailto:oj@buffered.io">
+                                <i class="fa fa-envelope"></i>
+                            </a>
+                        
+                    </div>
+
+                    <ul class="site-nav">
+                        
+    <li class="site-nav-item">
+        <a title="Home" href="/">Home</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Live Streaming" href="/streaming/">Live Streaming</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="About" href="/about/">About</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Contact" href="/contact/">Contact</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Tags" href="/tags/">Tags</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Categories" href="/categories/">Categories</a>
+    </li>
+
+                    </ul>
+                </div>
+            </header>
+
+            <div id="container">
+
+
+<div class="container">
+    <article class="post-container" itemscope="" itemtype="http://schema.org/BlogPosting">
+        <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Continued Meterpreter Development</h1>
+    
+    <p class="post-date">
+        <span>Published <time datetime="2016-05-05" itemprop="datePublished">2016-05-05</time></span>
+        <span>by</span>
+        <span itemscope="" itemprop="author" itemtype="https://schema.org/Person">
+            <span itemprop="name">
+                <a href="#" itemprop="url" rel="author">OJ Reeves</a>
+            </span>
+        </span>
+    </p>
+    
+        <p class="post-reading post-line">
+            <span>Read time: 7 min</span>
+        </p>
+    
+</header>
+
+        <div class="post-content clearfix" itemprop="articleBody">
+    
+
+    <p>Active users of Metasploit will no doubt be aware that Meterpreter is still being actively developed and enhanced by a bunch of people. I&rsquo;m lucky enough to still be one of them! In this post I just want to cover a few things that have been done to it recently, and to give a bit of visbility of how I am able to continue contributing in the way that I do.</p>
+
+<h2 id="credit-where-it-is-due">Credit where it is due</h2>
+
+<p>I love Meterpreter. It&rsquo;s an amazing bit of kit, and I really do love working on it. The people who built the early versions were clearly visionaries whose shoulders we all get to stand on.</p>
+
+<p>I actively contribute to Meterpreter using my own personal time because I think its continued improvement is important, and I like to help it evolve. One such contribution is the recent <a href="/posts/tlv-traffic-obfuscation/">TLV Traffic Obfuscation</a> feature which helps to make AV and IDS suffer a little while trying to detect the communications that passes better MSF and Meterpreter.</p>
+
+<p>However, the bulk of the big features that have been built, and continue to be built, are not done on my own time. It&rsquo;s hard to justify weeks of effort while running a <a href="https://beyondbinary.io/">security business</a>.</p>
+
+<p>It&rsquo;s important for you all to know that <a href="https://www.rapid7.com/">Rapid7</a> are the ones footing the bill for these major features. They pay me for my time, and they support me through the process of development. Without them, the speed at which these things get delivered would be hindered, and the tool that you all make use of would not move forward at the rate that it does.</p>
+
+<p>Many users of Metasploit believe that everything I&rsquo;m doing for Meterpreter is done out of my own pocket, and I want to be 100% clear that while I do <em>some</em> work of my own volition, the bulk of it is all thanks to Rapid7 and the Metasploit team. So please give them a squeeze and a beverage next time you see them if you think this work is valuable to you.</p>
+
+<p>It&rsquo;s also important to point out that I am making this statement because I want you to know, and not because Rapid7 want you to know. I am not under duress or instruction here. This is all about giving credit where it&rsquo;s due.</p>
+
+<p>To the folks at Rapid7, especially those in the Metasploit team, I love you all and thank you for your continued support.</p>
+
+<h2 id="the-powershell-extension">The Powershell Extension</h2>
+
+<p>A recent bombshell was dropped in the form of a new extension that allows for direct interaction with a hot-loaded Powershell interpreter. Prior to this extension existing, we were stuck with invoking <code>powershell.exe</code> on the command line and passing in scripts. We weren&rsquo;t in a position to interact with it like we were with <code>cmd.exe</code> (for example). This was painful, and with so much &hellip; er.. power.. being provided by Powershell, we were finding that more and more people wanted to use it without having to juggle results via <code>cmd.exe</code>. There were other issues too:</p>
+
+<ul>
+<li>Single-shot <code>powershell.exe</code> invocations didn&rsquo;t give us the ability to have persistent sessions.</li>
+<li>It wasn&rsquo;t always clear which <code>powershell.exe</code> was being invoked.</li>
+<li>It was hard to do anything complex.</li>
+</ul>
+
+<p>The Powershell extension was designed to solve this, and is based on a similar idea that the likes of <a href="http://www.powershellempire.com/">Empire</a> use, though it&rsquo;s different in some ways. The foundation is built on the work that <a href="https://twitter.com/tifkin_">Lee</a> put into <a href="https://github.com/leechristensen/UnmanagedPowerShell">Unmanaged Powershell</a>, and so he deserves a huge deal of credit, lots of cuddles, and a noogie or two.</p>
+
+<p><img src="/uploads/2016/05/ace-ventura-noogie.jpg" alt="NOOOOOGIIIIIEEEE!!" /></p>
+
+<p>At this point I&rsquo;d like to defer to <a href="https://twitter.com/Carlos_Perez">DarkOperator</a> who has already put together a <a href="http://www.darkoperator.com/blog/2016/4/2/meterpreter-new-windows-powershell-extension">very good post</a> that covers the extension in quite a bit of detail. Thank you Carlos, you saved me quite a bit of time! I recommend going over there and reading it in full.</p>
+
+<h2 id="reverse-port-forwards">Reverse Port Forwards</h2>
+
+<p>One of the most frequenly requested features for Meterpreter over the last few years has been &ldquo;reverse port forwards&rdquo;. While we&rsquo;ve had the ability to pivot through a Meterpreter session in a forward direction for quite some time, it wasn&rsquo;t possible to go in the other direction.</p>
+
+<p>Having the ability to tunnel a listener &ldquo;into&rdquo; a network and have connections pivot out to a local port has quite a lot of value in assessment scenarios. To get around the lack of support in Meterpreter, most people use the likes of <a href="http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html">plink</a> or a similar tool. The problem with this is that it often requires dropping binaries on the target&rsquo;s disk, which isn&rsquo;t ideal.</p>
+
+<p>As of yesterday, the <a href="https://github.com/rapid7/metasploit-framework/pull/6753">reverse port forward</a> functionality is now present in Metasploit. It is possible to use the <code>portfwd</code> command with the <code>-R</code> option to create a reverse port forward. When invoked, Meterpreter opens up a port and listens for connections. When a connection is received, a new channel is created and data is shuffled back and forth through that channel in the same way it does for typical port forwards.</p>
+
+<p>Please go and have a play with it, and if you have any issues, hit me up or open a Github issue.</p>
+
+<h2 id="pivots-via-named-pipes">Pivots via Named Pipes</h2>
+
+<p>Reverse port forwards give us the ability to pivot sessions out of a network from machines that don&rsquo;t have direct internet connectivity. They also reduce noise on the wire a bit by not having extra connections heading to the untrusted Tubes.</p>
+
+<p>The only thing better than this is having the ability to pivot without having to go through obscure ports and custom listeners. Opening a port can also be noisy, and so ideally we would use something else that doesn&rsquo;t require it. This is where <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa365590(v=vs.85).aspx">Named Pipes</a> come in, which operate over <a href="https://en.wikipedia.org/wiki/Server_Message_Block">SMB</a> and hence blend in a bit more with existing Windowsy traffic.</p>
+
+<p>This functionality is currently in development; I hope to have a Pull Request submitted very soon. The goal is to have:</p>
+
+<ul>
+<li>A new transport type called <code>reverse_named_pipe</code> that makes use of the Named Pipe functionality that&rsquo;s native to Windows.</li>
+<li>Full support in Stageless Meterpreter.</li>
+<li>Two new stagers, x86 and x64, that stage Meterpreter over Named Pipes.</li>
+</ul>
+
+<p>I would also like to be able to migrate while the Named Pipe transport is active, but I&rsquo;m still not sure if that will happen yet. There&rsquo;s more research to do here.</p>
+
+<p>It&rsquo;s worth noting that Metasploit itself doesn&rsquo;t have the ability to &ldquo;be a SMB-compaitible Named Pipe server&rdquo; (at least not yet), and so it&rsquo;s not possible to talk directly to MSF over Named Pipes across port 445. To make use of this feature, an existing Meterpreter session must be present. The new Named Pipe handler forces the user to specify a <code>SESSION</code> when the handler is created, as this is where the listener will be created. When the listener is created, the session is set up with ACLs configured to allow <code>EVERYONE</code> to connect, which ties the implementation to Windows domains only. This is a short-term limitation, however it does allow non-admins to create the Named Pipe. To create NULL sessions, the user would have to be admin with full privileges, as it requires other hacks (such as poking registry keys) in order to work. This will come down the track, but for now we&rsquo;ll be starting with something simpler.</p>
+
+<p>While the general use of Named Pipes is rather simple, there are all kinds of use cases in Meterpreter where using Named Pipes as a transport cause heartache. One example is handling cases where pivot points fail, or when <code>sessions -K</code> is executed (killing the pivot means we can&rsquo;t kill the client, as the comms channel is gone!). When the work is finished, I intend to document these nuances on the <a href="https://github.com/rapid7/metasploit-framework/wiki">Wiki</a> so that it&rsquo;s clear to all why things are the way they are.</p>
+
+<p>Yes, I know other tools &ldquo;do this already&rdquo;. Tell me something I don&rsquo;t know.</p>
+
+<h2 id="that-ll-do-pig-that-ll-do">That&rsquo;ll do pig. That&rsquo;ll do.</h2>
+
+<p>That&rsquo;s all for now. Be sure to keep tabs on both the <a href="https://github.com/rapid7/metasploit-framework">Metasploit Repository</a> and the <a href="https://github.com/rapid7/metasploit-payloads">Payloads Repository</a> if you&rsquo;re keen to see things as they happen. Otherwise, wait for more blogs here or over on the <a href="https://community.rapid7.com/welcome">Rapid7 community</a> site.</p>
+
+<p>Thanks for reading.</p>
+</div>
+
+        <footer class="post-footer clearfix">
+    
+
+    <div class="share">
+        
+            <a class="icon-twitter" href="https://twitter.com/share?text=Continued%20Meterpreter%20Development&url=%2fposts%2fcontinued-meterpreter-development%2f"
+                onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                <i class="fa fa-twitter"></i>
+                <span class="hidden">Twitter</span>
+            </a>
+        
+
+        
+            <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=%2fposts%2fcontinued-meterpreter-development%2f"
+                onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                <i class="fa fa-facebook"></i>
+                <span class="hidden">Facebook</span>
+            </a>
+        
+
+        
+            <a class="icon-google-plus" href="https://plus.google.com/share?url=%2fposts%2fcontinued-meterpreter-development%2f"
+              onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+              <i class="fa fa-google-plus"></i>
+                <span class="hidden">Google+</span>
+            </a>
+        
+        
+    </div>
+</footer>
+
+        
+    <div class="comments">
+        
+    </div>
+
+    </article>
+</div>
+
+            </div>
+        </div>
+
+        <footer class="footer">
+            <div class="container">
+                <div class="site-title-wrapper">
+                    <h1 class="site-title">
+                        <a title="OJ&#39;s Perspective" href="/">OJ&#39;s Perspective</a>
+                    </h1>
+                    <a class="button-square button-jump-top js-jump-top" href="#">
+                        <i class="fa fa-angle-up"></i>
+                    </a>
+                </div>
+
+                <p class="footer-copyright">
+                    <span>&copy; 2019 / Powered by <a href="https://gohugo.io/">Hugo</a></span>
+                </p>
+                <p class="footer-copyright">
+                    <span><a href="https://github.com/roryg/ghostwriter">Ghostwriter theme</a> By <a href="http://jollygoodthemes.com">JollyGoodThemes</a></span>
+                    <span>/ <a href="https://github.com/jbub/ghostwriter">Ported</a> to Hugo By <a href="https://github.com/jbub">jbub</a></span>
+                </p>
+            </div>
+        </footer>
+
+        <script src="/js/jquery-1.11.3.min.js"></script>
+        <script src="/js/jquery.fitvids.js"></script>
+        
+        
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        
+        
+        <script src="/js/scripts.js"></script>
+    </body>
+</html>
+

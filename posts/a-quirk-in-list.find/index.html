@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns#">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>A Quirk in List.Find() &middot; OJ Reeves</title>
+        <meta name="description" content="Earlier today I was having a chat with a friend of mine, who lives in Vancouver, about finding items that are stored in generic Lists. He flicked me a code snippet that looked something like this:
+
+List&lt;foo&gt; list = new List&lt;foo&gt;();
+// .. do some stuff
+Foo f = list.Find(delegate(Foo f) { return foo.Name == &quot;Bar&quot;; });
+
+
+Straight away I fired back with an update to the code which used lambda expressions instead, as I&rsquo;m a fan of how concise they are ;)">
+        <meta name="HandheldFriendly" content="True">
+        <meta name="MobileOptimized" content="320">
+        <meta name="generator" content="Hugo 0.55.6" />
+        <meta name="robots" content="index,follow">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta property="og:title" content="A Quirk in List.Find()">
+<meta property="og:description" content="Earlier today I was having a chat with a friend of mine, who lives in Vancouver, about finding items that are stored in generic Lists. He flicked me a code snippet that looked something like this:
+
+List&lt;foo&gt; list = new List&lt;foo&gt;();
+// .. do some stuff
+Foo f = list.Find(delegate(Foo f) { return foo.Name == &quot;Bar&quot;; });
+
+
+Straight away I fired back with an update to the code which used lambda expressions instead, as I&rsquo;m a fan of how concise they are ;)">
+<meta property="og:type" content="article">
+<meta property="og:url" content="/posts/a-quirk-in-list.find/">
+        <link rel="stylesheet" href="/dist/styles.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300&subset=latin,cyrillic-ext,latin-ext,cyrillic">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+        
+        
+        
+    </head>
+    <body>
+        
+
+        <div id="wrapper">
+            <header class="site-header">
+                <div class="container">
+                    <div class="site-title-wrapper">
+                        
+                            <h1 class="site-title">
+                                <a title="OJ&#39;s Perspective" href="/">OJ&#39;s Perspective</a>
+                            </h1>
+                        
+                        <a class="button-square" href="/index.xml"><i class="fa fa-rss"></i></a>
+                        
+                            <a class="button-square button-social hint--top" data-hint="Twitter" title="Twitter" href="https://twitter.com/TheColonial" rel="me">
+                                <i class="fa fa-twitter"></i>
+                            </a>
+                        
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Github" title="Github" href="https://github.com/OJ" rel="me">
+                                <i class="fa fa-github-alt"></i>
+                            </a>
+                        
+                        
+                        
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Email" title="Email" href="mailto:oj@buffered.io">
+                                <i class="fa fa-envelope"></i>
+                            </a>
+                        
+                    </div>
+
+                    <ul class="site-nav">
+                        
+    <li class="site-nav-item">
+        <a title="Home" href="/">Home</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Live Streaming" href="/streaming/">Live Streaming</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="About" href="/about/">About</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Contact" href="/contact/">Contact</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Tags" href="/tags/">Tags</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Categories" href="/categories/">Categories</a>
+    </li>
+
+                    </ul>
+                </div>
+            </header>
+
+            <div id="container">
+
+
+<div class="container">
+    <article class="post-container" itemscope="" itemtype="http://schema.org/BlogPosting">
+        <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">A Quirk in List.Find()</h1>
+    
+    <p class="post-date">
+        <span>Published <time datetime="2009-03-25" itemprop="datePublished">2009-03-25</time></span>
+        <span>by</span>
+        <span itemscope="" itemprop="author" itemtype="https://schema.org/Person">
+            <span itemprop="name">
+                <a href="#" itemprop="url" rel="author">OJ Reeves</a>
+            </span>
+        </span>
+    </p>
+    
+        <p class="post-reading post-line">
+            <span>Read time: 5 min</span>
+        </p>
+    
+</header>
+
+        <div class="post-content clearfix" itemprop="articleBody">
+    
+
+    <p>Earlier today I was having a chat with a <a href="http://doomkeeper.com/" title="Jimmy's Blog">friend of mine</a>, who lives in Vancouver, about finding items that are stored in <a href="http://msdn.microsoft.com/en-us/library/6sh2ey19.aspx" title="List(T)">generic Lists</a>. He flicked me a code snippet that looked something like this:</p>
+
+<pre><code>List&lt;foo&gt; list = new List&lt;foo&gt;();
+// .. do some stuff
+Foo f = list.Find(delegate(Foo f) { return foo.Name == &quot;Bar&quot;; });
+</code></pre>
+
+<p>Straight away I fired back with an update to the code which used <a href="http://msdn.microsoft.com/en-us/library/bb397687.aspx" title="Lambda Expressions (C# Programming Guide)">lambda expressions</a> instead, as I&rsquo;m a fan of how concise they are ;)</p>
+
+<pre><code>List&lt;foo&gt; list = new List&lt;foo&gt;();
+// .. do some stuff
+Foo f = list.Find(foo =&gt; foo.Name == &quot;Bar&quot;);
+</code></pre>
+
+<p>My friend ran this code against a data set that he had constructed and found that when the call to <a href="http://msdn.microsoft.com/en-us/library/x0b5b5bc.aspx" title="List(T).Find">Find()</a> was made, a <a href="http://msdn.microsoft.com/en-us/library/system.nullreferenceexception.aspx" title="System.NullReferenceException">NullReferenceException</a> was being thrown. I found this odd as I hadn&rsquo;t seen that before. <em>list</em> was definitely a valid reference and the lambda expression was well-formed as well. So what was wrong?</p>
+
+<p>It turns out that even though <em>list</em> was a valid reference, it <strong>didn&rsquo;t contain any elements</strong>.</p>
+
+<p>How odd! Why would the generic List object throw an exception when the user calls Find() when no elements are present? After a little bit of thinking I thought that I had the answer. I thought to myself:</p>
+
+<blockquote>
+<p>What if the List was a container for a <a href="http://msdn.microsoft.com/en-us/library/34yytbws(VS.71).aspx" title="Value Types">value type</a>, such as <em>int</em>? If you attempt to find a value in an empty list, then the function cannot return <em>null</em> because that isn&rsquo;t valid for value-types! Throwing an exception <em>does</em> make sense!</p>
+</blockquote>
+
+<p>Isn&rsquo;t it amazing how easy it is to convince yourself of your own greatness? I thought I&rsquo;d nailed it first go. So I proposed my argument to my friend, who initially was semi-sold on the idea.</p>
+
+<p>Then I thought about it again and managed to convince myself that my apparent &ldquo;brilliance&rdquo; was, in fact, a failure. The perfect counter-argument to the above point is:</p>
+
+<blockquote>
+<p>What happens when you have a List of ints which <em>does</em> contain elements and you attempt to search for a value that <strong>is not in the list</strong>?</p>
+</blockquote>
+
+<p>It wasn&rsquo;t immediately obvious. So I tried something to see what would happen:</p>
+
+<pre><code>List&lt;int&gt; list = new List&lt;int&gt;(new int[] { 1, 2, 3 });
+int i = list.Find(x =&gt; x &gt; 3);
+// ....
+</code></pre>
+
+<p>So what do you think the value of <em>i</em> is after those first two lines? Yes, you guessed it: <strong>Zero</strong>. Why? Well, duh, it&rsquo;s because <a href="http://msdn.microsoft.com/en-us/library/xwth0h0d.aspx" title="default keyword">default(T)</a> for integers is Zero!</p>
+
+<p>This is where little alarm bells started to ring in my head. I immediately whipped up an example where this would be considered bad:</p>
+
+<pre><code>List&lt;int&gt; list = new List&lt;int&gt;(new int[] { 0, 1, 2, 3 });
+int i = list.Find(x =&gt; x &gt; 3);
+// ....
+</code></pre>
+
+<p>Again, <em>i</em> is Zero when this code is executed, but the result is very misleading. Zero is contained in the collection but doesn&rsquo;t match the predicate, yet Zero is returned because that&rsquo;s the default value for this value-type.</p>
+
+<p>I thought this was a bit of a glaring hole in the design. So I went straight to the <a href="http://msdn.microsoft.com/en-us/library/x0b5b5bc.aspx" title="List(T).Find">documentation</a> and found this:</p>
+
+<blockquote>
+<p><strong>Important Note:</strong></p>
+
+<p>When searching a list containing value types, make sure the default value for the type does not satisfy the search predicate. Otherwise, there is no way to distinguish between a default value indicating that no match was found and a list element that happens to have the default value for the type. If the default value satisfies the search predicate, use the <a href="http://msdn.microsoft.com/en-us/library/0k601hd9.aspx" title="FindIndex">FindIndex</a> method instead.</p>
+</blockquote>
+
+<p>This was concerning for a couple of reasons. First of all, the designers have left it up to you to determine that this is the default behaviour. Yes I should be able to come to that conclusion myself, but I didn&rsquo;t until I got bitten :) So shut up! Secondly, you have to check your result value against your predicate <em>again</em> to be sure that it&rsquo;s not dodgey. For example:</p>
+
+<pre><code>List&lt;int&gt; list = new List&lt;int&gt;(new int[] { 0, 1, 2, 3 });
+int i = list.Find(x =&gt; x &gt; 3);
+if(i &gt; 3)
+{
+  // .. valid value, do stuff ..
+}
+else
+{
+  // .. no item found
+}
+</code></pre>
+
+<p>Do <em>you</em> want to do that? I certainly don&rsquo;t. After a bit of back-and-forth with Jimbo, I thought that the best option for a generic List Find() function would be one that is akin to the good old C++ days. It would look something like this:</p>
+
+<pre><code>bool Find&lt;t&gt;(Predicate&lt;t&gt; predicate, ref T output);
+</code></pre>
+
+<p>This would mean that you could change your code to something like the following:</p>
+
+<pre><code>int i;
+List&lt;int&gt; list = new List&lt;int&gt;(new int[] { 0, 1, 2, 3 });
+if(list.Find(x =&gt; x &gt; 3, ref i))
+{
+  // .. valid value, do stuff ..
+}
+else
+{
+  // .. no item found, or empty list!
+}
+</code></pre>
+
+<p>Note how with this option you could easily support the case for empty lists at the same time. It would be helpful and meaningful. Only when the function returns true can you rely on the output parameter. It&rsquo;s very clear and caters for value-types and reference-types. It&rsquo;d be easy to implement in an [extension method][] as well. I&rsquo;d prefer this solution over using FindIndex().</p>
+
+<p>In case it&rsquo;s not obvious, this problem would no doubt exist in all functions on generic objects that attempt to return a single instance of <em>T</em> based on some form of predicate. [FindLast()][ListTFindLast] would be another example.</p>
+
+<p>I&rsquo;m very keen to know the reasons behind the original design decision. I&rsquo;m sure that minds far greater than mine parsed that problem and came up with that solution, probably for a very good reason.</p>
+
+<p>What do you guys think?</p>
+
+<p>[ListTFindLast]: &ldquo;<a href="http://msdn.microsoft.com/en-us/library/5kthb929.aspx&quot;">http://msdn.microsoft.com/en-us/library/5kthb929.aspx&quot;</a> List(T).FindLast&rdquo;</p>
+</div>
+
+        <footer class="post-footer clearfix">
+    
+        <p class="post-tags">
+            <span>Tagged:</span>
+            
+            
+                <a href="/tags/.net/">.net</a>, 
+            
+                <a href="/tags/c/">C#</a>, 
+            
+                <a href="/tags/design/">design</a>, 
+            
+                <a href="/tags/generics/">generics</a>
+            
+        </p>
+    
+
+    <div class="share">
+        
+            <a class="icon-twitter" href="https://twitter.com/share?text=A%20Quirk%20in%20List.Find%28%29&url=%2fposts%2fa-quirk-in-list.find%2f"
+                onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                <i class="fa fa-twitter"></i>
+                <span class="hidden">Twitter</span>
+            </a>
+        
+
+        
+            <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=%2fposts%2fa-quirk-in-list.find%2f"
+                onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                <i class="fa fa-facebook"></i>
+                <span class="hidden">Facebook</span>
+            </a>
+        
+
+        
+            <a class="icon-google-plus" href="https://plus.google.com/share?url=%2fposts%2fa-quirk-in-list.find%2f"
+              onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+              <i class="fa fa-google-plus"></i>
+                <span class="hidden">Google+</span>
+            </a>
+        
+        
+    </div>
+</footer>
+
+        
+    <div class="comments">
+        
+    </div>
+
+    </article>
+</div>
+
+            </div>
+        </div>
+
+        <footer class="footer">
+            <div class="container">
+                <div class="site-title-wrapper">
+                    <h1 class="site-title">
+                        <a title="OJ&#39;s Perspective" href="/">OJ&#39;s Perspective</a>
+                    </h1>
+                    <a class="button-square button-jump-top js-jump-top" href="#">
+                        <i class="fa fa-angle-up"></i>
+                    </a>
+                </div>
+
+                <p class="footer-copyright">
+                    <span>&copy; 2019 / Powered by <a href="https://gohugo.io/">Hugo</a></span>
+                </p>
+                <p class="footer-copyright">
+                    <span><a href="https://github.com/roryg/ghostwriter">Ghostwriter theme</a> By <a href="http://jollygoodthemes.com">JollyGoodThemes</a></span>
+                    <span>/ <a href="https://github.com/jbub/ghostwriter">Ported</a> to Hugo By <a href="https://github.com/jbub">jbub</a></span>
+                </p>
+            </div>
+        </footer>
+
+        <script src="/js/jquery-1.11.3.min.js"></script>
+        <script src="/js/jquery.fitvids.js"></script>
+        
+        
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        
+        
+        <script src="/js/scripts.js"></script>
+    </body>
+</html>
+

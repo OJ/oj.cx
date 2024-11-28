@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns#">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>An Interesting Little Problem &middot; OJ Reeves</title>
+        <meta name="description" content="This post was inspired by a recent interview question that was posted over at fsharp.it. It&rsquo;s one of those neat little questions which looks really simple on the surface but is quite tricky.">
+        <meta name="HandheldFriendly" content="True">
+        <meta name="MobileOptimized" content="320">
+        <meta name="generator" content="Hugo 0.55.6" />
+        <meta name="robots" content="index,follow">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta property="og:title" content="An Interesting Little Problem">
+<meta property="og:description" content="This post was inspired by a recent interview question that was posted over at fsharp.it. It&rsquo;s one of those neat little questions which looks really simple on the surface but is quite tricky.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="/posts/an-interesting-little-problem/">
+        <link rel="stylesheet" href="/dist/styles.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300&subset=latin,cyrillic-ext,latin-ext,cyrillic">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+        
+        
+        
+    </head>
+    <body>
+        
+
+        <div id="wrapper">
+            <header class="site-header">
+                <div class="container">
+                    <div class="site-title-wrapper">
+                        
+                            <h1 class="site-title">
+                                <a title="OJ&#39;s Perspective" href="/">OJ&#39;s Perspective</a>
+                            </h1>
+                        
+                        <a class="button-square" href="/index.xml"><i class="fa fa-rss"></i></a>
+                        
+                            <a class="button-square button-social hint--top" data-hint="Twitter" title="Twitter" href="https://twitter.com/TheColonial" rel="me">
+                                <i class="fa fa-twitter"></i>
+                            </a>
+                        
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Github" title="Github" href="https://github.com/OJ" rel="me">
+                                <i class="fa fa-github-alt"></i>
+                            </a>
+                        
+                        
+                        
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Email" title="Email" href="mailto:oj@buffered.io">
+                                <i class="fa fa-envelope"></i>
+                            </a>
+                        
+                    </div>
+
+                    <ul class="site-nav">
+                        
+    <li class="site-nav-item">
+        <a title="Home" href="/">Home</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Live Streaming" href="/streaming/">Live Streaming</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="About" href="/about/">About</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Contact" href="/contact/">Contact</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Tags" href="/tags/">Tags</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Categories" href="/categories/">Categories</a>
+    </li>
+
+                    </ul>
+                </div>
+            </header>
+
+            <div id="container">
+
+
+<div class="container">
+    <article class="post-container" itemscope="" itemtype="http://schema.org/BlogPosting">
+        <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">An Interesting Little Problem</h1>
+    
+    <p class="post-date">
+        <span>Published <time datetime="2008-06-14" itemprop="datePublished">2008-06-14</time></span>
+        <span>by</span>
+        <span itemscope="" itemprop="author" itemtype="https://schema.org/Person">
+            <span itemprop="name">
+                <a href="#" itemprop="url" rel="author">OJ Reeves</a>
+            </span>
+        </span>
+    </p>
+    
+        <p class="post-reading post-line">
+            <span>Read time: 5 min</span>
+        </p>
+    
+</header>
+
+        <div class="post-content clearfix" itemprop="articleBody">
+    
+
+    <p>This post was inspired by a recent interview question that was posted over at <a href="http://www.fsharp.it/posts/google-interview-question-product-of-other-elements-in-an-array-in-on/" title="Fsharp.it">fsharp.it</a>. It&rsquo;s one of those neat little questions which looks really simple on the surface but is quite tricky.</p>
+
+<p>The question apparently originates from an interview that someone had with Google, and goes something like this:<blockquote><p>
+There is an array A[N] of N integers. You have to compose an array Output[N] such that Output[i] will be equal to the product of all the elements of A[] except A[i].</p>
+
+<p>Example:
+&nbsp;&nbsp;&nbsp;&nbsp;INPUT:[4, 3, 2, 1, 2]
+&nbsp;&nbsp;&nbsp;&nbsp;OUTPUT:[12, 16, 24, 48, 24]</p>
+
+<p><strong>Note:</strong> Solve it <em>without</em> the division operator and in O(n).
+</p></blockquote>
+Since I had a spare 10 minutes, I decided to give it a shot &hellip; in Haskell.</p>
+
+<p>I&rsquo;ll cut to the chase, here&rsquo;s the source to my solution:</p>
+
+<pre><code>vals :: [Int]
+vals = [ 4, 3, 2, 1, 2 ]
+
+answers :: [Int]
+answers = [ front !! (x-1) * back !! (x+1) | x &lt;- [1..length vals] ]
+  where
+    front = scanl1 (*) temp
+    back = scanr1 (*) temp
+    temp = [1] ++ vals ++ [1]
+</code></pre>
+
+<p>I&rsquo;m hoping that this is quite self-explanatory. But in case it&rsquo;s not, I&rsquo;ll cover some of the gory bits.</p>
+
+<p>The core of the problem is coming up with a way of determining the value of the product of numbers from the start of the list up to a given index, and to do the same at the other end of the list from that given index.</p>
+
+<p>I thought that the easiest way would be to create two lists: both of them containing the compounded products of the numbers in the list, but each of them in different directions. To generate those lists, I thought that I&rsquo;d add the value of 1 to the list, both at the start and at the end, as it would allow me to do two things:<ol><li>Generate the lists using the <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v%3Ascanl1" title="scanl1">scanl1</a> and scanr1 functions.</li><li>Index into the list using a counter that&rsquo;s based on the size of the original values without having to worry about going past the bounds of the list.</li></ol>Yup, quite lazy, but very handy.</p>
+
+<p>Here&rsquo;s the output when I execute <em>answers</em> in <a href="http://www.haskell.org/ghc/docs/latest/html/users_guide/ghci.html" title="GHCi">GHCi</a>:</p>
+
+<pre><code>Prelude&gt; :l google.hs
+[1 of 1] Compiling Main             ( google.hs, interpreted )
+Ok, modules loaded: Main.
+*Main&gt; answers
+[12,16,24,48,24]
+*Main&gt;
+</code></pre>
+
+<p>Problem solved in O(n). Neato! After feeling rather chuffed with myself I thought I&rsquo;d go back to Fsharp.it and check out the answer posted there. The principle was similar, but the implementation listed was a little longer.</p>
+
+<p>So I thought I&rsquo;d have a go at writing up my solution using F#. It didn&rsquo;t seem like a stretch until I realised how little of the language I know (I&rsquo;m currently reading through <a href="http://www.amazon.com/Expert-F-Experts-Voice-Net/dp/1590598504" title="Expert F#">Expert F#</a>, but I&rsquo;m still far from being one myself). Here&rsquo;s what I came up with:</p>
+
+<pre><code>#light
+
+let vals = [ 4; 3; 2; 1; 2; ]
+
+let mul a b = a * b
+let (++) = List.append
+
+let answers =
+  let temp = [1] ++ vals ++ [1]
+  let front = List.scan1_left mul temp |&gt; List.to_array
+  let back = List.scan1_right mul temp |&gt; List.to_array
+  seq { for x in [1 .. vals.Length] -&gt; front.[x-1] * back.[x+1] }
+</code></pre>
+
+<p>A few things you might notice:<ol><li>My syntax highlighter plugin doesn&rsquo;t currently support F# :)</li><li>I use a similar method to the Haskell solution, but ended up having to convert the <em>front</em> and <em>back</em> lists to arrays. The reason was because I need to be able to index into the resulting integer set, and I can&rsquo;t do that with lists (if I&rsquo;m wrong, please let me know!)</li><li>I defined a function called <em>mul</em> which does a simple multiplication. I wanted to pass <em>(<em>)</em> as the first parameter to the scan1_</em> functions, but the interpreter took that as the start of a comment instead! So I had to resort to a dodgey hack. If you know a way around this, please let me know.</li><li>I wrote my own (++) operator because I didn&rsquo;t want to have to write List.append more than once :)</li></ol>
+In other words, my F# version smells like n00b. I&rsquo;m sure there are so many better ways to implement this using the built-in features of the language and supporting libraries, but I&rsquo;m yet to get to the level when I can write it. I&rsquo;d love for someone to show me how :)</p>
+
+<p>I did enjoy having a dabble with F# for the first time in ages, though I have to admit I much prefer using <a href="http://www.vim.org/" title="VIM">VIM</a> and <a href="http://research.microsoft.com/fsharp/manual/compiler.aspx" title="F# Interactive">fsi.exe</a> instead of <a href="http://msdn.microsoft.com/en-us/vstudio/default.aspx" title="Visual Studio">Visual Studio</a> and the <a href="http://blogs.msdn.com/dsyme/archive/posts/534925.aspx" title="A Taste of F# Interactive in Visual Studio">interactive F# add-in</a>.</p>
+
+<p>As always, feedback and criticism welcomed (and needed).</p>
+
+<p><h2>Update</h2>
+After some great feedback (see below), I&rsquo;ve come to realise that the !! operator in Haskell is actually O(n) itself. Hence it was a bad choice for inclusion. Back to the drawing board for me!</p>
+
+<p>Here are a couple of submitted Haskell solutions.</p>
+
+<pre><code>-- by lf
+scanm f z xs = zipWith f (scanl f z xs) (tail $ scanr f z xs)
+main = print $ scanm (*) 1 [4,3,2,1,2]
+
+-- by Henning
+answers :: [Int] -&gt; [Int]
+answers vals = zipWith (*) front (drop 1 back)
+	where
+	front = scanl (*) 1 vals
+	back = scanr (*) 1 vals
+
+-- by desp
+problem input = zipWith (*) front back where
+  front = init (scanl (*) 1 input)
+  back = tail (scanr (*) 1 input)
+
+-- by foobar
+foo [] _ = ([], 1)
+foo (x:xs) acc = let (l, m) = foo xs (acc*x)
+                 in ((m*acc):l , m*x)
+</code></pre>
+
+<p>Thanks for the submissions guys :) Sorry for not including the imperative versions in the update.</p>
+</div>
+
+        <footer class="post-footer clearfix">
+    
+        <p class="post-tags">
+            <span>Tagged:</span>
+            
+            
+                <a href="/tags/challenge/">challenge</a>, 
+            
+                <a href="/tags/f/">F#</a>, 
+            
+                <a href="/tags/functional/">functional</a>, 
+            
+                <a href="/tags/google/">Google</a>, 
+            
+                <a href="/tags/haskell/">Haskell</a>, 
+            
+                <a href="/tags/interview/">interview</a>, 
+            
+                <a href="/tags/programming/">programming</a>
+            
+        </p>
+    
+
+    <div class="share">
+        
+            <a class="icon-twitter" href="https://twitter.com/share?text=An%20Interesting%20Little%20Problem&url=%2fposts%2fan-interesting-little-problem%2f"
+                onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                <i class="fa fa-twitter"></i>
+                <span class="hidden">Twitter</span>
+            </a>
+        
+
+        
+            <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=%2fposts%2fan-interesting-little-problem%2f"
+                onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                <i class="fa fa-facebook"></i>
+                <span class="hidden">Facebook</span>
+            </a>
+        
+
+        
+            <a class="icon-google-plus" href="https://plus.google.com/share?url=%2fposts%2fan-interesting-little-problem%2f"
+              onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+              <i class="fa fa-google-plus"></i>
+                <span class="hidden">Google+</span>
+            </a>
+        
+        
+    </div>
+</footer>
+
+        
+    <div class="comments">
+        
+    </div>
+
+    </article>
+</div>
+
+            </div>
+        </div>
+
+        <footer class="footer">
+            <div class="container">
+                <div class="site-title-wrapper">
+                    <h1 class="site-title">
+                        <a title="OJ&#39;s Perspective" href="/">OJ&#39;s Perspective</a>
+                    </h1>
+                    <a class="button-square button-jump-top js-jump-top" href="#">
+                        <i class="fa fa-angle-up"></i>
+                    </a>
+                </div>
+
+                <p class="footer-copyright">
+                    <span>&copy; 2019 / Powered by <a href="https://gohugo.io/">Hugo</a></span>
+                </p>
+                <p class="footer-copyright">
+                    <span><a href="https://github.com/roryg/ghostwriter">Ghostwriter theme</a> By <a href="http://jollygoodthemes.com">JollyGoodThemes</a></span>
+                    <span>/ <a href="https://github.com/jbub/ghostwriter">Ported</a> to Hugo By <a href="https://github.com/jbub">jbub</a></span>
+                </p>
+            </div>
+        </footer>
+
+        <script src="/js/jquery-1.11.3.min.js"></script>
+        <script src="/js/jquery.fitvids.js"></script>
+        
+        
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        
+        
+        <script src="/js/scripts.js"></script>
+    </body>
+</html>
+

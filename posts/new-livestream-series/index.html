@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns#">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>New Livestream Series &middot; OJ Reeves</title>
+        <meta name="description" content="TL;DR We&rsquo;re going to build a .NET implementation of Meterpreter live on stream. Together. From scratch. Read on for all the details!
+The Backstory I remember kicking off my first ever live stream on Twitch back in September 2016. It feels like a lifetime ago already. That stream, broken up into two parts (1, 2), was me breaking open the Capcom.sys driver that had a blatant backdoor in it and abusing this backdoor to get NT AUTHORITY\SYSTEM privileges.">
+        <meta name="HandheldFriendly" content="True">
+        <meta name="MobileOptimized" content="320">
+        <meta name="generator" content="Hugo 0.55.6" />
+        <meta name="robots" content="index,follow">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta property="og:title" content="New Livestream Series">
+<meta property="og:description" content="TL;DR We&rsquo;re going to build a .NET implementation of Meterpreter live on stream. Together. From scratch. Read on for all the details!
+The Backstory I remember kicking off my first ever live stream on Twitch back in September 2016. It feels like a lifetime ago already. That stream, broken up into two parts (1, 2), was me breaking open the Capcom.sys driver that had a blatant backdoor in it and abusing this backdoor to get NT AUTHORITY\SYSTEM privileges.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="/posts/new-livestream-series/">
+        <link rel="stylesheet" href="/dist/styles.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300&subset=latin,cyrillic-ext,latin-ext,cyrillic">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+        
+        
+        
+    </head>
+    <body>
+        
+
+        <div id="wrapper">
+            <header class="site-header">
+                <div class="container">
+                    <div class="site-title-wrapper">
+                        
+                            <h1 class="site-title">
+                                <a title="OJ&#39;s Perspective" href="/">OJ&#39;s Perspective</a>
+                            </h1>
+                        
+                        <a class="button-square" href="/index.xml"><i class="fa fa-rss"></i></a>
+                        
+                            <a class="button-square button-social hint--top" data-hint="Twitter" title="Twitter" href="https://twitter.com/TheColonial" rel="me">
+                                <i class="fa fa-twitter"></i>
+                            </a>
+                        
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Github" title="Github" href="https://github.com/OJ" rel="me">
+                                <i class="fa fa-github-alt"></i>
+                            </a>
+                        
+                        
+                        
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Email" title="Email" href="mailto:oj@buffered.io">
+                                <i class="fa fa-envelope"></i>
+                            </a>
+                        
+                    </div>
+
+                    <ul class="site-nav">
+                        
+    <li class="site-nav-item">
+        <a title="Home" href="/">Home</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Live Streaming" href="/streaming/">Live Streaming</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="About" href="/about/">About</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Contact" href="/contact/">Contact</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Tags" href="/tags/">Tags</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Categories" href="/categories/">Categories</a>
+    </li>
+
+                    </ul>
+                </div>
+            </header>
+
+            <div id="container">
+
+
+<div class="container">
+    <article class="post-container" itemscope="" itemtype="http://schema.org/BlogPosting">
+        <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">New Livestream Series</h1>
+    
+    <p class="post-date">
+        <span>Published <time datetime="2019-04-17" itemprop="datePublished">2019-04-17</time></span>
+        <span>by</span>
+        <span itemscope="" itemprop="author" itemtype="https://schema.org/Person">
+            <span itemprop="name">
+                <a href="#" itemprop="url" rel="author">OJ Reeves</a>
+            </span>
+        </span>
+    </p>
+    
+        <p class="post-reading post-line">
+            <span>Read time: 7 min</span>
+        </p>
+    
+</header>
+
+        <div class="post-content clearfix" itemprop="articleBody">
+    
+
+    
+
+<h2 id="tl-dr">TL;DR</h2>
+
+<p>We&rsquo;re going to build a .NET implementation of Meterpreter live on stream. Together. From scratch. Read on for all the details!</p>
+
+<h2 id="the-backstory">The Backstory</h2>
+
+<p>I remember kicking off my first ever live stream on <a href="https://twitch.tv/ojreeves">Twitch</a> back in September 2016. It feels like a lifetime ago already. That stream, broken up into two parts (<a href="https://www.youtube.com/watch?v=pJZjWXxUEl4">1</a>, <a href="https://www.youtube.com/watch?v=UGWqq5kTiso">2</a>), was me breaking open the Capcom.sys driver that had a blatant backdoor in it and abusing this backdoor to get <code>NT AUTHORITY\SYSTEM</code> privileges. After that, I went on to write a <a href="https://www.rapid7.com/db/modules/exploit/windows/local/capcom_sys_exec">Metasploit post module</a> to abuse this from a Meterpreter session.</p>
+
+<p>It was fun! It was also bloody scary. I&rsquo;ve spoken at conferences to rooms full of people without too much concern, but I found this whole &ldquo;live streaming&rdquo; lark to be a completely different kettle of fish. There was something intimidating about opening myself up to an audience that I couldn&rsquo;t see. I was able to interact, but just via a chat function. The inability to respond to body language was really unusual and took a bit of time to get used to.</p>
+
+<p>I&rsquo;m glad I pushed through it. I&rsquo;ve carried on the live streaming whenever I have the time, and have had a great deal of fun while learning alongside those who have joined me in the venture. Thanks to everyone who has supported me and joined in so far.</p>
+
+<h2 id="the-importance-of-fresh-content">The Importance of Fresh Content</h2>
+
+<p>Live streaming the same kind of things over and over again is pretty easy. While the content is technically different, and most hacker nerds enjoy a good binary exploitation challenge, I can honestly say that the content isn&rsquo;t fresh.</p>
+
+<p>Sure there are cases where the exploits are quirky, or there is some new exploitation technique that has to be used. Those cases are indeed fun, and we all learn something. But at the end of the day we&rsquo;re just continuing to pop similar things.</p>
+
+<p>Don&rsquo;t get me wrong, I love it! It&rsquo;s fun, I generally learn something new, but I think it&rsquo;s important to venture into other things. This is part of the reason why I do various streams that focus on development as well.</p>
+
+<h2 id="forcing-development-on-security-folks">Forcing Development on Security Folks</h2>
+
+<p>I&rsquo;m sure it&rsquo;s common knowledge that I&rsquo;ve spent a fair bit of my life writing (bad) code. I&rsquo;ve been really fortunate to work on some pretty crazy stuff in my time, and along the way have got to work with some seriously amazing people. I don&rsquo;t look back on my time as a dev and think &ldquo;holy shit that was a waste of time&rdquo;. I am very grateful for the experience, exposure and education that I gained in those years.</p>
+
+<p>I have a fair bit of evidence that this history has helped me be better at security-related things that I might not be otherwise (particularly in the software security space).</p>
+
+<p>After moving into security full-time, I found that there was a bit of a misconception that developers were clueless and careless. That they couldn&rsquo;t give a hoot about security, and that they&rsquo;re too busy with building features. That they don&rsquo;t want to handle security bug reports and don&rsquo;t care if their users are at risk.</p>
+
+<p>Based on my own experience, given I can&rsquo;t speak for others, this is completely false. The developers I know now, along with those I&rsquo;ve worked with in the past, <em>definitely</em> care. They care way more than their employers and users will ever know.</p>
+
+<p>The reality is that being a developer is much harder than it looks. I mean <em>much</em> harder.</p>
+
+<p>Developers work under tight timelines, strict constraints emposed by management or users, and have to constantly prove that they&rsquo;re adding value. Value is subjective, and hence making sure that value is visible to all of those in the management chain is a tough exercise.</p>
+
+<p>So please, give developers a fucking break. They&rsquo;re working as hard as they can and facing obstacles that you don&rsquo;t even know exist. And don&rsquo;t pretend you know what it&rsquo;s like when all you&rsquo;ve done is bash a few tools together in Python/Go/C#/whatever. Development and support of complex software is way harder than pushing a butchered script to GitHub.</p>
+
+<p>Herein lies another part of the reason I like to live stream development: <strong>I want security people to see how hard it is!</strong></p>
+
+<p>And now I&rsquo;m going to take it up a notch.</p>
+
+<h2 id="what-s-coming">What&rsquo;s Coming?</h2>
+
+<p>I&rsquo;ve decided to do a new livestream series, and yes it&rsquo;s going to be development related with a heavy security focus.</p>
+
+<p>We&rsquo;re building it from scratch. We&rsquo;re integrating it with something that already exists and deal with the baggage and constraints that come with doing it. We&rsquo;re going to make it work on various platforms/versions, and we&rsquo;re going to suffer the pain of handling the gaps across those versions.</p>
+
+<p>I want us to build a version of <strong>Meterpreter on the .NET platform</strong>. Together. With all the pain that comes with it. I want us to learn together, to suffer together, and hopefully collectively gain an appreciation for what it&rsquo;s like to build something that is large and complex.</p>
+
+<p>This is no small task. As someone who is fairly intimate with how Meterpreter works now, I can honestly say that we&rsquo;ve got a pretty long road ahead of us. But I really think it&rsquo;s worth it. We all know that PowerShell is becoming harder to abuse in target environments. We know that native code is getting caught all over the shop. We know that variety and options are important when we&rsquo;re conducting our assessments. To me it makes sense to look at a .NET Meterpreter, as I think it&rsquo;ll extend it&rsquo;s shelf life and open up other options with regards to post-exploitation.</p>
+
+<p>I plan on going over my rationale on stream, so please join me for the first one! I plan on kicking this off sometime next week when I&rsquo;m back from school holidays with the family. I will be keeping these streams below 2 hours for each session to avoid burning out. The first few might not even have any code-writing in it. I plan on doing 2 or 3 per week for the first month, as this will hopefully ramp us all up on what we&rsquo;re going to be doing. It&rsquo;ll also help me get to <a href="https://affiliate.twitch.tv/">Twitch Affiliate</a> status, which will allow me to better interact with all of you along the way.</p>
+
+<h2 id="stay-with-me">Stay With Me!</h2>
+
+<p>I will also stream the other things that I usually stream. I&rsquo;ll be doing exploitation, arbitrary tool hacking, and various other things that take my fancy (or you suggest). But I hope you enjoy the idea of building this with me. At the end I think you&rsquo;ll have learned many/all of the following:</p>
+
+<ul>
+<li>Complex software is hard.</li>
+<li>Integration comes with pain and suffering.</li>
+<li>Software contains baggage.</li>
+<li>Operating under constraints is hard, and painful.</li>
+<li>Hacking stuff together is easy, building proper software is hard.</li>
+<li>The first step of building something should not be &ldquo;writing code&rdquo;, but instead getting a good understanding of the problem.</li>
+<li>C# is a great language, but has a few issues that make it painful.</li>
+<li>It&rsquo;s very easy to write shit code, and while it&rsquo;s harder to write good code it&rsquo;s very much worth it.</li>
+<li>.NET is amazing, and the framework is huge.</li>
+<li>Managing different versions of software is surprisingly hard.</li>
+<li>Ruby is terrible.</li>
+<li>It takes a long time to build something large/good, expecially from scratch.</li>
+<li>There are many ways to solve a problem, and sometimes it&rsquo;s hard to find the best one.</li>
+<li>I am actually a terrible developer. I&rsquo;m just striving to get better every day.</li>
+<li>Finally &hellip; building a new Meterpreter implementation and wiring it into Metasploit requires a lot of extra stuff that you didn&rsquo;t realise.</li>
+</ul>
+
+<p>As always, the sessions are <em>interactive</em>. I want you to get involved. Share ideas. Point out my issues and stupidity. Let&rsquo;s see how good we can do together.</p>
+
+<p>Right, time to stop rambling. Expect the first stream to appear on my <a href="https://twitch.tv/ojreeves">Twitch</a> channel in the very near future. If you&rsquo;re keen to learn with me, please join in!o</p>
+
+<p>Peace.</p>
+
+</div>
+
+        <footer class="post-footer clearfix">
+    
+
+    <div class="share">
+        
+            <a class="icon-twitter" href="https://twitter.com/share?text=New%20Livestream%20Series&url=%2fposts%2fnew-livestream-series%2f"
+                onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                <i class="fa fa-twitter"></i>
+                <span class="hidden">Twitter</span>
+            </a>
+        
+
+        
+            <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=%2fposts%2fnew-livestream-series%2f"
+                onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                <i class="fa fa-facebook"></i>
+                <span class="hidden">Facebook</span>
+            </a>
+        
+
+        
+            <a class="icon-google-plus" href="https://plus.google.com/share?url=%2fposts%2fnew-livestream-series%2f"
+              onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+              <i class="fa fa-google-plus"></i>
+                <span class="hidden">Google+</span>
+            </a>
+        
+        
+    </div>
+</footer>
+
+        
+    <div class="comments">
+        
+    </div>
+
+    </article>
+</div>
+
+            </div>
+        </div>
+
+        <footer class="footer">
+            <div class="container">
+                <div class="site-title-wrapper">
+                    <h1 class="site-title">
+                        <a title="OJ&#39;s Perspective" href="/">OJ&#39;s Perspective</a>
+                    </h1>
+                    <a class="button-square button-jump-top js-jump-top" href="#">
+                        <i class="fa fa-angle-up"></i>
+                    </a>
+                </div>
+
+                <p class="footer-copyright">
+                    <span>&copy; 2019 / Powered by <a href="https://gohugo.io/">Hugo</a></span>
+                </p>
+                <p class="footer-copyright">
+                    <span><a href="https://github.com/roryg/ghostwriter">Ghostwriter theme</a> By <a href="http://jollygoodthemes.com">JollyGoodThemes</a></span>
+                    <span>/ <a href="https://github.com/jbub/ghostwriter">Ported</a> to Hugo By <a href="https://github.com/jbub">jbub</a></span>
+                </p>
+            </div>
+        </footer>
+
+        <script src="/js/jquery-1.11.3.min.js"></script>
+        <script src="/js/jquery.fitvids.js"></script>
+        
+        
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        
+        
+        <script src="/js/scripts.js"></script>
+    </body>
+</html>
+

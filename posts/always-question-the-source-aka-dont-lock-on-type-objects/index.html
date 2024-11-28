@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns#">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Always Question the Source (aka &#34;Don&#39;t Lock on Type Objects&#34;) &middot; OJ Reeves</title>
+        <meta name="description" content="For one reason or another, I recently found myself perusing some code based on the CSLA framework. While nosing around I came upon a snippet of code that I found rather disturbing. An example can be found here in the function called InitializeAuthorizationRules.
+
+For those who are lazy, here is the particular snippet of code that caught my eye:">
+        <meta name="HandheldFriendly" content="True">
+        <meta name="MobileOptimized" content="320">
+        <meta name="generator" content="Hugo 0.55.6" />
+        <meta name="robots" content="index,follow">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta property="og:title" content="Always Question the Source (aka &#34;Don&#39;t Lock on Type Objects&#34;)">
+<meta property="og:description" content="For one reason or another, I recently found myself perusing some code based on the CSLA framework. While nosing around I came upon a snippet of code that I found rather disturbing. An example can be found here in the function called InitializeAuthorizationRules.
+
+For those who are lazy, here is the particular snippet of code that caught my eye:">
+<meta property="og:type" content="article">
+<meta property="og:url" content="/posts/always-question-the-source-aka-dont-lock-on-type-objects/">
+        <link rel="stylesheet" href="/dist/styles.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300&subset=latin,cyrillic-ext,latin-ext,cyrillic">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+        
+        
+        
+    </head>
+    <body>
+        
+
+        <div id="wrapper">
+            <header class="site-header">
+                <div class="container">
+                    <div class="site-title-wrapper">
+                        
+                            <h1 class="site-title">
+                                <a title="OJ&#39;s Perspective" href="/">OJ&#39;s Perspective</a>
+                            </h1>
+                        
+                        <a class="button-square" href="/index.xml"><i class="fa fa-rss"></i></a>
+                        
+                            <a class="button-square button-social hint--top" data-hint="Twitter" title="Twitter" href="https://twitter.com/TheColonial" rel="me">
+                                <i class="fa fa-twitter"></i>
+                            </a>
+                        
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Github" title="Github" href="https://github.com/OJ" rel="me">
+                                <i class="fa fa-github-alt"></i>
+                            </a>
+                        
+                        
+                        
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Email" title="Email" href="mailto:oj@buffered.io">
+                                <i class="fa fa-envelope"></i>
+                            </a>
+                        
+                    </div>
+
+                    <ul class="site-nav">
+                        
+    <li class="site-nav-item">
+        <a title="Home" href="/">Home</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Live Streaming" href="/streaming/">Live Streaming</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="About" href="/about/">About</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Contact" href="/contact/">Contact</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Tags" href="/tags/">Tags</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Categories" href="/categories/">Categories</a>
+    </li>
+
+                    </ul>
+                </div>
+            </header>
+
+            <div id="container">
+
+
+<div class="container">
+    <article class="post-container" itemscope="" itemtype="http://schema.org/BlogPosting">
+        <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Always Question the Source (aka &#34;Don&#39;t Lock on Type Objects&#34;)</h1>
+    
+    <p class="post-date">
+        <span>Published <time datetime="2009-02-10" itemprop="datePublished">2009-02-10</time></span>
+        <span>by</span>
+        <span itemscope="" itemprop="author" itemtype="https://schema.org/Person">
+            <span itemprop="name">
+                <a href="#" itemprop="url" rel="author">OJ Reeves</a>
+            </span>
+        </span>
+    </p>
+    
+        <p class="post-reading post-line">
+            <span>Read time: 3 min</span>
+        </p>
+    
+</header>
+
+        <div class="post-content clearfix" itemprop="articleBody">
+    
+
+    <p>For one reason or another, I recently found myself perusing some code based on the <a href="http://www.lhotka.net/cslanet/" title="CSLA">CSLA</a> framework. While nosing around I came upon a snippet of code that I found rather disturbing. An example can be found <a href="http://www.lhotka.net/cslacvs/viewvc.cgi/trunk/cslacs/Csla/Core/BusinessBase.cs?revision=3690&amp;view=markup" title="BusinessBase.cs">here</a> in the function called InitializeAuthorizationRules.</p>
+
+<p>For those who are lazy, here is the particular snippet of code that caught my eye:</p>
+
+<p>{% codeblock lang:csharp %}
+lock (this.GetType())
+{
+  // .. stuff ..
+}
+{% endcodeblock %}</p>
+
+<p>If you want to see more, head over there and read up. There are quite a few instances of the code listed above.</p>
+
+<p>So why is this disturbing? If you&rsquo;re not sure of the answer, take a bit of time to go and read up on C#&rsquo;s <a href="http://msdn.microsoft.com/en-us/library/c5kehkcz.aspx" title="lock Statement (C# reference)">lock</a> keyword. When you&rsquo;re done, ask yourself &ldquo;what kind of object should I be using alongside the lock keyword?&rdquo;.</p>
+
+<p>If the answer escapes you, then toodle over to <a href="http://www.mail-archive.com/bdotnet@groups.msn.com/msg06816.html" title="Why lock(typeof(ClassName)) or SyncLock GetType(ClassName) is Bad">this little doozy</a> for a blow by blow account. I&rsquo;ll quote a rather gifted developer friend of mine (who for now shall remain anonymous) who summed up nicely one of the issues that could occur if the above code makes it into your code base:</p>
+
+<blockquote>
+<p>This is terrible, terrible, terrible.</p>
+
+<p>Good luck with the cross-appdomain deadlock which brings down prod and can&rsquo;t be diagnosed without 2 weeks behind windbg.</p>
+</blockquote>
+
+<p>So true.</p>
+
+<p>Now that you know it&rsquo;s bad you might be wondering how a framework like CSLA managed to get polluted by it. Time to speculate!</p>
+
+<p>You may have noticed that the article I linked above mentions that the practice of locking type objects was actually demonstrated/advocated on MSDN:</p>
+
+<blockquote>
+<p>This is even done in MSDN sample, makuing it the holy grail.
+.
+.
+Rico Mariani, performance architect for the Microsoft .NET runtime and longtime Microsoft developer, mentioned to Dr. GUI in an e-mail conversation recently that a fairly common practice (and one that&rsquo;s, unfortunately, described in some of our documentation right now, although we&rsquo;ll be fixing that) is actually quite problematic.</p>
+</blockquote>
+
+<p><em>Note: Spelling mistakes and awful grammar in the quote above are, for once, not my fault.</em></p>
+
+<p>I&rsquo;m guessing that the author(s) of CSLA were reading up on some multithreading documentation on MSDN and came across a sample which demonstrated locking type objects as shown above. Since they were reading MSDN, the apparent Bible for all things .NET, they may have assumed that whatever they saw could be taken as Gospel.</p>
+
+<p>Unfortunately, no resource is perfect. Not even MSDN.</p>
+
+<p>This is where I have my gripe. The authors of <strong>any</strong> software should <strong>always</strong> critique <strong>all</strong> of the code they come across during the course of development. Whether they wrote it themselves, got it from MSDN, read it on a blog site while researching or saw it in a book written by the author of the language. <em>NEVER EVER</em> assume that the code you are reading is 100% sound.</p>
+
+<p>If the authors had thought about the <em>meaning</em> of the lock statement and had an understanding of exactly what <a href="http://msdn.microsoft.com/en-us/library/system.object.gettype.aspx" title="Object.GetType Method">GetType()</a> does (ie. always returns the <em>same</em> reference when called on the same type), then perhaps they might have figured out that using a lock on something that&rsquo;s accessible from <strong>any object in the process</strong> is a bad idea. It is opening the door for potential deadlocks if somebody else decides to do the same.</p>
+
+<p>So I say again: <em>do not assume that the code you get off the Internet is safe!</em> Scrutinise it. Pull it to pieces. Understand it. Then, if all is safe and you&rsquo;re still comfortable with it, consider using it in your software. Don&rsquo;t assume that the author of the code knows what they&rsquo;re doing&hellip;</p>
+
+<p>&hellip; unless it&rsquo;s me of course.</p>
+</div>
+
+        <footer class="post-footer clearfix">
+    
+        <p class="post-tags">
+            <span>Tagged:</span>
+            
+            
+                <a href="/tags/assumptions/">assumptions</a>, 
+            
+                <a href="/tags/lock/">lock</a>, 
+            
+                <a href="/tags/multithreading/">multithreading</a>, 
+            
+                <a href="/tags/stupidity/">stupidity</a>
+            
+        </p>
+    
+
+    <div class="share">
+        
+            <a class="icon-twitter" href="https://twitter.com/share?text=Always%20Question%20the%20Source%20%28aka%20%22Don%27t%20Lock%20on%20Type%20Objects%22%29&url=%2fposts%2falways-question-the-source-aka-dont-lock-on-type-objects%2f"
+                onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                <i class="fa fa-twitter"></i>
+                <span class="hidden">Twitter</span>
+            </a>
+        
+
+        
+            <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=%2fposts%2falways-question-the-source-aka-dont-lock-on-type-objects%2f"
+                onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                <i class="fa fa-facebook"></i>
+                <span class="hidden">Facebook</span>
+            </a>
+        
+
+        
+            <a class="icon-google-plus" href="https://plus.google.com/share?url=%2fposts%2falways-question-the-source-aka-dont-lock-on-type-objects%2f"
+              onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+              <i class="fa fa-google-plus"></i>
+                <span class="hidden">Google+</span>
+            </a>
+        
+        
+    </div>
+</footer>
+
+        
+    <div class="comments">
+        
+    </div>
+
+    </article>
+</div>
+
+            </div>
+        </div>
+
+        <footer class="footer">
+            <div class="container">
+                <div class="site-title-wrapper">
+                    <h1 class="site-title">
+                        <a title="OJ&#39;s Perspective" href="/">OJ&#39;s Perspective</a>
+                    </h1>
+                    <a class="button-square button-jump-top js-jump-top" href="#">
+                        <i class="fa fa-angle-up"></i>
+                    </a>
+                </div>
+
+                <p class="footer-copyright">
+                    <span>&copy; 2019 / Powered by <a href="https://gohugo.io/">Hugo</a></span>
+                </p>
+                <p class="footer-copyright">
+                    <span><a href="https://github.com/roryg/ghostwriter">Ghostwriter theme</a> By <a href="http://jollygoodthemes.com">JollyGoodThemes</a></span>
+                    <span>/ <a href="https://github.com/jbub/ghostwriter">Ported</a> to Hugo By <a href="https://github.com/jbub">jbub</a></span>
+                </p>
+            </div>
+        </footer>
+
+        <script src="/js/jquery-1.11.3.min.js"></script>
+        <script src="/js/jquery.fitvids.js"></script>
+        
+        
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        
+        
+        <script src="/js/scripts.js"></script>
+    </body>
+</html>
+

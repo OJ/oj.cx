@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns#">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Rekindling my Functional Programming Passion with Haskell &middot; OJ Reeves</title>
+        <meta name="description" content="Back in the day when I was studying at University I tutored a subject which taught students how to write functional code in Miranda. I loved it! The whole functional programming thing really did it for me. I was fascinated by it. Despite my interest, I never chased it up after finishing at University.
+
+I recently stumbled on a random blog post that went into depth on some functional programming topics, and that resparked my interest.">
+        <meta name="HandheldFriendly" content="True">
+        <meta name="MobileOptimized" content="320">
+        <meta name="generator" content="Hugo 0.55.6" />
+        <meta name="robots" content="index,follow">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta property="og:title" content="Rekindling my Functional Programming Passion with Haskell">
+<meta property="og:description" content="Back in the day when I was studying at University I tutored a subject which taught students how to write functional code in Miranda. I loved it! The whole functional programming thing really did it for me. I was fascinated by it. Despite my interest, I never chased it up after finishing at University.
+
+I recently stumbled on a random blog post that went into depth on some functional programming topics, and that resparked my interest.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="/posts/rekindling-my-functional-programming-passion-with-haskell/">
+        <link rel="stylesheet" href="/dist/styles.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300&subset=latin,cyrillic-ext,latin-ext,cyrillic">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+        
+        
+        
+    </head>
+    <body>
+        
+
+        <div id="wrapper">
+            <header class="site-header">
+                <div class="container">
+                    <div class="site-title-wrapper">
+                        
+                            <h1 class="site-title">
+                                <a title="OJ&#39;s Perspective" href="/">OJ&#39;s Perspective</a>
+                            </h1>
+                        
+                        <a class="button-square" href="/index.xml"><i class="fa fa-rss"></i></a>
+                        
+                            <a class="button-square button-social hint--top" data-hint="Twitter" title="Twitter" href="https://twitter.com/TheColonial" rel="me">
+                                <i class="fa fa-twitter"></i>
+                            </a>
+                        
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Github" title="Github" href="https://github.com/OJ" rel="me">
+                                <i class="fa fa-github-alt"></i>
+                            </a>
+                        
+                        
+                        
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Email" title="Email" href="mailto:oj@buffered.io">
+                                <i class="fa fa-envelope"></i>
+                            </a>
+                        
+                    </div>
+
+                    <ul class="site-nav">
+                        
+    <li class="site-nav-item">
+        <a title="Home" href="/">Home</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Live Streaming" href="/streaming/">Live Streaming</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="About" href="/about/">About</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Contact" href="/contact/">Contact</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Tags" href="/tags/">Tags</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Categories" href="/categories/">Categories</a>
+    </li>
+
+                    </ul>
+                </div>
+            </header>
+
+            <div id="container">
+
+
+<div class="container">
+    <article class="post-container" itemscope="" itemtype="http://schema.org/BlogPosting">
+        <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Rekindling my Functional Programming Passion with Haskell</h1>
+    
+    <p class="post-date">
+        <span>Published <time datetime="2008-03-17" itemprop="datePublished">2008-03-17</time></span>
+        <span>by</span>
+        <span itemscope="" itemprop="author" itemtype="https://schema.org/Person">
+            <span itemprop="name">
+                <a href="#" itemprop="url" rel="author">OJ Reeves</a>
+            </span>
+        </span>
+    </p>
+    
+        <p class="post-reading post-line">
+            <span>Read time: 2 min</span>
+        </p>
+    
+</header>
+
+        <div class="post-content clearfix" itemprop="articleBody">
+    
+
+    <p>Back in the day when I was studying at <a href="http://www.uts.edu.au/" title="UTS">University</a> I tutored a subject which taught students how to write functional code in <a href="" title="">Miranda</a>. I loved it! The whole <a href="http://en.wikipedia.org/wiki/Functional_programming" title="Functional Programming">functional programming</a> thing really did it for me. I was fascinated by it. Despite my interest, I never chased it up after finishing at University.</p>
+
+<p>I recently stumbled on a random blog post that went into depth on some functional programming topics, and that resparked my interest.</p>
+
+<p>So after a few years off, I&rsquo;m now back into toying with functional lanauges. Right now, the one I&rsquo;m using is <a href="http://www.haskell.org/" title="Haskell">Haskell</a>, which is considered a pure functional programming language (by that I mean it has no <a href="http://en.wikipedia.org/wiki/Side_effect_%28computer_science%29" title="Side effect (computer science)">side effects</a>).</p>
+
+<p>I&rsquo;m still in the learning phase, and hence am not an expert. But I do love how concise the solutions are to some seriously crazy problems.</p>
+
+<p>I decided to show you a really basic program which solves a really basic problem. Its job is to generate the <a href="" title="">Roman Numeral</a> equivalent of an integer. It&rsquo;s far from complete, and doesn&rsquo;t cover zero or numbers less than zero, but it does show how easy it can be to solve the problem with a very small amount of code. It&rsquo;s probably far from the best solution, and there may well be a more functional approach than what I&rsquo;ve listed.</p>
+
+<p>So for your scrutiny (and enjoyment :)) here&rsquo;s the source to that little proggy:</p>
+
+<pre><code>{- The 'map' of roman numerals and their string equivalents -}
+romanMap :: [(Int,[Char])]
+romanMap = [ (1000, &quot;M&quot;), (900, &quot;CM&quot;), (500, &quot;D&quot;), (400, &quot;CD&quot;), (100, &quot;C&quot;), (90, &quot;XC&quot;), (50, &quot;L&quot;), (40, &quot;XL&quot;), (10, &quot;X&quot;), (9, &quot;IX&quot;), (5, &quot;V&quot;), (4, &quot;IV&quot;), (1, &quot;I&quot;)]
+
+{- Get the roman numeral equivalent of a number using the given map -}
+getRoman :: Int -&gt; [(Int,[Char])] -&gt; [Char]
+getRoman _ [] = &quot;&quot;
+getRoman 0 _ = &quot;&quot;
+getRoman n ((d,r):rs) = (concat $ replicate (div n d) r) ++ (getRoman (mod n d) rs)
+
+{- Helper function that calls the core function passing in the roman numeral map -}
+roman :: Int -&gt; [Char]
+roman n = getRoman n romanMap
+</code></pre>
+
+<p>This should compile fine using <a href="http://www.haskell.org/ghc/" title="GHC">GHC</a>. If it doesn&rsquo;t, feel free to abuse me. Invoke the <em>roman</em> function and pass it a positive integer to get the result.</p>
+
+<p>Over the coming weeks I&rsquo;ll start sharing my solutions to the <a href="http://projecteuler.net/" title="Project Euler">Project Euler</a> questions in the hope that you guys can help me improve them.</p>
+
+<p><strong>Be warned!</strong> Functional programming, once you&rsquo;ve got a taste for it, can be very addictive. Start at your own risk!</p>
+</div>
+
+        <footer class="post-footer clearfix">
+    
+
+    <div class="share">
+        
+            <a class="icon-twitter" href="https://twitter.com/share?text=Rekindling%20my%20Functional%20Programming%20Passion%20with%20Haskell&url=%2fposts%2frekindling-my-functional-programming-passion-with-haskell%2f"
+                onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                <i class="fa fa-twitter"></i>
+                <span class="hidden">Twitter</span>
+            </a>
+        
+
+        
+            <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=%2fposts%2frekindling-my-functional-programming-passion-with-haskell%2f"
+                onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                <i class="fa fa-facebook"></i>
+                <span class="hidden">Facebook</span>
+            </a>
+        
+
+        
+            <a class="icon-google-plus" href="https://plus.google.com/share?url=%2fposts%2frekindling-my-functional-programming-passion-with-haskell%2f"
+              onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+              <i class="fa fa-google-plus"></i>
+                <span class="hidden">Google+</span>
+            </a>
+        
+        
+    </div>
+</footer>
+
+        
+    <div class="comments">
+        
+    </div>
+
+    </article>
+</div>
+
+            </div>
+        </div>
+
+        <footer class="footer">
+            <div class="container">
+                <div class="site-title-wrapper">
+                    <h1 class="site-title">
+                        <a title="OJ&#39;s Perspective" href="/">OJ&#39;s Perspective</a>
+                    </h1>
+                    <a class="button-square button-jump-top js-jump-top" href="#">
+                        <i class="fa fa-angle-up"></i>
+                    </a>
+                </div>
+
+                <p class="footer-copyright">
+                    <span>&copy; 2019 / Powered by <a href="https://gohugo.io/">Hugo</a></span>
+                </p>
+                <p class="footer-copyright">
+                    <span><a href="https://github.com/roryg/ghostwriter">Ghostwriter theme</a> By <a href="http://jollygoodthemes.com">JollyGoodThemes</a></span>
+                    <span>/ <a href="https://github.com/jbub/ghostwriter">Ported</a> to Hugo By <a href="https://github.com/jbub">jbub</a></span>
+                </p>
+            </div>
+        </footer>
+
+        <script src="/js/jquery-1.11.3.min.js"></script>
+        <script src="/js/jquery.fitvids.js"></script>
+        
+        
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        
+        
+        <script src="/js/scripts.js"></script>
+    </body>
+</html>
+

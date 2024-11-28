@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns#">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Building Meterpreter is Easy &middot; OJ Reeves</title>
+        <meta name="description" content="I might not have mentioned this before, but I have to tell you that building Meterpreter is easy. In the old days, downloading the source was the easy bit and compiling it was the hard bit. The steps involved in getting a Meterpreter build environment together were extensive and prone to error. In fact if you got one wrong, or you did things in the wrong order, then you could end up having to remove everything from your machine and starting again.">
+        <meta name="HandheldFriendly" content="True">
+        <meta name="MobileOptimized" content="320">
+        <meta name="generator" content="Hugo 0.55.6" />
+        <meta name="robots" content="index,follow">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta property="og:title" content="Building Meterpreter is Easy">
+<meta property="og:description" content="I might not have mentioned this before, but I have to tell you that building Meterpreter is easy. In the old days, downloading the source was the easy bit and compiling it was the hard bit. The steps involved in getting a Meterpreter build environment together were extensive and prone to error. In fact if you got one wrong, or you did things in the wrong order, then you could end up having to remove everything from your machine and starting again.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="/posts/building-meterpreter-is-easy/">
+        <link rel="stylesheet" href="/dist/styles.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300&subset=latin,cyrillic-ext,latin-ext,cyrillic">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+        
+        
+        
+    </head>
+    <body>
+        
+
+        <div id="wrapper">
+            <header class="site-header">
+                <div class="container">
+                    <div class="site-title-wrapper">
+                        
+                            <h1 class="site-title">
+                                <a title="OJ&#39;s Perspective" href="/">OJ&#39;s Perspective</a>
+                            </h1>
+                        
+                        <a class="button-square" href="/index.xml"><i class="fa fa-rss"></i></a>
+                        
+                            <a class="button-square button-social hint--top" data-hint="Twitter" title="Twitter" href="https://twitter.com/TheColonial" rel="me">
+                                <i class="fa fa-twitter"></i>
+                            </a>
+                        
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Github" title="Github" href="https://github.com/OJ" rel="me">
+                                <i class="fa fa-github-alt"></i>
+                            </a>
+                        
+                        
+                        
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Email" title="Email" href="mailto:oj@buffered.io">
+                                <i class="fa fa-envelope"></i>
+                            </a>
+                        
+                    </div>
+
+                    <ul class="site-nav">
+                        
+    <li class="site-nav-item">
+        <a title="Home" href="/">Home</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Live Streaming" href="/streaming/">Live Streaming</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="About" href="/about/">About</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Contact" href="/contact/">Contact</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Tags" href="/tags/">Tags</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Categories" href="/categories/">Categories</a>
+    </li>
+
+                    </ul>
+                </div>
+            </header>
+
+            <div id="container">
+
+
+<div class="container">
+    <article class="post-container" itemscope="" itemtype="http://schema.org/BlogPosting">
+        <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Building Meterpreter is Easy</h1>
+    
+    <p class="post-date">
+        <span>Published <time datetime="2014-02-18" itemprop="datePublished">2014-02-18</time></span>
+        <span>by</span>
+        <span itemscope="" itemprop="author" itemtype="https://schema.org/Person">
+            <span itemprop="name">
+                <a href="#" itemprop="url" rel="author">OJ Reeves</a>
+            </span>
+        </span>
+    </p>
+    
+        <p class="post-reading post-line">
+            <span>Read time: 3 min</span>
+        </p>
+    
+</header>
+
+        <div class="post-content clearfix" itemprop="articleBody">
+    
+
+    <p>I might not have mentioned this before, but I have to tell you that <em>building Meterpreter is easy</em>. In the old days, downloading the source was the easy bit and compiling it was the hard bit. The steps involved in getting a Meterpreter build environment together were extensive and prone to error. In fact if you got one wrong, or you did things in the wrong order, then you could end up having to remove everything from your machine and starting again.</p>
+
+<p>It shouldn&rsquo;t be surprising that the contributions to Meterpreter from the community have been a bit lean as a result. Nobody wants to deal with a painful set up or horrible build experience when it comes to any software, let alone open source.</p>
+
+<p>One of my goals when working on Meterpreter was to make this problem go away. While it was partly because I didn&rsquo;t want to suffer myself, it was also because the Metasploit team wanted it to be easy for anyone to contribute.</p>
+
+<p>Thankfully the pain has been removed! In fact, building this puppy it is just as easy as getting the source itself! My mum could do it. My mum&rsquo;s mum could do it. <em>Anyone</em> can do it, <strong>even if they don&rsquo;t have a computer!</strong></p>
+
+<p>OK, that last bit might not be true, but it is super easy to build and doesn&rsquo;t require expensive build tools either. All you need is a recent-enough copy of Windows and you&rsquo;re good to go. Now that we use Visual Studio 2013 we have to match the requirements for this baby to run. This means that you need a copy of <strong>Windows 7 Service Pack 1</strong> or later. It can be x86 or x64, but the version is important. If you&rsquo;re on this version, or using Windows 8, 8.1, 2008 or 2012 then you should be fine. VS requires .NET 4.5, so if you can get that running happily you should be fine.</p>
+
+<p>To prove just how easy it is, I have put together a short video which demonstrates it. The video takes you from a bare Windows 7 x86 SP1 installation (with a few MS updates applied thanks to Windows Update automatically installing stuff) through to compiled Meterpreter binaries.</p>
+
+<p>The steps are:</p>
+
+<ol>
+<li>Install Windows 7 and update to SP1 (not in the video because that&rsquo;s <em>boring</em>).</li>
+<li>Download and install Visual Studio 2013 Express for Windows Desktop. It&rsquo;s important to emphasise that the correct edition is the <strong>Windows Desktop</strong> edition, and if you don&rsquo;t install this edition then building the source will not work.</li>
+<li>Download and install git.</li>
+<li>Clone the repository from Github and initialise submodules. If you&rsquo;re interested in contributing to Meterpreter then you should fork the repository yourself before. Github had a great <a href="https://help.github.com/articles/fork-a-repo" title="Fork a Repo">how-to up on their site</a> so have a read of that if you&rsquo;re not sure what to do.</li>
+<li>Open a &ldquo;Developer command prompt&rdquo;.</li>
+<li>Type <code>make</code> and hit enter.</li>
+</ol>
+
+<p>And here it is in action. See it in all its Youtubey glory!</p>
+
+<iframe width="640" height="480" src="//www.youtube.com/embed/5WgLlGCMez0" frameborder="0" allowfullscreen></iframe>
+
+<p>Feedback, comments and questions are welcome as always.</p>
+
+</div>
+
+        <footer class="post-footer clearfix">
+    
+
+    <div class="share">
+        
+            <a class="icon-twitter" href="https://twitter.com/share?text=Building%20Meterpreter%20is%20Easy&url=%2fposts%2fbuilding-meterpreter-is-easy%2f"
+                onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                <i class="fa fa-twitter"></i>
+                <span class="hidden">Twitter</span>
+            </a>
+        
+
+        
+            <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=%2fposts%2fbuilding-meterpreter-is-easy%2f"
+                onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                <i class="fa fa-facebook"></i>
+                <span class="hidden">Facebook</span>
+            </a>
+        
+
+        
+            <a class="icon-google-plus" href="https://plus.google.com/share?url=%2fposts%2fbuilding-meterpreter-is-easy%2f"
+              onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+              <i class="fa fa-google-plus"></i>
+                <span class="hidden">Google+</span>
+            </a>
+        
+        
+    </div>
+</footer>
+
+        
+    <div class="comments">
+        
+    </div>
+
+    </article>
+</div>
+
+            </div>
+        </div>
+
+        <footer class="footer">
+            <div class="container">
+                <div class="site-title-wrapper">
+                    <h1 class="site-title">
+                        <a title="OJ&#39;s Perspective" href="/">OJ&#39;s Perspective</a>
+                    </h1>
+                    <a class="button-square button-jump-top js-jump-top" href="#">
+                        <i class="fa fa-angle-up"></i>
+                    </a>
+                </div>
+
+                <p class="footer-copyright">
+                    <span>&copy; 2019 / Powered by <a href="https://gohugo.io/">Hugo</a></span>
+                </p>
+                <p class="footer-copyright">
+                    <span><a href="https://github.com/roryg/ghostwriter">Ghostwriter theme</a> By <a href="http://jollygoodthemes.com">JollyGoodThemes</a></span>
+                    <span>/ <a href="https://github.com/jbub/ghostwriter">Ported</a> to Hugo By <a href="https://github.com/jbub">jbub</a></span>
+                </p>
+            </div>
+        </footer>
+
+        <script src="/js/jquery-1.11.3.min.js"></script>
+        <script src="/js/jquery.fitvids.js"></script>
+        
+        
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        
+        
+        <script src="/js/scripts.js"></script>
+    </body>
+</html>
+

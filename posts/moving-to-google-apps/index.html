@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns#">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Moving to Google Apps &middot; OJ Reeves</title>
+        <meta name="description" content="As you all know, I recently moved the Blackapache site to a new server. We had some teething issues, as ya do when making the move, but all is now well. One of the things that I hadn&rsquo;t got round to fixing was my SpamAssassin installation.
+I&rsquo;d already gone through the fun times of setting up email (POP3s, IMAP4s) with Qmail, which after a bit of time (and a learning curve) was working fine (with SSL, hence the &rsquo;s&rsquo; at the end of the names ;) ) and all my users were able to send/receive without an issues.">
+        <meta name="HandheldFriendly" content="True">
+        <meta name="MobileOptimized" content="320">
+        <meta name="generator" content="Hugo 0.55.6" />
+        <meta name="robots" content="index,follow">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta property="og:title" content="Moving to Google Apps">
+<meta property="og:description" content="As you all know, I recently moved the Blackapache site to a new server. We had some teething issues, as ya do when making the move, but all is now well. One of the things that I hadn&rsquo;t got round to fixing was my SpamAssassin installation.
+I&rsquo;d already gone through the fun times of setting up email (POP3s, IMAP4s) with Qmail, which after a bit of time (and a learning curve) was working fine (with SSL, hence the &rsquo;s&rsquo; at the end of the names ;) ) and all my users were able to send/receive without an issues.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="/posts/moving-to-google-apps/">
+        <link rel="stylesheet" href="/dist/styles.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300&subset=latin,cyrillic-ext,latin-ext,cyrillic">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+        
+        
+        
+    </head>
+    <body>
+        
+
+        <div id="wrapper">
+            <header class="site-header">
+                <div class="container">
+                    <div class="site-title-wrapper">
+                        
+                            <h1 class="site-title">
+                                <a title="OJ&#39;s Perspective" href="/">OJ&#39;s Perspective</a>
+                            </h1>
+                        
+                        <a class="button-square" href="/index.xml"><i class="fa fa-rss"></i></a>
+                        
+                            <a class="button-square button-social hint--top" data-hint="Twitter" title="Twitter" href="https://twitter.com/TheColonial" rel="me">
+                                <i class="fa fa-twitter"></i>
+                            </a>
+                        
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Github" title="Github" href="https://github.com/OJ" rel="me">
+                                <i class="fa fa-github-alt"></i>
+                            </a>
+                        
+                        
+                        
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Email" title="Email" href="mailto:oj@buffered.io">
+                                <i class="fa fa-envelope"></i>
+                            </a>
+                        
+                    </div>
+
+                    <ul class="site-nav">
+                        
+    <li class="site-nav-item">
+        <a title="Home" href="/">Home</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Live Streaming" href="/streaming/">Live Streaming</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="About" href="/about/">About</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Contact" href="/contact/">Contact</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Tags" href="/tags/">Tags</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Categories" href="/categories/">Categories</a>
+    </li>
+
+                    </ul>
+                </div>
+            </header>
+
+            <div id="container">
+
+
+<div class="container">
+    <article class="post-container" itemscope="" itemtype="http://schema.org/BlogPosting">
+        <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Moving to Google Apps</h1>
+    
+    <p class="post-date">
+        <span>Published <time datetime="2007-05-06" itemprop="datePublished">2007-05-06</time></span>
+        <span>by</span>
+        <span itemscope="" itemprop="author" itemtype="https://schema.org/Person">
+            <span itemprop="name">
+                <a href="#" itemprop="url" rel="author">OJ Reeves</a>
+            </span>
+        </span>
+    </p>
+    
+        <p class="post-reading post-line">
+            <span>Read time: 4 min</span>
+        </p>
+    
+</header>
+
+        <div class="post-content clearfix" itemprop="articleBody">
+    
+
+    <p>As you all know, I recently moved the Blackapache site to a new server. We had some teething issues, as ya do when making the move, but all is now well. One of the things that I hadn&rsquo;t got round to fixing was my <a href="http://www.spamassassin.org/" title="SpamAssassin">SpamAssassin</a> installation.</p>
+
+<p>I&rsquo;d already gone through the fun times of setting up email (POP3s, IMAP4s) with <a href="http://www.qmail.org/" title="Qmail">Qmail</a>, which after a bit of time (and a learning curve) was working fine (with SSL, hence the &rsquo;s&rsquo; at the end of the names ;) ) and all my users were able to send/receive without an issues. While trying to set it up, I was having issues getting both SpamAssassin and <a href="http://www.clamav.net/" title="Clam AV">Clam AntiVirus</a> working. Both of the daemons would run fine, but I just couldn&rsquo;t quite get the configuration right.</p>
+
+<p>Thankfully, AV isn&rsquo;t so much of an issue as my users all have AV protection on their local machines. Spam, while annoying, can be lived with until I find the time to get the filters working properly - so I basically left these two things alone for a while until I found the time after doing all the other <em>urgent</em> bits.</p>
+
+<p>I finally got round to making an attempt to fix the problem a weekend or so ago, but still couldn&rsquo;t get it to behave. I read forum upon forum, blog upon blog, and readme upon readme, but for some reason the bloody thing just refused to work. I got frustrated, reverted all the settings back to how they were before, and gave up for the day.</p>
+
+<p>During the last week I was prepping myself for another attempt at getting it work, when I heard about <a href="http://www.google.com/a/" title="Google Apps">Google Apps</a>. I was a bit surprised when I first read all the details, because it was the first time I&rsquo;d heard about it! Being a geek I thought I was pretty good with keeping up to speed, and I was a bit narked with myself for letting this golden nugget slip through the net.</p>
+
+<p>I&rsquo;m not going to go through the ins and outs of what Google Apps is all about as there are already a <a href="http://www.google.com.au/search?hl=en&q=google+apps" title="Google Apps Search">stack</a> of pages out there already talking about it. What I will say is that I should have made the move earlier!</p>
+
+<p>Not only do I no longer have to worry about keeping my entire email configuration (Qmail with vpopmail and courier imap, SpamAssassin, ClamAV, Horde/SquirrelMail) up to date and patched, I don&rsquo;t even have to have it running. The &ldquo;precious&rdquo; resources on the server can now be utilised for other things such as an <a href="http://subversion.tigris.org/" title="SubVersion">SVN</a> install. Each email user has 2GB of space, webmail comes for free and has the fantastic facilities that come with <a href="http://www.gmail.com/" title="Gmail">Gmail</a>. Users can easily configure their own accounts, handle their own password changes, etc. My administration of email has basically dropped to just above zero. The only thing I need to do as an administrator is get the account set up initially, the rest is up to the user.</p>
+
+<p>You can probably tell that I&rsquo;m quite excited about this. It&rsquo;s great that I don&rsquo;t have to worry about this any more, and I can put more time and effort into other things.  Of course, my excitement only extends as far as email for now, but I&rsquo;m pretty sure that over time I&rsquo;ll also come to love the added features of <a href="http://calendar.google.com/" title="Google Calendar">Google Calendar</a> and <a href="http://docs.google.com/" title="Google Calendar">Google Calendar</a>.</p>
+
+<p>This service does come with its limitations, and with the possibility of Google Datamining, but for a home server which I use for a blog, having this facility to lighten the admin load is just fantastic.</p>
+
+<p>I highly recommend considering this as an option if you&rsquo;re looking to sort out an email host! Give it a trial, at least for a while, and you may find you&rsquo;re as happy as I am. If you don&rsquo;t like it, you can always revert back to your old setup.</p>
+
+</div>
+
+        <footer class="post-footer clearfix">
+    
+
+    <div class="share">
+        
+            <a class="icon-twitter" href="https://twitter.com/share?text=Moving%20to%20Google%20Apps&url=%2fposts%2fmoving-to-google-apps%2f"
+                onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                <i class="fa fa-twitter"></i>
+                <span class="hidden">Twitter</span>
+            </a>
+        
+
+        
+            <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=%2fposts%2fmoving-to-google-apps%2f"
+                onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                <i class="fa fa-facebook"></i>
+                <span class="hidden">Facebook</span>
+            </a>
+        
+
+        
+            <a class="icon-google-plus" href="https://plus.google.com/share?url=%2fposts%2fmoving-to-google-apps%2f"
+              onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+              <i class="fa fa-google-plus"></i>
+                <span class="hidden">Google+</span>
+            </a>
+        
+        
+    </div>
+</footer>
+
+        
+    <div class="comments">
+        
+    </div>
+
+    </article>
+</div>
+
+            </div>
+        </div>
+
+        <footer class="footer">
+            <div class="container">
+                <div class="site-title-wrapper">
+                    <h1 class="site-title">
+                        <a title="OJ&#39;s Perspective" href="/">OJ&#39;s Perspective</a>
+                    </h1>
+                    <a class="button-square button-jump-top js-jump-top" href="#">
+                        <i class="fa fa-angle-up"></i>
+                    </a>
+                </div>
+
+                <p class="footer-copyright">
+                    <span>&copy; 2019 / Powered by <a href="https://gohugo.io/">Hugo</a></span>
+                </p>
+                <p class="footer-copyright">
+                    <span><a href="https://github.com/roryg/ghostwriter">Ghostwriter theme</a> By <a href="http://jollygoodthemes.com">JollyGoodThemes</a></span>
+                    <span>/ <a href="https://github.com/jbub/ghostwriter">Ported</a> to Hugo By <a href="https://github.com/jbub">jbub</a></span>
+                </p>
+            </div>
+        </footer>
+
+        <script src="/js/jquery-1.11.3.min.js"></script>
+        <script src="/js/jquery.fitvids.js"></script>
+        
+        
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        
+        
+        <script src="/js/scripts.js"></script>
+    </body>
+</html>
+

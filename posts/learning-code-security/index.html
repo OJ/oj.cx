@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns#">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Learning Code Security &middot; OJ Reeves</title>
+        <meta name="description" content="As a regular read of Scott Gu&rsquo;s blog (see blogroll) I often find nuggets of information that are handy for the work that I do, but I also often end up with a few questions :)
+The latest one that fired up a bit of thought was his post on guarding against SQL injection attacks. The information posted very handy, and is something that I would assume most web developers already know, but it made me wonder how many devs out there are actually aware of these kinds of issues while they&rsquo;re building their applications.">
+        <meta name="HandheldFriendly" content="True">
+        <meta name="MobileOptimized" content="320">
+        <meta name="generator" content="Hugo 0.55.6" />
+        <meta name="robots" content="index,follow">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta property="og:title" content="Learning Code Security">
+<meta property="og:description" content="As a regular read of Scott Gu&rsquo;s blog (see blogroll) I often find nuggets of information that are handy for the work that I do, but I also often end up with a few questions :)
+The latest one that fired up a bit of thought was his post on guarding against SQL injection attacks. The information posted very handy, and is something that I would assume most web developers already know, but it made me wonder how many devs out there are actually aware of these kinds of issues while they&rsquo;re building their applications.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="/posts/learning-code-security/">
+        <link rel="stylesheet" href="/dist/styles.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300&subset=latin,cyrillic-ext,latin-ext,cyrillic">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+        
+        
+        
+    </head>
+    <body>
+        
+
+        <div id="wrapper">
+            <header class="site-header">
+                <div class="container">
+                    <div class="site-title-wrapper">
+                        
+                            <h1 class="site-title">
+                                <a title="OJ&#39;s Perspective" href="/">OJ&#39;s Perspective</a>
+                            </h1>
+                        
+                        <a class="button-square" href="/index.xml"><i class="fa fa-rss"></i></a>
+                        
+                            <a class="button-square button-social hint--top" data-hint="Twitter" title="Twitter" href="https://twitter.com/TheColonial" rel="me">
+                                <i class="fa fa-twitter"></i>
+                            </a>
+                        
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Github" title="Github" href="https://github.com/OJ" rel="me">
+                                <i class="fa fa-github-alt"></i>
+                            </a>
+                        
+                        
+                        
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Email" title="Email" href="mailto:oj@buffered.io">
+                                <i class="fa fa-envelope"></i>
+                            </a>
+                        
+                    </div>
+
+                    <ul class="site-nav">
+                        
+    <li class="site-nav-item">
+        <a title="Home" href="/">Home</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Live Streaming" href="/streaming/">Live Streaming</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="About" href="/about/">About</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Contact" href="/contact/">Contact</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Tags" href="/tags/">Tags</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Categories" href="/categories/">Categories</a>
+    </li>
+
+                    </ul>
+                </div>
+            </header>
+
+            <div id="container">
+
+
+<div class="container">
+    <article class="post-container" itemscope="" itemtype="http://schema.org/BlogPosting">
+        <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Learning Code Security</h1>
+    
+    <p class="post-date">
+        <span>Published <time datetime="2006-10-13" itemprop="datePublished">2006-10-13</time></span>
+        <span>by</span>
+        <span itemscope="" itemprop="author" itemtype="https://schema.org/Person">
+            <span itemprop="name">
+                <a href="#" itemprop="url" rel="author">OJ Reeves</a>
+            </span>
+        </span>
+    </p>
+    
+        <p class="post-reading post-line">
+            <span>Read time: 3 min</span>
+        </p>
+    
+</header>
+
+        <div class="post-content clearfix" itemprop="articleBody">
+    
+
+    <p>As a regular read of Scott Gu&rsquo;s blog (see blogroll) I often find nuggets of information that are handy for the work that I do, but I also often end up with a few questions :)</p>
+
+<p>The latest one that fired up a bit of thought was his post on <a href="http://weblogs.asp.net/scottgu/archive/posts/Tip_2F00_Trick_3A00_-Guard-Against-SQL-Injection-Attacks.aspx" title="Guard Against SQL Injection Attacks">guarding against SQL injection attacks</a>.  The information posted very handy, and is something that I would assume most web developers already know, but it made me wonder how many devs out there <em>are</em> actually aware of these kinds of issues while they&rsquo;re building their applications.</p>
+
+<p>I starting hacking code together from a young age, and I&rsquo;ve written my fair share of code that I hope to God never made it onto the web :) I&rsquo;d like to think that over the time that I&rsquo;ve spent reading, writing and working I&rsquo;ve gained a pretty good coverage of the code security issues that are faced when building all kinds of applications - though I&rsquo;m sure I have a stack more to learn! One thing struck me though, and that was that almost none of this stuff was covered during my course of formal study at University.</p>
+
+<p>I transferred to different Unis during my time as a student, and out of the 3 that I went to, <strong>none</strong> of them had any form of code security as part of the core syllabus. Sure, there were special subjects that you could take which focussed on things such as this, including SQL injection, buffer overflows, etc, but you actually had to <em>choose the subject</em> out of a stack of others to get a good amount of exposure to the principles.</p>
+
+<p>As time goes by, it becomes harder and harder for the developer to get themselves into trouble when writing code due to the nature of the languages and the support that you get via the accompanying frameworks - but we do manage to find new and startling ways of creating holes in our softy that the malicious and crafty can exploit.</p>
+
+<p>So I do think that learning at least the basics of code security (particularly in web-based environments) is something that every developer should do.  Sure, if you&rsquo;re using C# you might not have to worry about buffer overflows. If you&rsquo;re not using an SQL back-end, you won&rsquo;t have to worry about SQL injection. Regardless of the application and language, there are always different ways in which you can slip up. Coverage should be <strong>mandatory</strong> in courses at any formal education centre so that budding developers are aware of those issues before they hit the streets. To me, this is as obvious as having English and Maths as mandatory subjects during school if you&rsquo;re going to work as a coder!</p>
+
+</div>
+
+        <footer class="post-footer clearfix">
+    
+
+    <div class="share">
+        
+            <a class="icon-twitter" href="https://twitter.com/share?text=Learning%20Code%20Security&url=%2fposts%2flearning-code-security%2f"
+                onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                <i class="fa fa-twitter"></i>
+                <span class="hidden">Twitter</span>
+            </a>
+        
+
+        
+            <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=%2fposts%2flearning-code-security%2f"
+                onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                <i class="fa fa-facebook"></i>
+                <span class="hidden">Facebook</span>
+            </a>
+        
+
+        
+            <a class="icon-google-plus" href="https://plus.google.com/share?url=%2fposts%2flearning-code-security%2f"
+              onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+              <i class="fa fa-google-plus"></i>
+                <span class="hidden">Google+</span>
+            </a>
+        
+        
+    </div>
+</footer>
+
+        
+    <div class="comments">
+        
+    </div>
+
+    </article>
+</div>
+
+            </div>
+        </div>
+
+        <footer class="footer">
+            <div class="container">
+                <div class="site-title-wrapper">
+                    <h1 class="site-title">
+                        <a title="OJ&#39;s Perspective" href="/">OJ&#39;s Perspective</a>
+                    </h1>
+                    <a class="button-square button-jump-top js-jump-top" href="#">
+                        <i class="fa fa-angle-up"></i>
+                    </a>
+                </div>
+
+                <p class="footer-copyright">
+                    <span>&copy; 2019 / Powered by <a href="https://gohugo.io/">Hugo</a></span>
+                </p>
+                <p class="footer-copyright">
+                    <span><a href="https://github.com/roryg/ghostwriter">Ghostwriter theme</a> By <a href="http://jollygoodthemes.com">JollyGoodThemes</a></span>
+                    <span>/ <a href="https://github.com/jbub/ghostwriter">Ported</a> to Hugo By <a href="https://github.com/jbub">jbub</a></span>
+                </p>
+            </div>
+        </footer>
+
+        <script src="/js/jquery-1.11.3.min.js"></script>
+        <script src="/js/jquery.fitvids.js"></script>
+        
+        
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        
+        
+        <script src="/js/scripts.js"></script>
+    </body>
+</html>
+

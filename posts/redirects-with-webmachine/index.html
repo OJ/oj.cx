@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns#">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Redirects with Webmachine &middot; OJ Reeves</title>
+        <meta name="description" content="Webmachine is currently my favourite tool for building websites. I&rsquo;ve been lucky enough to use it on a few things now, some commercially some personally. While working on my Erlang web development series I had to handle the case where URLs redirected to other URLs. I found some basic documentation on this but wasn&rsquo;t able to find a canonical example of how to do it.
+
+After a big of digging through blog posts and speaking to people on IRC I figured out how it was done. The goal of this post is to show how it&rsquo;s done for 301 (permanent) and 307 (temporary) redirects.">
+        <meta name="HandheldFriendly" content="True">
+        <meta name="MobileOptimized" content="320">
+        <meta name="generator" content="Hugo 0.55.6" />
+        <meta name="robots" content="index,follow">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta property="og:title" content="Redirects with Webmachine">
+<meta property="og:description" content="Webmachine is currently my favourite tool for building websites. I&rsquo;ve been lucky enough to use it on a few things now, some commercially some personally. While working on my Erlang web development series I had to handle the case where URLs redirected to other URLs. I found some basic documentation on this but wasn&rsquo;t able to find a canonical example of how to do it.
+
+After a big of digging through blog posts and speaking to people on IRC I figured out how it was done. The goal of this post is to show how it&rsquo;s done for 301 (permanent) and 307 (temporary) redirects.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="/posts/redirects-with-webmachine/">
+        <link rel="stylesheet" href="/dist/styles.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300&subset=latin,cyrillic-ext,latin-ext,cyrillic">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+        
+        
+        
+    </head>
+    <body>
+        
+
+        <div id="wrapper">
+            <header class="site-header">
+                <div class="container">
+                    <div class="site-title-wrapper">
+                        
+                            <h1 class="site-title">
+                                <a title="OJ&#39;s Perspective" href="/">OJ&#39;s Perspective</a>
+                            </h1>
+                        
+                        <a class="button-square" href="/index.xml"><i class="fa fa-rss"></i></a>
+                        
+                            <a class="button-square button-social hint--top" data-hint="Twitter" title="Twitter" href="https://twitter.com/TheColonial" rel="me">
+                                <i class="fa fa-twitter"></i>
+                            </a>
+                        
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Github" title="Github" href="https://github.com/OJ" rel="me">
+                                <i class="fa fa-github-alt"></i>
+                            </a>
+                        
+                        
+                        
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Email" title="Email" href="mailto:oj@buffered.io">
+                                <i class="fa fa-envelope"></i>
+                            </a>
+                        
+                    </div>
+
+                    <ul class="site-nav">
+                        
+    <li class="site-nav-item">
+        <a title="Home" href="/">Home</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Live Streaming" href="/streaming/">Live Streaming</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="About" href="/about/">About</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Contact" href="/contact/">Contact</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Tags" href="/tags/">Tags</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Categories" href="/categories/">Categories</a>
+    </li>
+
+                    </ul>
+                </div>
+            </header>
+
+            <div id="container">
+
+
+<div class="container">
+    <article class="post-container" itemscope="" itemtype="http://schema.org/BlogPosting">
+        <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Redirects with Webmachine</h1>
+    
+    <p class="post-date">
+        <span>Published <time datetime="2012-02-15" itemprop="datePublished">2012-02-15</time></span>
+        <span>by</span>
+        <span itemscope="" itemprop="author" itemtype="https://schema.org/Person">
+            <span itemprop="name">
+                <a href="#" itemprop="url" rel="author">OJ Reeves</a>
+            </span>
+        </span>
+    </p>
+    
+        <p class="post-reading post-line">
+            <span>Read time: 4 min</span>
+        </p>
+    
+</header>
+
+        <div class="post-content clearfix" itemprop="articleBody">
+    
+
+    <p><a href="http://webmachine.basho.com/" title="Webmachine">Webmachine</a> is currently my favourite tool for building websites. I&rsquo;ve been lucky enough to use it on a few things now, some commercially some personally. While working on my <a href="http://buffered.io/series/web-development-with-erlang/" title="Web development with Erlang">Erlang web development series</a> I had to handle the case where URLs redirected to other URLs. I found some basic documentation on this but wasn&rsquo;t able to find a canonical example of how to do it.</p>
+
+<p>After a big of digging through blog posts and speaking to people on IRC I figured out how it was done. The goal of this post is to show how it&rsquo;s done for 301 (permanent) and 307 (temporary) redirects.</p>
+
+<p>You&rsquo;re probably already aware that Webmachine&rsquo;s goal is to make easy to build <em>well behaved HTTP applications</em>. It does this by enforcing a workflow which guides you through the HTTP process. Your job, as the developer, is to build <strong>resources</strong> which override certain behaviours depending on what you want to achieve.</p>
+
+<p>In order to get your resource to return the appropriate redirect error codes, you need to provide custom implementations of three of four functions. Two of them are common to both 301 and 307 redirects, the developer must choose between the other two depending on the type of redirect required.</p>
+
+<h2 id="resource-exists"><code>resource_exists</code></h2>
+
+<p>This function is the first of the functions that is called by the Webmachine pipeline and expects the results in the standard format of <code>{&lt;result&gt;, ReqData, State}</code>. The <code>&lt;result&gt;</code> needs to be a boolean atom (ie. <code>true</code> or <code>false</code>). The default behaviour of this function returns <code>{true, ReqData, State}</code>. To start off the process of redirecting, this function needs to tell Webmachine that the resource doesn&rsquo;t exist by instead returning <code>{false, ReqData, State}</code>.</p>
+
+<pre><code>resource_exists(ReqData, State) -&gt;
+  {false, ReqData, State}.
+</code></pre>
+
+<h2 id="previously-existed"><code>previously_existed</code></h2>
+
+<p>This function tells Webmachine if the resource had, for some reason, existed in the past. The return value of this function takes the same format as the <code>resource_exists</code> function, but the default behaviour returns <code>{false, ReqData, State}</code> which tells Webmachine that the resource never existed. This results in a 404 (not found) error being returned to the caller.</p>
+
+<p>This isn&rsquo;t the behaviour we want, so instead we need to override the function and instead return <code>{true, ReqData, State}</code>.</p>
+
+<pre><code>previously_existed(ReqData, State) -&gt;
+  {true, ReqData, State}.
+</code></pre>
+
+<h2 id="moved-temporarily-for-307-redirects"><code>moved_temporarily</code> - for 307 redirects</h2>
+
+<p>If you&rsquo;re looking to get a 307 redirect, you need to override this function. The default return value of this function is the same as <code>previously_existed</code> which isn&rsquo;t going to give us what we need. Instead we need to tell Webmachine that there is another URL which should be used instead. We do this by returning <code>{{ &quot;{&quot; }}{true, &lt;URL&gt;}, ReqData, State}</code>. The URL that is returned is what Webmachine will pass back to the user along with the 307 redirect code.</p>
+
+<pre><code>moved_temporarily(ReqData, State) -&gt;
+  {{ &quot;{&quot; }}{true, &quot;http://buffered.io&quot;}, ReqData, State}.
+</code></pre>
+
+<p>Do not override this function if you&rsquo;re looking to do a permanent redirect.</p>
+
+<p>This is what happens if you hit a resource with this behaviour using <a href="http://curl.haxx.se/" title="cURL">cURL</a>.</p>
+
+<pre><code>oj@air ~/ $ curl -v http://localhost:8000/temporary
+* About to connect() to localhost port 8000 (#0)
+*   Trying 127.0.0.1... connected
+* Connected to localhost (127.0.0.1) port 8000 (#0)
+&gt; GET /temporary HTTP/1.1
+&gt; User-Agent: curl/7.21.4 (universal-apple-darwin11.0) libcurl/7.21.4 OpenSSL/0.9.8r zlib/1.2.5
+&gt; Host: localhost:8000
+&gt; Accept: */*
+&gt; 
+&lt; HTTP/1.1 307 Temporary Redirect
+&lt; Server: MochiWeb/1.1 WebMachine/1.9.0 (someone had painted it blue)
+&lt; Location: http://buffered.io/
+&lt; Date: Wed, 15 Feb 2012 09:05:16 GMT
+&lt; Content-Type: text/html
+&lt; Content-Length: 0
+&lt; 
+* Connection #0 to host localhost left intact
+* Closing connection #0
+</code></pre>
+
+<h2 id="moved-permanently-for-301-redirects"><code>moved_permanently</code> - for 301 redirects</h2>
+
+<p>If you&rsquo;re aiming to deliver a 301 redirect then this is the function you should override. Again the default return value is the same as <code>previously_existed</code> (just like <code>moved_temporarily</code>) and we need to override it with the same detail as in <code>moved_temporarily</code>).</p>
+
+<pre><code>moved_permanently(ReqData, State) -&gt;
+  {{ &quot;{&quot; }}{true, &quot;http://buffered.io&quot;}, ReqData, State}.
+</code></pre>
+
+<p>Do not override this function if you&rsquo;re looking to do a temporary redirect.</p>
+
+<p>This is what happens if you hit a resource with this behaviour using <a href="http://curl.haxx.se/" title="cURL">cURL</a>.</p>
+
+<pre><code>oj@air ~/code/riak $ curl -v http://localhost:8000/permanent
+* About to connect() to localhost port 8000 (#0)
+*   Trying 127.0.0.1... connected
+* Connected to localhost (127.0.0.1) port 8000 (#0)
+&gt; GET /permanent HTTP/1.1
+&gt; User-Agent: curl/7.21.4 (universal-apple-darwin11.0) libcurl/7.21.4 OpenSSL/0.9.8r zlib/1.2.5
+&gt; Host: localhost:8000
+&gt; Accept: */*
+&gt; 
+&lt; HTTP/1.1 301 Moved Permanently
+&lt; Server: MochiWeb/1.1 WebMachine/1.9.0 (someone had painted it blue)
+&lt; Location: http://buffered.io/
+&lt; Date: Wed, 15 Feb 2012 09:09:03 GMT
+&lt; Content-Type: text/html
+&lt; Content-Length: 0
+&lt; 
+* Connection #0 to host localhost left intact
+* Closing connection #0
+</code></pre>
+
+<h2 id="that-s-all-folks">That&rsquo;s all folks</h2>
+
+<p>For once it&rsquo;s short and sweet. I hope you find it useful.</p>
+</div>
+
+        <footer class="post-footer clearfix">
+    
+
+    <div class="share">
+        
+            <a class="icon-twitter" href="https://twitter.com/share?text=Redirects%20with%20Webmachine&url=%2fposts%2fredirects-with-webmachine%2f"
+                onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                <i class="fa fa-twitter"></i>
+                <span class="hidden">Twitter</span>
+            </a>
+        
+
+        
+            <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=%2fposts%2fredirects-with-webmachine%2f"
+                onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                <i class="fa fa-facebook"></i>
+                <span class="hidden">Facebook</span>
+            </a>
+        
+
+        
+            <a class="icon-google-plus" href="https://plus.google.com/share?url=%2fposts%2fredirects-with-webmachine%2f"
+              onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+              <i class="fa fa-google-plus"></i>
+                <span class="hidden">Google+</span>
+            </a>
+        
+        
+    </div>
+</footer>
+
+        
+    <div class="comments">
+        
+    </div>
+
+    </article>
+</div>
+
+            </div>
+        </div>
+
+        <footer class="footer">
+            <div class="container">
+                <div class="site-title-wrapper">
+                    <h1 class="site-title">
+                        <a title="OJ&#39;s Perspective" href="/">OJ&#39;s Perspective</a>
+                    </h1>
+                    <a class="button-square button-jump-top js-jump-top" href="#">
+                        <i class="fa fa-angle-up"></i>
+                    </a>
+                </div>
+
+                <p class="footer-copyright">
+                    <span>&copy; 2019 / Powered by <a href="https://gohugo.io/">Hugo</a></span>
+                </p>
+                <p class="footer-copyright">
+                    <span><a href="https://github.com/roryg/ghostwriter">Ghostwriter theme</a> By <a href="http://jollygoodthemes.com">JollyGoodThemes</a></span>
+                    <span>/ <a href="https://github.com/jbub/ghostwriter">Ported</a> to Hugo By <a href="https://github.com/jbub">jbub</a></span>
+                </p>
+            </div>
+        </footer>
+
+        <script src="/js/jquery-1.11.3.min.js"></script>
+        <script src="/js/jquery.fitvids.js"></script>
+        
+        
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        
+        
+        <script src="/js/scripts.js"></script>
+    </body>
+</html>
+

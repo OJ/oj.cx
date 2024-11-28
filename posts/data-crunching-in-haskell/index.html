@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns#">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Data Crunching in Haskell &middot; OJ Reeves</title>
+        <meta name="description" content="A few days ago I was having a chat to a friend of mine about a little data parsing problem. He had the need to parse a multi-dimensional array to pull out some values. That array was guaranteed to be square, but not necessarily in contiguous memory. He needed to parse each &ldquo;column&rdquo; of the array, calculate a total, and then determine the biggest and smallest of those totals.
+
+A sample of the data might look something like this:
+
+data = ({150,200,45,57,95,2,45,32,15,10,5,2,2,4},
+        {12,20,45,37,10,5,2,2,10,95,2,45,32,7},
+        {32,15,10,5,2,23,24,15,20,45,57,95,0,45})
+
+
+So the first step would be to add 150, 12 and 32 and store the value. Then 200, 20 and 15, and store the value. Do this for all of the columns, then get a maximum and a minimum.">
+        <meta name="HandheldFriendly" content="True">
+        <meta name="MobileOptimized" content="320">
+        <meta name="generator" content="Hugo 0.55.6" />
+        <meta name="robots" content="index,follow">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta property="og:title" content="Data Crunching in Haskell">
+<meta property="og:description" content="A few days ago I was having a chat to a friend of mine about a little data parsing problem. He had the need to parse a multi-dimensional array to pull out some values. That array was guaranteed to be square, but not necessarily in contiguous memory. He needed to parse each &ldquo;column&rdquo; of the array, calculate a total, and then determine the biggest and smallest of those totals.
+
+A sample of the data might look something like this:
+
+data = ({150,200,45,57,95,2,45,32,15,10,5,2,2,4},
+        {12,20,45,37,10,5,2,2,10,95,2,45,32,7},
+        {32,15,10,5,2,23,24,15,20,45,57,95,0,45})
+
+
+So the first step would be to add 150, 12 and 32 and store the value. Then 200, 20 and 15, and store the value. Do this for all of the columns, then get a maximum and a minimum.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="/posts/data-crunching-in-haskell/">
+        <link rel="stylesheet" href="/dist/styles.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300&subset=latin,cyrillic-ext,latin-ext,cyrillic">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+        
+        
+        
+    </head>
+    <body>
+        
+
+        <div id="wrapper">
+            <header class="site-header">
+                <div class="container">
+                    <div class="site-title-wrapper">
+                        
+                            <h1 class="site-title">
+                                <a title="OJ&#39;s Perspective" href="/">OJ&#39;s Perspective</a>
+                            </h1>
+                        
+                        <a class="button-square" href="/index.xml"><i class="fa fa-rss"></i></a>
+                        
+                            <a class="button-square button-social hint--top" data-hint="Twitter" title="Twitter" href="https://twitter.com/TheColonial" rel="me">
+                                <i class="fa fa-twitter"></i>
+                            </a>
+                        
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Github" title="Github" href="https://github.com/OJ" rel="me">
+                                <i class="fa fa-github-alt"></i>
+                            </a>
+                        
+                        
+                        
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Email" title="Email" href="mailto:oj@buffered.io">
+                                <i class="fa fa-envelope"></i>
+                            </a>
+                        
+                    </div>
+
+                    <ul class="site-nav">
+                        
+    <li class="site-nav-item">
+        <a title="Home" href="/">Home</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Live Streaming" href="/streaming/">Live Streaming</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="About" href="/about/">About</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Contact" href="/contact/">Contact</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Tags" href="/tags/">Tags</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Categories" href="/categories/">Categories</a>
+    </li>
+
+                    </ul>
+                </div>
+            </header>
+
+            <div id="container">
+
+
+<div class="container">
+    <article class="post-container" itemscope="" itemtype="http://schema.org/BlogPosting">
+        <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Data Crunching in Haskell</h1>
+    
+    <p class="post-date">
+        <span>Published <time datetime="2009-06-25" itemprop="datePublished">2009-06-25</time></span>
+        <span>by</span>
+        <span itemscope="" itemprop="author" itemtype="https://schema.org/Person">
+            <span itemprop="name">
+                <a href="#" itemprop="url" rel="author">OJ Reeves</a>
+            </span>
+        </span>
+    </p>
+    
+        <p class="post-reading post-line">
+            <span>Read time: 5 min</span>
+        </p>
+    
+</header>
+
+        <div class="post-content clearfix" itemprop="articleBody">
+    
+
+    <p>A few days ago I was having a chat to a <a href="http://shiftperception.com/blog" title="Shifty">friend of mine</a> about a little data parsing problem. He had the need to parse a multi-dimensional array to pull out some values. That array was guaranteed to be square, but not necessarily in contiguous memory. He needed to parse each &ldquo;column&rdquo; of the array, calculate a total, and then determine the biggest and smallest of those totals.</p>
+
+<p>A sample of the data might look something like this:</p>
+
+<pre><code>data = ({150,200,45,57,95,2,45,32,15,10,5,2,2,4},
+        {12,20,45,37,10,5,2,2,10,95,2,45,32,7},
+        {32,15,10,5,2,23,24,15,20,45,57,95,0,45})
+</code></pre>
+
+<p>So the first step would be to add 150, 12 and 32 and store the value. Then 200, 20 and 15, and store the value. Do this for all of the columns, then get a maximum and a minimum.</p>
+
+<p>This little algorithm was going to be part of his project, and hence needed to be implemented in <a href="http://www.adobe.com/devnet/actionscript/articles/actionscript3_overview.html" title="ActionScript 3.0">AS3</a>. So I picked his brains about the AS3 syntax, because I have absolutely no clue given that I&rsquo;ve never worked with any version of ActionScript in the past.</p>
+
+<p>Together, we came up with the following solution:</p>
+
+<pre><code>var columnTotal:Number;
+var biggest:Number;
+var smallest:Number;
+biggest = smallest = sum(vData, 0);
+
+for(var i = 1; i &lt; _scope.period_mcs.length; ++i)
+{
+  columnTotal = sum(vData, i);
+  biggest = Math.max(biggest, columnTotal);
+  smallest = Math.min(smallest, columnTotal);
+}
+
+// helper function 
+function sum(var data:Array, var index:Integer):Number
+{
+  var total:Number = 0;
+  for(int i = 0; i &lt; data.length; ++i)
+  {
+    total += data[i][index];
+  }
+  return total;
+}
+</code></pre>
+
+<p>Does it work? Yes, it sure does. Is it optimal? Yes, and no :) I was lazy and used the Math.max and Math.min functions instead of doing the obvious&hellip;</p>
+
+<pre><code>if(biggest &lt; columnTotal) biggest = columnTotal;
+</code></pre>
+
+<p>So if we did that, to reduce the need for function calls and unnecessary assignments, we end up with this:</p>
+
+<pre><code>var columnTotal:Number;
+var biggest:Number;
+var smallest:Number;
+biggest = smallest = sum(vData, 0);
+
+for(var i = 1; i &lt; _scope.period_mcs.length; ++i)
+{
+  columnTotal = sum(vData, i);
+  if(biggest &lt; columnTotal)
+  {
+    biggest = columnTotal;
+  }
+  else if(smallest &gt; columnTotal)
+  {
+    smallest = columnTotal;
+  }
+}
+
+// helper function 
+function sum(var data:Array, var index:Integer):Number
+{
+  var total:Number = 0;
+  for(int i = 0; i &lt; data.length; ++i)
+  {
+    total += data[i][index];
+  }
+  return total;
+}
+</code></pre>
+
+<p>I can&rsquo;t see many ways to improve on this without going overboard with optimisation. Any AS3 guru&rsquo;s are more than welcome to prove me wrong!</p>
+
+<p>So after thinking about this in an imperative language, I couldn&rsquo;t help but have a look at what the functional version might look like. Of course, my current chosen Functional toy is <a href="http://haskell.org/" title="Haskell">Haskell</a> and so I fired up <a href="http://vim.org/" title="VIM">VIM</a> and <a href="http://www.haskell.org/ghc/" title="GHC">GHCI</a> and had a bit of a play.</p>
+
+<p>First, I put the data into Haskell&rsquo;s list format:</p>
+
+<pre><code>vals = [[150,200,45,57,95,2,45,32,15,10,5,2,2,4],
+        [12,20,45,37,10,5,2,2,10,95,2,45,32,7],
+        [32,15,10,5,2,23,24,15,20,45,57,95,0,45]]
+</code></pre>
+
+<p>That was easy enough. The next step was to break the problem down so that I could use some of the built in functions of Haskell&rsquo;s <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html" title="Prelude">Prelude</a> libraries. My thought processes were:
+<ol>
+<li>Summing the column of the array could be done using <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:sum" title="sum">sum</a>, but I&rsquo;d need to change the list so that rows become columns, and vice-versa.</li>
+<li>To switch rows and columns, I could use the <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Data-List.html#v:transpose" title="Data.List.transpose">transpose</a> function.</li>
+<li>Then all I&rsquo;d need to do is use <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:maximum" title="maximum">maximum</a> and <a href="http://haskell.org/ghc/docs/latest/html/libraries/base/Prelude.html#v:minimum" title="minimum">minimum</a> to get the right values out.</li>
+</ol>
+Being a bit of a primitive Haskeller, my first pass was something like this:</p>
+
+<pre><code>extremes n = (b, s)
+  where
+    l = map sum $ transpose n
+    b = maximum l
+    s = minimum l
+</code></pre>
+
+<p>The function <em>extremes</em> is the function which takes the data (list of lists) and spits out a tuple of <em>(max, min)</em>.</p>
+
+<p>Before the end of the conversation with my designer colleague in arms, I pinged him my version of the solution in Haskell and needless to say he was a little surprised as how concise it was. I was sure to point out that there is no doubt a better way of representing this solution with regards to speed and conciseness.</p>
+
+<p>The first thing that I thought could be improved would be using a custom <a href="http://www.haskell.org/haskellwiki/Fold" title="Fold">fold</a> to get the max and min while parsing the transposed list. This would allow us to calculate the values in a single pass and hence be a little better with regards to performance. That would obviously sacrifice a little bit of the conciseness we&rsquo;re looking for.</p>
+
+<p>When the conversation ended, I jumped onto IRC and spoke to some more seasoned Haskellers. The first suggested improvement that popped out of that chat was to use <a href="http://www.haskell.org/arrows/" title="Arrows">arrows</a> to remove the need for the where clause. That solution looks like this:</p>
+
+<pre><code>extremes = (maximum &amp;&amp;&amp; minimum) . map sum . transpose
+</code></pre>
+
+<p>Nifty :) Of all the other options, this proved to be the most readable and concise, though not the best performing.</p>
+
+<p>The next most notable solution included the fold which calculated the min and max in a single parse, not a double parse:</p>
+
+<pre><code>extremes = foldl1 (\(a, b) -&gt; max a *** min b) . join zip . map sum . transpose
+</code></pre>
+
+<p>Folds really are fantastic aren&rsquo;t they. Again we&rsquo;re using arrows here to do a bit of heavy lifting and that keeps things looking a little nicer.</p>
+
+<p>So after this little session, my designer friend was aware of how easy it can be to crunch certain types of data using a functional language, like Haskell. It made me think again about how it&rsquo;d be nice to just be able to plug in whichever language we wanted whenever we felt it would do the job better than whatever the current tool is.</p>
+
+<p>So how would you improve it? :)</p>
+</div>
+
+        <footer class="post-footer clearfix">
+    
+
+    <div class="share">
+        
+            <a class="icon-twitter" href="https://twitter.com/share?text=Data%20Crunching%20in%20Haskell&url=%2fposts%2fdata-crunching-in-haskell%2f"
+                onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                <i class="fa fa-twitter"></i>
+                <span class="hidden">Twitter</span>
+            </a>
+        
+
+        
+            <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=%2fposts%2fdata-crunching-in-haskell%2f"
+                onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                <i class="fa fa-facebook"></i>
+                <span class="hidden">Facebook</span>
+            </a>
+        
+
+        
+            <a class="icon-google-plus" href="https://plus.google.com/share?url=%2fposts%2fdata-crunching-in-haskell%2f"
+              onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+              <i class="fa fa-google-plus"></i>
+                <span class="hidden">Google+</span>
+            </a>
+        
+        
+    </div>
+</footer>
+
+        
+    <div class="comments">
+        
+    </div>
+
+    </article>
+</div>
+
+            </div>
+        </div>
+
+        <footer class="footer">
+            <div class="container">
+                <div class="site-title-wrapper">
+                    <h1 class="site-title">
+                        <a title="OJ&#39;s Perspective" href="/">OJ&#39;s Perspective</a>
+                    </h1>
+                    <a class="button-square button-jump-top js-jump-top" href="#">
+                        <i class="fa fa-angle-up"></i>
+                    </a>
+                </div>
+
+                <p class="footer-copyright">
+                    <span>&copy; 2019 / Powered by <a href="https://gohugo.io/">Hugo</a></span>
+                </p>
+                <p class="footer-copyright">
+                    <span><a href="https://github.com/roryg/ghostwriter">Ghostwriter theme</a> By <a href="http://jollygoodthemes.com">JollyGoodThemes</a></span>
+                    <span>/ <a href="https://github.com/jbub/ghostwriter">Ported</a> to Hugo By <a href="https://github.com/jbub">jbub</a></span>
+                </p>
+            </div>
+        </footer>
+
+        <script src="/js/jquery-1.11.3.min.js"></script>
+        <script src="/js/jquery.fitvids.js"></script>
+        
+        
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        
+        
+        <script src="/js/scripts.js"></script>
+    </body>
+</html>
+

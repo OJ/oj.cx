@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns#">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Jumping with Bad Chars &middot; OJ Reeves</title>
+        <meta name="description" content="During the course of exploit development it is not uncommon to require jumps in your shellcode. The most common case for these jumps is when doing SEH overwrites, due to their nature. There are times when the author of the exploit has a hard time performing these jumps due to the fact that only a subset of characters are deemed valid for use by the target application in that particular input field.
+
+In this post I want to briefly cover a few options for performing those jumps in such a scenario.">
+        <meta name="HandheldFriendly" content="True">
+        <meta name="MobileOptimized" content="320">
+        <meta name="generator" content="Hugo 0.55.6" />
+        <meta name="robots" content="index,follow">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta property="og:title" content="Jumping with Bad Chars">
+<meta property="og:description" content="During the course of exploit development it is not uncommon to require jumps in your shellcode. The most common case for these jumps is when doing SEH overwrites, due to their nature. There are times when the author of the exploit has a hard time performing these jumps due to the fact that only a subset of characters are deemed valid for use by the target application in that particular input field.
+
+In this post I want to briefly cover a few options for performing those jumps in such a scenario.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="/posts/jumping-with-bad-chars/">
+        <link rel="stylesheet" href="/dist/styles.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300&subset=latin,cyrillic-ext,latin-ext,cyrillic">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+        
+        
+        
+    </head>
+    <body>
+        
+
+        <div id="wrapper">
+            <header class="site-header">
+                <div class="container">
+                    <div class="site-title-wrapper">
+                        
+                            <h1 class="site-title">
+                                <a title="OJ&#39;s Perspective" href="/">OJ&#39;s Perspective</a>
+                            </h1>
+                        
+                        <a class="button-square" href="/index.xml"><i class="fa fa-rss"></i></a>
+                        
+                            <a class="button-square button-social hint--top" data-hint="Twitter" title="Twitter" href="https://twitter.com/TheColonial" rel="me">
+                                <i class="fa fa-twitter"></i>
+                            </a>
+                        
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Github" title="Github" href="https://github.com/OJ" rel="me">
+                                <i class="fa fa-github-alt"></i>
+                            </a>
+                        
+                        
+                        
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Email" title="Email" href="mailto:oj@buffered.io">
+                                <i class="fa fa-envelope"></i>
+                            </a>
+                        
+                    </div>
+
+                    <ul class="site-nav">
+                        
+    <li class="site-nav-item">
+        <a title="Home" href="/">Home</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Live Streaming" href="/streaming/">Live Streaming</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="About" href="/about/">About</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Contact" href="/contact/">Contact</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Tags" href="/tags/">Tags</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Categories" href="/categories/">Categories</a>
+    </li>
+
+                    </ul>
+                </div>
+            </header>
+
+            <div id="container">
+
+
+<div class="container">
+    <article class="post-container" itemscope="" itemtype="http://schema.org/BlogPosting">
+        <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Jumping with Bad Chars</h1>
+    
+    <p class="post-date">
+        <span>Published <time datetime="2014-03-21" itemprop="datePublished">2014-03-21</time></span>
+        <span>by</span>
+        <span itemscope="" itemprop="author" itemtype="https://schema.org/Person">
+            <span itemprop="name">
+                <a href="#" itemprop="url" rel="author">OJ Reeves</a>
+            </span>
+        </span>
+    </p>
+    
+        <p class="post-reading post-line">
+            <span>Read time: 8 min</span>
+        </p>
+    
+</header>
+
+        <div class="post-content clearfix" itemprop="articleBody">
+    
+
+    <p>During the course of exploit development it is not uncommon to require jumps in your shellcode. The most common case for these jumps is when doing <a href="https://www.corelan.be/index.php/2009/07/25/writing-buffer-overflow-exploits-a-quick-and-basic-tutorial-part-3-seh/">SEH overwrites</a>, due to their nature. There are times when the author of the exploit has a hard time performing these jumps due to the fact that only a subset of characters are deemed valid for use by the target application in that particular input field.</p>
+
+<p>In this post I want to briefly cover a few options for performing those jumps in such a scenario.</p>
+
+<h3 id="seh-overwrites">SEH overwrites</h3>
+
+<p>SEH overwrites tend to follow the pattern of having an input field overwrite its target buffer and overflow beyond the return address through to the <code>SEH</code> pointers. The <code>SEH</code> pointer is overwritten with an address that contains a <code>POP # POP # RET</code> instruction sequence, and this results in <code>EIP</code> being redirected to the <code>NSEH</code> pointer address. The <code>NSEH</code> pointer address is contained in the <code>4</code> bytes immediately preceding the <code>SEH</code> pointer.</p>
+
+<p>In order to exploit an SEH overwrite, the attacker need to execute shellcode which will perform some kind of operation on the target machine. It could be a reverse shell, a bind shell or something like a command execution. Regardless of the payload, it&rsquo;s almost certain that <code>4</code> bytes is not going to be enough to fit the entire instruction sequence in.</p>
+
+<p>So once control has been gained and <code>EIP</code> is pointing to those <code>4</code> bytes, the first thing that needs to be done is execution needs to move to an area of memory that is controlled by the attacker via a jump. Depending on the exploit, the attacker may need to jump forwards or backwards.</p>
+
+<h3 id="the-basic-jmp">The basic JMP</h3>
+
+<p>Jumps tend to only require <code>2</code> bytes, and so in the case of SEH overwrites it is common to see the <code>NSEH</code> entry overwritten with a <code>2</code> byte jump followed by <code>NOP</code> instructions to fill the gap. See the image below for a synthetic example:</p>
+
+<p><img src="/uploads/2014/03/jmp-1-basicjmp.png" alt="Basic SEH overwrite JMP" /></p>
+
+<p>For the sake of discussion we&rsquo;ll assume that the address at <code>0x77F7F594</code> is the <code>NSEH</code> pointer location and that <code>0x77F7F598</code> is the <code>SEH</code> pointer location. The example shows that <code>NSEH</code> contains a <code>JMP SHORT</code> instruction which moves control forward to the address at <code>0x77F7FC9C</code></p>
+
+<p>Once the SEH has been overwritten and the <code>POP # POP # RET</code> sequence has been executed, the <code>JMP</code> instruction is hit and <code>EIP</code> then gets set to the value immediately following the <code>SEH</code> address. We can assume at this point that the attacker has been able to control the area of memory immediately following and hence from there they can perform arbitrary execution.</p>
+
+<h3 id="bad-characters">Bad characters</h3>
+
+<p>It is easy to see that flaws that allow for SEH overwrites can appear in any application, and they do! However, some applications only allow a restricted set of characters to be used for input. As an example, a web server might be vulnerable to a stack buffer overflow when handling the URI of a given request. The problem for the attacker is that characters that are allowed in the URI are very limited. More often than not, non-printable or extended characters are not allowed in the target buffer and hence using them will result in behaviour that avoids or changes the process of exploitation.</p>
+
+<p>In the above example we can see that the <code>JMP</code> instruction maps to the bytes <code>EB 06</code>, and <code>EB</code> is a byte that tends not to make web servers very happy. As a result, using this instruction in the <code>NSEH</code> block isn&rsquo;t possible. Instead we need to find other jumps which are bad-character friendly. As a generalisation, if we can stick to instructions made up of bytes that are lower than <code>7E</code> we can usually get by. This does come with some caveats, such as spaces, newlines or <code>/</code> characters when dealing with web server URIs.</p>
+
+<p>So with this constraint in place, how does the attacker perform the simple jump?</p>
+
+<p>There are a number of <em>conditional</em> jumps available in the x86 instruction set which could be used, but the problem we have with conditional jumps is that we have to make sure that the condition is true before we hit the jump instruction.</p>
+
+<p>A well known example is the <code>JA</code> instruction, otherwise known as <em>Jump if above</em>, which has the byte code of <code>77</code>. This instruction will result in a jump if both the <code>CF</code> and <code>ZF</code> flags are <code>0</code>. To prepare for this the attacker can use the extra two bytes to operate on registers and modify flags.</p>
+
+<p>In our example we will assume that the carry flag is already zero at the time of our jump, but the zero flag is unknown. We can force the zero flag to be <code>0</code> by using the <code>DEC ESP</code> instruction. Here is what it might look like before execution:</p>
+
+<p><img src="/uploads/2014/03/jmp-2-cond-before.png" alt="Flag modification - Before" /></p>
+
+<p>And after running over the two <code>DEC ESP</code> instructions we see this:</p>
+
+<p><img src="/uploads/2014/03/jmp-2-cond-after.png" alt="Flag modification - After" /></p>
+
+<p>As a result the jump is taken and our code continues to execute as we would expect.</p>
+
+<p>There are many other ways that this kind of approach can be used with a mixture of other types of jumps. What I&rsquo;d like to show now is the way that I like to do it, which is a little different to the common examples around the web.</p>
+
+<h3 id="what-could-go-wrong">What could go wrong?</h3>
+
+<p>The approach used above works fine, but isn&rsquo;t necessarily the best. Why is this?</p>
+
+<p>When using <code>JA</code> we have made an assumption that <code>CF</code> will be <code>0</code> all the time when in fact it might not be. If <code>CF</code> is ever <code>1</code>, then the jump would not be taken. This kind of assumption might apply regardless of which kind of conditional jump we choose to use. Guaranteeing the correct combination of flags in a given scenario <em>might</em> not be possible (though admittedly, it usually is).</p>
+
+<p>For me personally I also have the problem of being stupid. I don&rsquo;t remember all of the combinations of flags required to make a jump work. While I know I can fall back on reference material I would much prefer to have an approach that:</p>
+
+<ul>
+<li>Doesn&rsquo;t rely on forcing a condition prior to taking the jump.</li>
+<li>Doesn&rsquo;t rely on me having to remember or research combinations of flags.</li>
+<li>Still fits within the often-required <code>4</code>-byte block.</li>
+</ul>
+
+<p>As a result, I use something that I like to call the <em>Jump Net</em>.</p>
+
+<h3 id="the-jump-net">The Jump Net</h3>
+
+<p>The Jump Net isn&rsquo;t anything revolutionary. It&rsquo;s not mind-expanding. It&rsquo;s not something that I have come up with that hasn&rsquo;t been thought of before. However, I feel compelled to write about it because I&rsquo;m yet to see anyone talk about it. I haven&rsquo;t even seen it in any of the exploits that I&rsquo;ve read or researched.</p>
+
+<p>There&rsquo;s no doubt that it&rsquo;s out there and being used by everyone all the time. But here it is, bloggified in all its simplistic glory.</p>
+
+<p>The theory is really simple. We have an unknown state <code>s</code>, this could be a flag for example, and a predicate <code>P</code> which will test <code>s</code> to determine whether or not a jump is made. Those who are savvy with the basics of predicate logic will know that <code>P(s) || ~P(s) == true</code>. That is, any boolean value <code>b</code> logically <code>OR</code>ed with <code>~b</code> will result in a value of <code>true</code>. In our case <code>s</code> is not known (ie. the content of the flag at a given time might not be known), but <code>P</code> is known (ie. we are using <code>JA</code>, or <code>JO</code> for our jump). To determine <code>~P</code>, we can just look for the logical opposite of the jump instruction that we have chosen. For example, the &ldquo;opposite&rdquo; of <code>JA</code> is <code>JNA</code> (which is a synonym for <code>JBE</code>, or <em>Jump if below or equal</em>).</p>
+
+<p>To make use of this knowledge, we just need to pair up two logically opposing jump conditions and have <code>EIP</code> pass over them. If the first condition succeeds our jump is taken and we win. If not, the second condition <em>must</em> succeed (it&rsquo;s the inverse of the first after all), and so we still win.</p>
+
+<p>Each conditional short jump just happens to have a very similar instruction byte value to its logical opposite. For example, <code>JNA</code> is <code>76</code> and <code>JA</code> is <code>77</code>. So this means that the chances of the characters being <em>bad</em> are slim (but admittedly non-zero).</p>
+
+<p>Armed with this knowledge, we can pair up two jumps which when combined form a &ldquo;net&rdquo; of conditions which will always &ldquo;catch&rdquo; a positive/true case and perform the jump. Here&rsquo;s an example that uses <code>JO</code> and <code>JNO</code>:</p>
+
+<p><img src="/uploads/2014/03/jmp-3-jojno.png" alt="The Jump Net" /></p>
+
+<p>When <code>EIP</code> is at <code>0x77F7F594</code> a test is performed to see if <code>OF</code> (the overflow flag) is set to <code>0</code>. If it is, then a jump is performed and <code>EIP</code> moves to <code>0x77F7F59C</code> .</p>
+
+<p>If the jump is not performed then <code>EIP</code> moves to <code>0x77F7F596</code>, at which point a test is performed to see if <code>OF</code> is set to <code>1</code>. We can conclude that this jump <em>must always happen</em> because we already know that <code>OF</code> wasn&rsquo;t set to <code>1</code> which caused the previous jump to fail. As a result <code>EIP</code> will move to <code>0x77F7F59C</code>, just as the first jump does.</p>
+
+<p>Note how similar the instructions are. If <code>70</code> is a valid byte, there&rsquo;s a good chance that <code>71</code> is as well. Admittedly this isn&rsquo;t always the case, but we do have quite a few conditional jump pairs to play with, so there&rsquo;s a good chance that at least one of them would work.</p>
+
+<h3 id="conclusion">Conclusion</h3>
+
+<p>That&rsquo;s literally it. As I promised, it isn&rsquo;t anything that&rsquo;s mind-blowingly insightful. It isn&rsquo;t something that can be applied every time because of bad characters. However it does work most of the time, and it&rsquo;s another handy technique to have in your shellcoding toolbox.</p>
+</div>
+
+        <footer class="post-footer clearfix">
+    
+
+    <div class="share">
+        
+            <a class="icon-twitter" href="https://twitter.com/share?text=Jumping%20with%20Bad%20Chars&url=%2fposts%2fjumping-with-bad-chars%2f"
+                onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                <i class="fa fa-twitter"></i>
+                <span class="hidden">Twitter</span>
+            </a>
+        
+
+        
+            <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=%2fposts%2fjumping-with-bad-chars%2f"
+                onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                <i class="fa fa-facebook"></i>
+                <span class="hidden">Facebook</span>
+            </a>
+        
+
+        
+            <a class="icon-google-plus" href="https://plus.google.com/share?url=%2fposts%2fjumping-with-bad-chars%2f"
+              onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+              <i class="fa fa-google-plus"></i>
+                <span class="hidden">Google+</span>
+            </a>
+        
+        
+    </div>
+</footer>
+
+        
+    <div class="comments">
+        
+    </div>
+
+    </article>
+</div>
+
+            </div>
+        </div>
+
+        <footer class="footer">
+            <div class="container">
+                <div class="site-title-wrapper">
+                    <h1 class="site-title">
+                        <a title="OJ&#39;s Perspective" href="/">OJ&#39;s Perspective</a>
+                    </h1>
+                    <a class="button-square button-jump-top js-jump-top" href="#">
+                        <i class="fa fa-angle-up"></i>
+                    </a>
+                </div>
+
+                <p class="footer-copyright">
+                    <span>&copy; 2019 / Powered by <a href="https://gohugo.io/">Hugo</a></span>
+                </p>
+                <p class="footer-copyright">
+                    <span><a href="https://github.com/roryg/ghostwriter">Ghostwriter theme</a> By <a href="http://jollygoodthemes.com">JollyGoodThemes</a></span>
+                    <span>/ <a href="https://github.com/jbub/ghostwriter">Ported</a> to Hugo By <a href="https://github.com/jbub">jbub</a></span>
+                </p>
+            </div>
+        </footer>
+
+        <script src="/js/jquery-1.11.3.min.js"></script>
+        <script src="/js/jquery.fitvids.js"></script>
+        
+        
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        
+        
+        <script src="/js/scripts.js"></script>
+    </body>
+</html>
+

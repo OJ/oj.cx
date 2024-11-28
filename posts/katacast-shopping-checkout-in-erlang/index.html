@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns#">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Katacast: Shopping Checkout in Erlang &middot; OJ Reeves</title>
+        <meta name="description" content="I&rsquo;ve recently discovered the joys of CodeKatas. If you&rsquo;re a geek looking for a way to sharpen the saw then I highly recommend taking a look at these and trying a few out. They&rsquo;re great fun and they&rsquo;re a good way of getting your feet wet with new languages (especially if you&rsquo;re tired of Project Euler).">
+        <meta name="HandheldFriendly" content="True">
+        <meta name="MobileOptimized" content="320">
+        <meta name="generator" content="Hugo 0.55.6" />
+        <meta name="robots" content="index,follow">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta property="og:title" content="Katacast: Shopping Checkout in Erlang">
+<meta property="og:description" content="I&rsquo;ve recently discovered the joys of CodeKatas. If you&rsquo;re a geek looking for a way to sharpen the saw then I highly recommend taking a look at these and trying a few out. They&rsquo;re great fun and they&rsquo;re a good way of getting your feet wet with new languages (especially if you&rsquo;re tired of Project Euler).">
+<meta property="og:type" content="article">
+<meta property="og:url" content="/posts/katacast-shopping-checkout-in-erlang/">
+        <link rel="stylesheet" href="/dist/styles.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300&subset=latin,cyrillic-ext,latin-ext,cyrillic">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+        
+        
+        
+    </head>
+    <body>
+        
+
+        <div id="wrapper">
+            <header class="site-header">
+                <div class="container">
+                    <div class="site-title-wrapper">
+                        
+                            <h1 class="site-title">
+                                <a title="OJ&#39;s Perspective" href="/">OJ&#39;s Perspective</a>
+                            </h1>
+                        
+                        <a class="button-square" href="/index.xml"><i class="fa fa-rss"></i></a>
+                        
+                            <a class="button-square button-social hint--top" data-hint="Twitter" title="Twitter" href="https://twitter.com/TheColonial" rel="me">
+                                <i class="fa fa-twitter"></i>
+                            </a>
+                        
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Github" title="Github" href="https://github.com/OJ" rel="me">
+                                <i class="fa fa-github-alt"></i>
+                            </a>
+                        
+                        
+                        
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Email" title="Email" href="mailto:oj@buffered.io">
+                                <i class="fa fa-envelope"></i>
+                            </a>
+                        
+                    </div>
+
+                    <ul class="site-nav">
+                        
+    <li class="site-nav-item">
+        <a title="Home" href="/">Home</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Live Streaming" href="/streaming/">Live Streaming</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="About" href="/about/">About</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Contact" href="/contact/">Contact</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Tags" href="/tags/">Tags</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Categories" href="/categories/">Categories</a>
+    </li>
+
+                    </ul>
+                </div>
+            </header>
+
+            <div id="container">
+
+
+<div class="container">
+    <article class="post-container" itemscope="" itemtype="http://schema.org/BlogPosting">
+        <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Katacast: Shopping Checkout in Erlang</h1>
+    
+    <p class="post-date">
+        <span>Published <time datetime="2010-01-04" itemprop="datePublished">2010-01-04</time></span>
+        <span>by</span>
+        <span itemscope="" itemprop="author" itemtype="https://schema.org/Person">
+            <span itemprop="name">
+                <a href="#" itemprop="url" rel="author">OJ Reeves</a>
+            </span>
+        </span>
+    </p>
+    
+        <p class="post-reading post-line">
+            <span>Read time: 3 min</span>
+        </p>
+    
+</header>
+
+        <div class="post-content clearfix" itemprop="articleBody">
+    
+
+    <p>I&rsquo;ve recently discovered the joys of <a href="http://codekata.pragprog.com/" title="CodeKata">CodeKatas</a>. If you&rsquo;re a geek looking for a way to <a href="http://en.wikipedia.org/wiki/The_Seven_Habits_of_Highly_Effective_People" title="The Seven Habits of Highly Effective People">sharpen the saw</a> then I highly recommend taking a look at these and trying a few out. They&rsquo;re great fun and they&rsquo;re a good way of getting your feet wet with new languages (especially if you&rsquo;re tired of <a href="http://projecteuler.net/" title="Project Euler">Project Euler</a>).</p>
+
+<p>I can thank <a href="http://twitter.com/gabriellelana" title="Gabrielle Lana on Twitter">Gabrielle Lana</a> for this discovery, as it was <a href="http://www.vimeo.com/8206748" title="String Calculator in Erlang">his attempt at one of the katas</a> that got me into it. He&rsquo;s also the reason I looked into <a href="http://www.katacasts.com/" title="Katacasts">Katacasts</a>, which are simply screencasted recordings of people attempting to solve Code Katas.</p>
+
+<p>This post is about my first Katacast, capturing my attempt at <a href="http://codekata.pragprog.com/2007/01/kata_nine_back_.html" title="Checkout">Code Kata #9</a> using <a href="http://erlang.org/" title="Erlang">Erlang</a> and <a href="http://www.vim.org/" title="VIM">VIM</a> with <a href="http://rake.rubyforge.org/" title="Ruby Make">Rake</a> as my build system. I&rsquo;ve put the video up on <a href="http://vimeo.com/8513414" title="Katacast for Codekata #9 by OJ Reeves">Vimeo</a> for the world to see/share. It&rsquo;s also embedded below for your convenience.</p>
+
+<p>Before watching, I&rsquo;d like to point out a few things about the video, and things that I have learned from the experience:</p>
+
+<ul>
+<li>I captured the video on my Linux Mint install. For some reason, capturing quality video in Linux is proving to be a bit of a pain for me. As a result, the video quality isn&rsquo;t that great. This partly due to the compression of the video, and partly due to the software failing to pick up some screen updates.</li>
+<li>I tried really hard to add a backing sound-track but all of my efforts failed in one way or another. If I did manage to get one to work it was either WAY too big (ie. &gt; 1GB in size) or the quality was absolutely terrible.</li>
+<li>There were points during the process where I had to alt-tab out to a browser to do a bit of research on something that I didn&rsquo;t know (such as an Erlang syntax quirk). This resulted in a few points where I don&rsquo;t appear to be doing anything. In future, I&rsquo;ll remember to hit pause on the recording when this happens.</li>
+<li>I captured it in a non-standard resolution. I&rsquo;m not sure if that&rsquo;s going to make it look bad or not. Feedback here is appreciated. I think in future I&rsquo;ll capture at a 800x600 resolution.</li>
+<li>This video is best viewed in full-screen mode.</li>
+</ul>
+
+<p>So please excuse the lack of quality in this first Katacast. I&rsquo;ll be sure to improve when I next create one. That being said, on with the show!</p>
+
+<div style="text-align: center"><iframe src="http://player.vimeo.com/video/8513414" width="400" height="335" frameborder="0"></iframe><p><a href="http://vimeo.com/8513414">Katacast for Codekata #9</a> from <a href="http://vimeo.com/thecolonial">OJ Reeves</a> on <a href="http://vimeo.com">Vimeo</a>.</p></div>
+ 
+
+<p>As always, feedback/criticism/etc is greatly appreciated. I&rsquo;d love to hear what you guys do and use to capture and edit your screencasts, particularly in Linux.</p>
+</div>
+
+        <footer class="post-footer clearfix">
+    
+        <p class="post-tags">
+            <span>Tagged:</span>
+            
+            
+                <a href="/tags/erlang/">Erlang</a>, 
+            
+                <a href="/tags/codekata/">codekata</a>, 
+            
+                <a href="/tags/katacast/">katacast</a>, 
+            
+                <a href="/tags/vim/">vim</a>, 
+            
+                <a href="/tags/rake/">rake</a>
+            
+        </p>
+    
+
+    <div class="share">
+        
+            <a class="icon-twitter" href="https://twitter.com/share?text=Katacast%3a%20Shopping%20Checkout%20in%20Erlang&url=%2fposts%2fkatacast-shopping-checkout-in-erlang%2f"
+                onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                <i class="fa fa-twitter"></i>
+                <span class="hidden">Twitter</span>
+            </a>
+        
+
+        
+            <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=%2fposts%2fkatacast-shopping-checkout-in-erlang%2f"
+                onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                <i class="fa fa-facebook"></i>
+                <span class="hidden">Facebook</span>
+            </a>
+        
+
+        
+            <a class="icon-google-plus" href="https://plus.google.com/share?url=%2fposts%2fkatacast-shopping-checkout-in-erlang%2f"
+              onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+              <i class="fa fa-google-plus"></i>
+                <span class="hidden">Google+</span>
+            </a>
+        
+        
+    </div>
+</footer>
+
+        
+    <div class="comments">
+        
+    </div>
+
+    </article>
+</div>
+
+            </div>
+        </div>
+
+        <footer class="footer">
+            <div class="container">
+                <div class="site-title-wrapper">
+                    <h1 class="site-title">
+                        <a title="OJ&#39;s Perspective" href="/">OJ&#39;s Perspective</a>
+                    </h1>
+                    <a class="button-square button-jump-top js-jump-top" href="#">
+                        <i class="fa fa-angle-up"></i>
+                    </a>
+                </div>
+
+                <p class="footer-copyright">
+                    <span>&copy; 2019 / Powered by <a href="https://gohugo.io/">Hugo</a></span>
+                </p>
+                <p class="footer-copyright">
+                    <span><a href="https://github.com/roryg/ghostwriter">Ghostwriter theme</a> By <a href="http://jollygoodthemes.com">JollyGoodThemes</a></span>
+                    <span>/ <a href="https://github.com/jbub/ghostwriter">Ported</a> to Hugo By <a href="https://github.com/jbub">jbub</a></span>
+                </p>
+            </div>
+        </footer>
+
+        <script src="/js/jquery-1.11.3.min.js"></script>
+        <script src="/js/jquery.fitvids.js"></script>
+        
+        
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        
+        
+        <script src="/js/scripts.js"></script>
+    </body>
+</html>
+

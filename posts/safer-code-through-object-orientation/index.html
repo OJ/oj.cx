@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns#">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Safer Code through Object-Orientation &middot; OJ Reeves</title>
+        <meta name="description" content="In my current position I spend a lot of time battling against a fairly poorly-written C&#43;&#43; code base. The code, while technically written in C&#43;&#43;, is actually more of a C-like &ldquo;splat&rdquo; with a few classes thrown in. Since I began working on this project I&rsquo;ve seen many cases where proper object-orientation would have made a drastic improvement to the quality of the code.
+
+And it&rsquo;s these cases which are the inspiration for this blog post.">
+        <meta name="HandheldFriendly" content="True">
+        <meta name="MobileOptimized" content="320">
+        <meta name="generator" content="Hugo 0.55.6" />
+        <meta name="robots" content="index,follow">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta property="og:title" content="Safer Code through Object-Orientation">
+<meta property="og:description" content="In my current position I spend a lot of time battling against a fairly poorly-written C&#43;&#43; code base. The code, while technically written in C&#43;&#43;, is actually more of a C-like &ldquo;splat&rdquo; with a few classes thrown in. Since I began working on this project I&rsquo;ve seen many cases where proper object-orientation would have made a drastic improvement to the quality of the code.
+
+And it&rsquo;s these cases which are the inspiration for this blog post.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="/posts/safer-code-through-object-orientation/">
+        <link rel="stylesheet" href="/dist/styles.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300&subset=latin,cyrillic-ext,latin-ext,cyrillic">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+        
+        
+        
+    </head>
+    <body>
+        
+
+        <div id="wrapper">
+            <header class="site-header">
+                <div class="container">
+                    <div class="site-title-wrapper">
+                        
+                            <h1 class="site-title">
+                                <a title="OJ&#39;s Perspective" href="/">OJ&#39;s Perspective</a>
+                            </h1>
+                        
+                        <a class="button-square" href="/index.xml"><i class="fa fa-rss"></i></a>
+                        
+                            <a class="button-square button-social hint--top" data-hint="Twitter" title="Twitter" href="https://twitter.com/TheColonial" rel="me">
+                                <i class="fa fa-twitter"></i>
+                            </a>
+                        
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Github" title="Github" href="https://github.com/OJ" rel="me">
+                                <i class="fa fa-github-alt"></i>
+                            </a>
+                        
+                        
+                        
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Email" title="Email" href="mailto:oj@buffered.io">
+                                <i class="fa fa-envelope"></i>
+                            </a>
+                        
+                    </div>
+
+                    <ul class="site-nav">
+                        
+    <li class="site-nav-item">
+        <a title="Home" href="/">Home</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Live Streaming" href="/streaming/">Live Streaming</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="About" href="/about/">About</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Contact" href="/contact/">Contact</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Tags" href="/tags/">Tags</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Categories" href="/categories/">Categories</a>
+    </li>
+
+                    </ul>
+                </div>
+            </header>
+
+            <div id="container">
+
+
+<div class="container">
+    <article class="post-container" itemscope="" itemtype="http://schema.org/BlogPosting">
+        <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Safer Code through Object-Orientation</h1>
+    
+    <p class="post-date">
+        <span>Published <time datetime="2007-08-09" itemprop="datePublished">2007-08-09</time></span>
+        <span>by</span>
+        <span itemscope="" itemprop="author" itemtype="https://schema.org/Person">
+            <span itemprop="name">
+                <a href="#" itemprop="url" rel="author">OJ Reeves</a>
+            </span>
+        </span>
+    </p>
+    
+        <p class="post-reading post-line">
+            <span>Read time: 7 min</span>
+        </p>
+    
+</header>
+
+        <div class="post-content clearfix" itemprop="articleBody">
+    
+
+    <p>In my current position I spend a lot of time battling against a fairly poorly-written C++ code base. The code, while <em>technically</em> written in C++, is actually more of a C-like &ldquo;splat&rdquo; with a few classes thrown in. Since I began working on this project I&rsquo;ve seen many cases where proper <a href="http://en.wikipedia.org/wiki/Object-oriented_programming" title="Object-oriented programming">object-orientation</a> would have made a drastic improvement to the quality of the code.</p>
+
+<p>And it&rsquo;s these cases which are the inspiration for this blog post.</p>
+
+<p>Objects are not only good for encapsulation and making more readable/maintainable code. They can also be used to improve <em>code safety</em>. Rather than try and explain through words what I mean by &lsquo;code safety&rsquo;, let&rsquo;s work through a couple of examples.</p>
+
+<p><h3>Example 1: Data Integrity in a Multithreaded Application</h3>
+Let&rsquo;s say that we&rsquo;re working on a <a href="http://en.wikipedia.org/wiki/Thread_(computer_science)" title="Threading">multithreaded</a> application. We have a set of data that is constantly read and written across the different threads. We obviously don&rsquo;t want to have different threads writing to the dataset at the same time, as this may cause all kinds of issues with the data&rsquo;s integrity. We want to put a mechanism in place to ensure that the data&rsquo;s integrity is never put at risk. We can do this simply by &lsquo;locking&rsquo; the sections of code that perform the data writes via a synchronisation technique such as a <a href="http://en.wikipedia.org/wiki/Critical_section" title="Critical section">critical section</a>, a <a href="http://en.wikipedia.org/wiki/Semaphore_(programming)" title="Semaphore">semaphore</a> or a <a href="http://en.wikipedia.org/wiki/Mutex" title="Mutex">mutex</a>. For the sake of this example, we&rsquo;ll use a critical section. We&rsquo;ll wrap it up in an object for easy use. Let&rsquo;s pretend that we have a C++ critical section class that looks like this:</p>
+
+<pre><code>class CriticalSection
+{
+public:
+  CriticalSection();
+  ~CriticalSection();
+
+  bool Lock();
+  bool Unlock();
+
+  // ...
+};
+</code></pre>
+
+<p>To use the critical section object, all we need to do is this:</p>
+
+<pre><code>CriticalSection importantDataLocker;
+// ...
+if( importantDataLocker.Lock() )
+{
+  // do stuff to important data
+  // ...
+
+  importantDataLocker.Unlock();
+}
+</code></pre>
+
+<p>Easy enough isn&rsquo;t it! We&rsquo;ll use this code in our data writer object, so that we can make sure that all of our threads are playing nicely while writing the data. During the course of our data writing, we might want to do some other processing that is not related to writing data. Even though this task isn&rsquo;t related to writing the data out, we still retain the lock so that we can finish off the job after without having to unlock and relock. So we may have some code that looks like this:</p>
+
+<pre><code>bool DataWriter::WriteFunkyData( FunkyData* data )
+{
+  if( m_dataLocker.Lock() )
+  {
+    WriteABitOfData( data );
+    DoSomeProcessing( data );
+    WriteSomeMoreData( data );
+    // ...
+    m_dataLocker.Unlock();
+    return true;
+  }
+  return false;
+}
+</code></pre>
+
+<p>Not really rocket science is it? The above code makes sure that all the code between <em>Lock()</em> and <em>Unlock()</em> is only run when no other threads are requesting a lock (or own a lock) on the critical section.</p>
+
+<p>Unfortunately we have a problem. In a non-perfect world (like the one we live in) there&rsquo;s always a chance that somewhere between the call to <em>Lock()</em> and the call to <em>Unlock()</em> an error might occur. An exception may be thrown. The code might just <em>return;</em>. If that&rsquo;s the case, the critical section will <strong>not be unlocked</strong> because the <em>Unlock()</em> function won&rsquo;t be called before the function finishes.</p>
+
+<p>The result? A critical section that&rsquo;s permanently locked, and all future <em>Lock()</em> requests will either hang or fail. This is not ideal. If we were using system-wide mutexes we&rsquo;d do some serious damage! Cleary this isn&rsquo;t acceptable.</p>
+
+<p>Most <a href="http://en.wikipedia.org/wiki/Procedural_programming" title="Procedural programming">procedural</a> programmers will adjust the code in the following manner:</p>
+
+<pre><code>bool DataWriter::WriteFunkyData( FunkyData* data )
+{
+  if( m_dataLocker.Lock() )
+  {
+    if( !WriteABitOfData( data ) )
+    {
+      m_dataLocker.Unlock();
+      return false;
+    }
+
+    try
+    {
+      DoSomeProcessing( data );
+    }
+    catch(...)
+    {
+      m_dataLocker.Unlock();
+      return false;
+    }
+
+    if( !WriteSomeMoreData( data ) )
+    {
+      m_dataLocker.Unlock();
+      return false;
+    }
+    // ...
+    m_dataLocker.Unlock();
+    return true;
+  }
+  return false;
+}
+</code></pre>
+
+<p>Some of you might be laughing at the above code. And rightly so! But don&rsquo;t think that it&rsquo;s uncommon because it&rsquo;s <strong>not</strong>. As you can imagine, the code gets bigger, nastier and tougher to maintain. As the function increases in size, code duplication increases and the chance of making mistakes increases. What if a new maintenance coder decides to early-out without unlocking? You&rsquo;re still stuck with the same problem.</p>
+
+<p>Further use of object-orientation is what&rsquo;s required to solve this problem. Let&rsquo;s use and abuse a couple of the core features of objects: <a href="http://en.wikipedia.org/wiki/Constructor_%28computer_science%29" title="Constructor">construction</a> and <a href="http://en.wikipedia.org/wiki/Destructor_%28computer_science%29" title="Destructor">destruction</a>:<ul><li>When an object is instantiated, it&rsquo;s <em>constructor</em> is called.</li><li>When an object is destroyed, it&rsquo;s <em>destructor</em> is called</li></ul>For those of you who don&rsquo;t know, objects are destroyed in two ways:<ol><li>When they go out of scope.</li><li>When they are <a href="http://en.wikipedia.org/wiki/Operator_delete" title="Operator delete">deleted</a>.</li></ol>
+Each function in C++ has it&rsquo;s own scope. As soon as the function is finished, the scope is no longer valid and any local variables are cleaned up. This happens when &hellip;<ul><li>&hellip; program execution reaches the end of the function.</li><li>&hellip; a <em>return</em> statement is reached.</li><li>&hellip; a exception is thrown that is not caught.</li></ul>
+If there was an object that was able to lock the critical section when it&rsquo;s constructed and unlock the same critical section when it&rsquo;s destroyed, we could use it to make sure that the critical section is unlocked <strong>regardless</strong> of the way in which the function is exited. That was a bit of a mouthful, so to demonstrate the point have a look at the following code:</p>
+
+<pre><code>class CriticalSectionLocker
+{
+public:
+  CriticalSectionLocker( CriticalSection&amp; cs )
+  : m_criticalSection( cs )
+  {
+    m_isLocked = m_criticalSection.Lock();
+  }
+  ~CriticalSectionLocker()
+  {
+    if( m_isLocked )
+    {
+      m_criticalSection.Unlock();
+    }
+  }
+  bool IsLocked()
+  {
+    return m_isLocked;
+  }
+private:
+  bool m_isLocked;
+  CriticalSection&amp; m_criticalSection;
+};
+</code></pre>
+
+<p>If we use this object instead of the verbose and repetitive method shown above, our code would look like this:</p>
+
+<pre><code>bool DataWriter::WriteFunkyData( FunkyData* data )
+{
+  CriticalSectionLocker csl( m_dataLocker );
+  if( csl.IsLocked() )
+  {
+    if( !WriteABitOfData( data ) )
+    {
+      return false;
+    }
+
+    DoSomeProcessing( data );
+
+    if( !WriteSomeMoreData( data ) )
+    {
+      return false;
+    }
+    // ...
+    return true;
+  }
+
+  return false;
+}
+</code></pre>
+
+<p>This code is substantially easier to maintain. As soon as <em>csl</em> goes out of scope, the critical section will be unlocked automatically via the destructor. This will happen on early-outs <em>and</em> when exceptions are thrown. Job done!</p>
+
+<p><h3>Example 2: Flag/Value Toggling</h3>
+Developers have been known to write code which relies on object state to function differently. While this might not be considered &lsquo;best practice&rsquo;, it&rsquo;s fairly common out in the wild. There are times where a developer may want to temporarily toggle a flag, or change the value of a variable, and change it back before the rest of the code is run. Here&rsquo;s an example (it&rsquo;s not real-life, but it should give you the idea):</p>
+
+<pre><code>void Person::GotToParty( NightClub* nc )
+{
+  if( !nc-&gt;AllowsEntry( this ) )
+  {
+    // temporarily pretend we're older
+    // so we can go clubbing!
+    int backupAge = m_Age;
+    m_Age = 25;
+
+    if( nc-&gt;AllowsEntry( this ) )
+    {
+      this-&gt;Party( nc, HARD_BUT_SUBTLE );
+    }
+
+    // best restore our age now
+    m_Age = backupAge;
+  }
+  else
+  {
+    this-&gt;Party( nc, HARD );
+  }
+}
+</code></pre>
+
+<p>Don&rsquo;t laugh, we&rsquo;ve all been there! :)</p>
+
+<p>It should be obvious that the code above suffers from the same shortcomings as the previous example. It&rsquo;s not resiliant against early-outs or exceptions. A similar type of construct/destruct mechanism can be used to reset the original value of a variable in a much safer way. An example class might look like this:</p>
+
+<pre><code>template&lt; typename T &gt;
+class ValueToggler
+{
+public:
+  ValueToggler( T&amp; variableToToggle, T tempValue )
+  : m_toggleVar( variableToToggle ),
+    m_originalValue( variableToToggle )
+  {
+    m_toggleVar = tempValue;
+  }
+
+  ~ValueToggler()
+  {
+    m_togglerVar = m_originalValue;
+  }
+private:
+  T&amp; m_toggleVar;
+  T m_originalValue;
+};
+</code></pre>
+
+<p>The object above is templated so that it can be used with a variety of types (eg. int, double, float). Using an object such as this, the example program code would change to the following:</p>
+
+<pre><code>void Person::GotToParty( NightClub* nc )
+{
+  if( !nc-&gt;AllowsEntry( this ) )
+  {
+    ValueToggler&lt;int&gt; vt( m_Age, 25 );
+
+    if( nc-&gt;AllowsEntry( this ) )
+    {
+      this-&gt;Party( nc, HARD_BUT_SUBTLE );
+    }
+  }
+  else
+  {
+    this-&gt;Party( nc, HARD );
+  }
+}
+</code></pre>
+
+<p>Again, the code is smaller and a lot more bulletproof. The value of <em>m_Age</em> will be restored no matter what happens inside the function.</p>
+
+<p><h3>Conclusion and Final Thoughts</h3>
+The above samples should show you how easy it is to use objects to help you write more defensive code. Though some people (usually the procedural programmers ;) ) would say that this kind of code is a hack, it&rsquo;s my view that they&rsquo;re wrong. The code is clear, easy to maintain, and very safe.</p>
+
+<p><em>Disclaimer:</em> The code above hasn&rsquo;t been compiled, so it may contain errors. The point of the post is to show you the idea behind using objects for safety. Ideal implementations are beyond the scope of the article.</p>
+
+<p>Thoughts and feedback are always welcome.</p>
+</div>
+
+        <footer class="post-footer clearfix">
+    
+
+    <div class="share">
+        
+            <a class="icon-twitter" href="https://twitter.com/share?text=Safer%20Code%20through%20Object-Orientation&url=%2fposts%2fsafer-code-through-object-orientation%2f"
+                onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                <i class="fa fa-twitter"></i>
+                <span class="hidden">Twitter</span>
+            </a>
+        
+
+        
+            <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=%2fposts%2fsafer-code-through-object-orientation%2f"
+                onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                <i class="fa fa-facebook"></i>
+                <span class="hidden">Facebook</span>
+            </a>
+        
+
+        
+            <a class="icon-google-plus" href="https://plus.google.com/share?url=%2fposts%2fsafer-code-through-object-orientation%2f"
+              onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+              <i class="fa fa-google-plus"></i>
+                <span class="hidden">Google+</span>
+            </a>
+        
+        
+    </div>
+</footer>
+
+        
+    <div class="comments">
+        
+    </div>
+
+    </article>
+</div>
+
+            </div>
+        </div>
+
+        <footer class="footer">
+            <div class="container">
+                <div class="site-title-wrapper">
+                    <h1 class="site-title">
+                        <a title="OJ&#39;s Perspective" href="/">OJ&#39;s Perspective</a>
+                    </h1>
+                    <a class="button-square button-jump-top js-jump-top" href="#">
+                        <i class="fa fa-angle-up"></i>
+                    </a>
+                </div>
+
+                <p class="footer-copyright">
+                    <span>&copy; 2019 / Powered by <a href="https://gohugo.io/">Hugo</a></span>
+                </p>
+                <p class="footer-copyright">
+                    <span><a href="https://github.com/roryg/ghostwriter">Ghostwriter theme</a> By <a href="http://jollygoodthemes.com">JollyGoodThemes</a></span>
+                    <span>/ <a href="https://github.com/jbub/ghostwriter">Ported</a> to Hugo By <a href="https://github.com/jbub">jbub</a></span>
+                </p>
+            </div>
+        </footer>
+
+        <script src="/js/jquery-1.11.3.min.js"></script>
+        <script src="/js/jquery.fitvids.js"></script>
+        
+        
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        
+        
+        <script src="/js/scripts.js"></script>
+    </body>
+</html>
+

@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns#">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Resolving Side-by-Side Configuration Issues &middot; OJ Reeves</title>
+        <meta name="description" content="I&rsquo;ve been meaning to blog about this for well over a year now, but for some reason I never got round to it. This came up in conversation the other day with a couple of workmates and it prompted me to revisit the issue.
+
+Have you ever fired up an application on Windows XP and got the following error?
+The application has failed to start because the application configuration is incorrect. Reinstalling the application may fix this problem.
+Informative isn&rsquo;t it! What about if you fire up the same application on Windows Vista?
+The application has failed to start because its side-by-side configuration is incorrect. Please see the application event log for more detail.
+This does tell us a little bit more about the problem, but not a lot more.">
+        <meta name="HandheldFriendly" content="True">
+        <meta name="MobileOptimized" content="320">
+        <meta name="generator" content="Hugo 0.55.6" />
+        <meta name="robots" content="index,follow">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta property="og:title" content="Resolving Side-by-Side Configuration Issues">
+<meta property="og:description" content="I&rsquo;ve been meaning to blog about this for well over a year now, but for some reason I never got round to it. This came up in conversation the other day with a couple of workmates and it prompted me to revisit the issue.
+
+Have you ever fired up an application on Windows XP and got the following error?
+The application has failed to start because the application configuration is incorrect. Reinstalling the application may fix this problem.
+Informative isn&rsquo;t it! What about if you fire up the same application on Windows Vista?
+The application has failed to start because its side-by-side configuration is incorrect. Please see the application event log for more detail.
+This does tell us a little bit more about the problem, but not a lot more.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="/posts/resolving-side-by-side-configuration-issues/">
+        <link rel="stylesheet" href="/dist/styles.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300&subset=latin,cyrillic-ext,latin-ext,cyrillic">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+        
+        
+        
+    </head>
+    <body>
+        
+
+        <div id="wrapper">
+            <header class="site-header">
+                <div class="container">
+                    <div class="site-title-wrapper">
+                        
+                            <h1 class="site-title">
+                                <a title="OJ&#39;s Perspective" href="/">OJ&#39;s Perspective</a>
+                            </h1>
+                        
+                        <a class="button-square" href="/index.xml"><i class="fa fa-rss"></i></a>
+                        
+                            <a class="button-square button-social hint--top" data-hint="Twitter" title="Twitter" href="https://twitter.com/TheColonial" rel="me">
+                                <i class="fa fa-twitter"></i>
+                            </a>
+                        
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Github" title="Github" href="https://github.com/OJ" rel="me">
+                                <i class="fa fa-github-alt"></i>
+                            </a>
+                        
+                        
+                        
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Email" title="Email" href="mailto:oj@buffered.io">
+                                <i class="fa fa-envelope"></i>
+                            </a>
+                        
+                    </div>
+
+                    <ul class="site-nav">
+                        
+    <li class="site-nav-item">
+        <a title="Home" href="/">Home</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Live Streaming" href="/streaming/">Live Streaming</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="About" href="/about/">About</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Contact" href="/contact/">Contact</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Tags" href="/tags/">Tags</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Categories" href="/categories/">Categories</a>
+    </li>
+
+                    </ul>
+                </div>
+            </header>
+
+            <div id="container">
+
+
+<div class="container">
+    <article class="post-container" itemscope="" itemtype="http://schema.org/BlogPosting">
+        <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Resolving Side-by-Side Configuration Issues</h1>
+    
+    <p class="post-date">
+        <span>Published <time datetime="2008-05-17" itemprop="datePublished">2008-05-17</time></span>
+        <span>by</span>
+        <span itemscope="" itemprop="author" itemtype="https://schema.org/Person">
+            <span itemprop="name">
+                <a href="#" itemprop="url" rel="author">OJ Reeves</a>
+            </span>
+        </span>
+    </p>
+    
+        <p class="post-reading post-line">
+            <span>Read time: 6 min</span>
+        </p>
+    
+</header>
+
+        <div class="post-content clearfix" itemprop="articleBody">
+    
+
+    <p>I&rsquo;ve been meaning to blog about this for well over a year now, but for some reason I never got round to it. This came up in conversation the other day with a couple of workmates and it prompted me to revisit the issue.</p>
+
+<p>Have you ever fired up an application on Windows XP and got the following error?
+<blockquote><p>The application has failed to start because the application configuration is incorrect. Reinstalling the application may fix this problem.</p></blockquote>
+Informative isn&rsquo;t it! What about if you fire up the same application on Windows Vista?
+<blockquote><p>The application has failed to start because its side-by-side configuration is incorrect. Please see the application event log for more detail.</p></blockquote>
+This does tell us a little bit more about the problem, but not a <em>lot</em> more.</p>
+
+<p>The fact is that the first error message above is useless, and the second is useless to everyone except those who know all about <a href="http://blog.tiensivu.com/aaron/archives/1306-Demystifying-the-WinSxS-directory-in-Windows-XP,-Vista-and-Server-20032008.html" title="WinSxS">WinSxS</a> (<em>side-by-side</em>). I&rsquo;m not going to go into detail about WinSxS in this article, but the short description is: <em>it&rsquo;s an attempt at alleviating <a href="http://en.wikipedia.org/wiki/DLL_hell" title="DLL Hell">DLL hell</a></em>.</p>
+
+<p>When a binary component links against a DLL, such as <a href="http://www.microsoft.com/" title="Microsoft">MS</a>&rsquo;s <a href="http://msdn.microsoft.com/en-us/library/abx4dbyh(VS.80).aspx" title="C Run-Time Libraries">CRT</a>, an entry for that dependant DLL is specified in the component&rsquo;s <a href="http://msdn.microsoft.com/en-us/library/aa375365.aspx" title="Manifests">manifest</a>. This tells Windows that the application can&rsquo;t run without those DLLs being present. If they&rsquo;re not present in WinSxS then the errors above are thrown in the user&rsquo;s face.</p>
+
+<p>To demonstrate the problem, consider the C++ program below.</p>
+
+<pre><code>#include &lt;windows.h&gt;
+#include &lt;tchar.h&gt;
+
+int WINAPI _tWinMain(HINSTANCE instance, HINSTANCE prevInstance, LPTSTR cmdLine, int cmdShow)
+{
+  ::MessageBox(NULL,
+      _T(&quot;This is a text executable that links against a later version of the runtimes.&quot;),
+      _T(&quot;Test EXE&quot;),
+      MB_OK);
+
+  return 0;
+}
+</code></pre>
+
+<p>Compile this on a machine with <a href="http://msdn.microsoft.com/en-us/vstudio/default.aspx" title="Visual Studio Developer Center">Vis Studio 2008</a> installed and the resulting EXE will be linked against version 9.0 of the CRT.</p>
+
+<p>Here is the result of running this on an XP machine without that runtime installed:</p>
+
+<p><a href="/uploads/2008/05/xp_fail.png" rel="lightbox[winsxs]"><img src="/uploads/2008/05/xp_fail.png" alt="Windows XP Error" title="XP Error" width="300" height="56" class="aligncenter size-medium wp-image-350" /></a></p>
+
+<p>Here&rsquo;s the same application running on Vista, again without the runtime installed:
+<a href="/uploads/2008/05/vista_fail.png" rel="lightbox[winsxs]"><img src="/uploads/2008/05/vista_fail.png" alt="WinSxS error on Vista" title="Vista Error Message" width="300" height="95" class="aligncenter size-medium wp-image-349" /></a></p>
+
+<p>Let&rsquo;s now pretend that we don&rsquo;t know why this problem is occuring and attempt to ascertain the reason for the error.</p>
+
+<p>First off, we need to locate the application&rsquo;s manifest. This can be found either in a appname.exe.manifest file, or <em>inside</em> the binary itself. In our case, the manifest is embedded so we need to open up the file in a binary/hex editor (or at least an editor that allows you to view the content of binary files). I used <a href="http://www.vim.org/" title="VIM">VIM</a>, but there are other options such as <a href="http://www.ultraedit.com/" title="UltraEdit">UltraEdit</a> and the free <a href="http://www.softcircuits.com/cygnus/fe/" title="Cygnus Hex Editor">Cynus</a> editor.</p>
+
+<p>Manifest information is usually stored towards the end of the file, so after opening it in your editor of choice, scroll to the end of the file and slowly scroll up. When you reach a section that contains what looks to be <a href="http://www.w3.org/XML/" title="XML">XML</a> then you&rsquo;ve probably found it. It usually lies just above a section of padding that looks like this:</p>
+
+<pre><code>0001ab0: 5041 4444 494e 4758 5850 4144 4449 4e47  PADDINGXXPADDING
+0001ac0: 5041 4444 494e 4758 5850 4144 4449 4e47  PADDINGXXPADDING
+0001ad0: 5041 4444 494e 4758 5850 4144 4449 4e47  PADDINGXXPADDING
+0001ae0: 5041 4444 494e 4758 5850 4144 4449 4e47  PADDINGXXPADDING
+0001af0: 5041 4444 494e 4758 5850 4144 4449 4e47  PADDINGXXPADDING
+0001b00: 5041 4444 494e 4758 5850 4144 4449 4e47  PADDINGXXPADDING
+0001b10: 5041 4444 494e 4758 5850 4144 4449 4e47  PADDINGXXPADDING
+0001b20: 5041 4444 494e 4758 5850 4144 4449 4e47  PADDINGXXPADDING
+0001b30: 5041 4444 494e 4758 5850 4144 4449 4e47  PADDINGXXPADDING
+0001b40: 5041 4444 494e 4758 5850 4144 4449 4e47  PADDINGXXPADDING
+0001b50: 5041 4444 494e 4758 5850 4144 4449 4e47  PADDINGXXPADDING
+0001b60: 5041 4444 494e 4758 5850 4144 4449 4e47  PADDINGXXPADDING
+0001b70: 5041 4444 494e 4758 5850 4144 4449 4e47  PADDINGXXPADDING
+</code></pre>
+
+<p>The manifest XML usually begins with an <em>assembly</em> tag. In the case of this example, it looks like this:</p>
+
+<pre><code>0001850: e404 0000 0000 0000 3c61 7373 656d 626c  ........&lt;assembl
+0001860: 7920 786d 6c6e 733d 2275 726e 3a73 6368  y xmlns=&quot;urn:sch
+0001870: 656d 6173 2d6d 6963 726f 736f 6674 2d63  emas-microsoft-c
+0001880: 6f6d 3a61 736d 2e76 3122 206d 616e 6966  om:asm.v1&quot; manif
+0001890: 6573 7456 6572 7369 6f6e 3d22 312e 3022  estVersion=&quot;1.0&quot;
+00018a0: 3e0d 0a20 203c 7472 7573 7449 6e66 6f20  &gt;..  &lt;trustInfo
+00018b0: 786d 6c6e 733d 2275 726e 3a73 6368 656d  xmlns=&quot;urn:schem
+00018c0: 6173 2d6d 6963 726f 736f 6674 2d63 6f6d  as-microsoft-com
+00018d0: 3a61 736d 2e76 3322 3e0d 0a20 2020 203c  :asm.v3&quot;&gt;..    &lt;
+00018e0: 7365 6375 7269 7479 3e0d 0a20 2020 2020  security&gt;..
+00018f0: 203c 7265 7175 6573 7465 6450 7269 7669   &lt;requestedPrivi
+0001900: 6c65 6765 733e 0d0a 2020 2020 2020 2020  leges&gt;..
+0001910: 3c72 6571 7565 7374 6564 4578 6563 7574  &lt;requestedExecut
+0001920: 696f 6e4c 6576 656c 206c 6576 656c 3d22  ionLevel level=&quot;
+0001930: 6173 496e 766f 6b65 7222 2075 6941 6363  asInvoker&quot; uiAcc
+0001940: 6573 733d 2266 616c 7365 223e 3c2f 7265  ess=&quot;false&quot;&gt;&lt;/re
+0001950: 7175 6573 7465 6445 7865 6375 7469 6f6e  questedExecution
+0001960: 4c65 7665 6c3e 0d0a 2020 2020 2020 3c2f  Level&gt;..      &lt;/
+0001970: 7265 7175 6573 7465 6450 7269 7669 6c65  requestedPrivile
+0001980: 6765 733e 0d0a 2020 2020 3c2f 7365 6375  ges&gt;..    &lt;/secu
+0001990: 7269 7479 3e0d 0a20 203c 2f74 7275 7374  rity&gt;..  &lt;/trust
+00019a0: 496e 666f 3e0d 0a20 203c 6465 7065 6e64  Info&gt;..  &lt;depend
+00019b0: 656e 6379 3e0d 0a20 2020 203c 6465 7065  ency&gt;..    &lt;depe
+00019c0: 6e64 656e 7441 7373 656d 626c 793e 0d0a  ndentAssembly&gt;..
+00019d0: 2020 2020 2020 3c61 7373 656d 626c 7949        &lt;assemblyI
+00019e0: 6465 6e74 6974 7920 7479 7065 3d22 7769  dentity type=&quot;wi
+00019f0: 6e33 3222 206e 616d 653d 224d 6963 726f  n32&quot; name=&quot;Micro
+0001a00: 736f 6674 2e56 4339 302e 4352 5422 2076  soft.VC90.CRT&quot; v
+0001a10: 6572 7369 6f6e 3d22 392e 302e 3231 3032  ersion=&quot;9.0.2102
+0001a20: 322e 3822 2070 726f 6365 7373 6f72 4172  2.8&quot; processorAr
+0001a30: 6368 6974 6563 7475 7265 3d22 7838 3622  chitecture=&quot;x86&quot;
+0001a40: 2070 7562 6c69 634b 6579 546f 6b65 6e3d   publicKeyToken=
+0001a50: 2231 6663 3862 3362 3961 3165 3138 6533  &quot;1fc8b3b9a1e18e3
+0001a60: 6222 3e3c 2f61 7373 656d 626c 7949 6465  b&quot;&gt;&lt;/assemblyIde
+0001a70: 6e74 6974 793e 0d0a 2020 2020 3c2f 6465  ntity&gt;..    &lt;/de
+0001a80: 7065 6e64 656e 7441 7373 656d 626c 793e  pendentAssembly&gt;
+0001a90: 0d0a 2020 3c2f 6465 7065 6e64 656e 6379  ..  &lt;/dependency
+0001aa0: 3e0d 0a3c 2f61 7373 656d 626c 793e 5041  &gt;..&lt;/assembly&gt;PA
+</code></pre>
+
+<p>In case you don&rsquo;t find this very readable, here it is after extraction/formatting:</p>
+
+<pre><code>&lt;assembly xmlns=&quot;urn:schemas-microsoft-com:asm.v1&quot; manifestVersion=&quot;1.0&quot;&gt;
+  &lt;trustInfo xmlns=&quot;urn:schemas-microsoft-com:asm.v3&quot;&gt;
+    &lt;security&gt;
+      &lt;requestedPrivileges&gt;
+      &lt;requestedExecutionLevel
+        level=&quot;asInvoker&quot;
+        uiAccess=&quot;false&quot;&gt;&lt;/requestedExecutionLevel&gt;
+      &lt;/requestedPrivileges&gt;
+    &lt;/security&gt;
+  &lt;/trustInfo&gt;
+  &lt;dependency&gt;
+    &lt;dependentAssembly&gt;
+      &lt;assemblyIdentity
+        type=&quot;win32&quot;
+        name=&quot;Microsoft.VC90.CRT&quot;
+        version=&quot;9.0.21022.8&quot;
+        processorArchitecture=&quot;x86&quot;
+        publicKeyToken=&quot;1fc8b3b9a1e18e3b&quot;&gt;
+      &lt;/assemblyIdentity&gt;
+    &lt;/dependentAssembly&gt;
+  &lt;/dependency&gt;
+&lt;/assembly&gt;
+</code></pre>
+
+<p>The bit we&rsquo;re really interested in is:</p>
+
+<pre><code>&lt;dependentAssembly&gt;
+  &lt;assemblyIdentity
+    type=&quot;win32&quot;
+    name=&quot;Microsoft.VC90.CRT&quot;
+    version=&quot;9.0.21022.8&quot;
+    processorArchitecture=&quot;x86&quot;
+    publicKeyToken=&quot;1fc8b3b9a1e18e3b&quot;&gt;
+  &lt;/assemblyIdentity&gt;
+&lt;/dependentAssembly&gt;
+</code></pre>
+
+<p>This tells us the exact component and version required for this application to run. You&rsquo;ll notice that it also mentions the processor architecture. In this case, we need to make sure that we have version 9.0.21022.8 of the Visual C Runtimes for x86 installed in the side-by-side folder. The WinSxS folder can be found at <em>%WINDIR%\WinSxS</em></p>
+
+<p>Inside that folder you&rsquo;ll probably see a stack of subfolders with crazy looking names. The one you would need to have to solve the problem above is called <em>x86_microsoft.vc90.crt_1fc8b3b9a1e18e3b_9.0.21022.8_none_bcb86ed6ac711f91</em>, which as you can see has a name that closely resembles the properties of the <em>assemblyIdentity</em> tag in the XML listed above.</p>
+
+<p>If you can&rsquo;t find the appropriate folder in your WinSxS then you need to download an installer that contains the appropriate components and install it.When installed, the application should run without a problem, and you should get a message like this:
+<a href="/uploads/2008/05/vista_success.png" rel="lightbox[winsxs]"><img src="/uploads/2008/05/vista_success.png" alt="The resulting message box shown when the test application\&#039;s side-by-side configuration is correct" title="Successful run of application" width="300" height="102" class="aligncenter size-medium wp-image-351" /></a></p>
+
+<p>Hope that helps!</p>
+
+<hr/>
+
+<p><strong>Edit (3rd Jan &lsquo;09)</strong>: A nifty tool has been built by Kenny Kerr which makes viewing manifest information <em>much</em> easier. Pointer your browser <a href="http://weblogs.asp.net/kennykerr/archive/posts/manifest-view-support-for-dlls.aspx">this way and check it out</a>. It should help when tryinig to resolve this problem.</p>
+
+<!--adsense-->
+</div>
+
+        <footer class="post-footer clearfix">
+    
+        <p class="post-tags">
+            <span>Tagged:</span>
+            
+            
+                <a href="/tags/configuration/">configuration</a>, 
+            
+                <a href="/tags/dll/">dll</a>, 
+            
+                <a href="/tags/error/">error</a>, 
+            
+                <a href="/tags/investigation/">investigation</a>, 
+            
+                <a href="/tags/windows/">Windows</a>, 
+            
+                <a href="/tags/winsxs/">winsxs</a>
+            
+        </p>
+    
+
+    <div class="share">
+        
+            <a class="icon-twitter" href="https://twitter.com/share?text=Resolving%20Side-by-Side%20Configuration%20Issues&url=%2fposts%2fresolving-side-by-side-configuration-issues%2f"
+                onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                <i class="fa fa-twitter"></i>
+                <span class="hidden">Twitter</span>
+            </a>
+        
+
+        
+            <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=%2fposts%2fresolving-side-by-side-configuration-issues%2f"
+                onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                <i class="fa fa-facebook"></i>
+                <span class="hidden">Facebook</span>
+            </a>
+        
+
+        
+            <a class="icon-google-plus" href="https://plus.google.com/share?url=%2fposts%2fresolving-side-by-side-configuration-issues%2f"
+              onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+              <i class="fa fa-google-plus"></i>
+                <span class="hidden">Google+</span>
+            </a>
+        
+        
+    </div>
+</footer>
+
+        
+    <div class="comments">
+        
+    </div>
+
+    </article>
+</div>
+
+            </div>
+        </div>
+
+        <footer class="footer">
+            <div class="container">
+                <div class="site-title-wrapper">
+                    <h1 class="site-title">
+                        <a title="OJ&#39;s Perspective" href="/">OJ&#39;s Perspective</a>
+                    </h1>
+                    <a class="button-square button-jump-top js-jump-top" href="#">
+                        <i class="fa fa-angle-up"></i>
+                    </a>
+                </div>
+
+                <p class="footer-copyright">
+                    <span>&copy; 2019 / Powered by <a href="https://gohugo.io/">Hugo</a></span>
+                </p>
+                <p class="footer-copyright">
+                    <span><a href="https://github.com/roryg/ghostwriter">Ghostwriter theme</a> By <a href="http://jollygoodthemes.com">JollyGoodThemes</a></span>
+                    <span>/ <a href="https://github.com/jbub/ghostwriter">Ported</a> to Hugo By <a href="https://github.com/jbub">jbub</a></span>
+                </p>
+            </div>
+        </footer>
+
+        <script src="/js/jquery-1.11.3.min.js"></script>
+        <script src="/js/jquery.fitvids.js"></script>
+        
+        
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        
+        
+        <script src="/js/scripts.js"></script>
+    </body>
+</html>
+

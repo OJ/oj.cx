@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns#">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>The Magic of Unity Builds &middot; OJ Reeves</title>
+        <meta name="description" content="I realise that as time goes by, people are using my beloved C&#43;&#43; less and less. .NET (C# and VB.NET) and Java seem to be taking over the mainstream coding world. Languages such as Ruby and Python seem to be taking over the scripting world. For the most part, C and C&#43;&#43; seem to exist only in the gaming/entertainment, real-time and driver worlds.
+
+In many colleges and univerties C&#43;&#43; is no longer taught as a core subject (along with Assembly language) which I find quite galling. It&rsquo;s a great language to learn, even if you never use it again. But the purpose of this post is not to preach the virtues and failures of the C&#43;&#43; language, but instead to talk about something that might aid those people who are using C&#43;&#43;.">
+        <meta name="HandheldFriendly" content="True">
+        <meta name="MobileOptimized" content="320">
+        <meta name="generator" content="Hugo 0.55.6" />
+        <meta name="robots" content="index,follow">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta property="og:title" content="The Magic of Unity Builds">
+<meta property="og:description" content="I realise that as time goes by, people are using my beloved C&#43;&#43; less and less. .NET (C# and VB.NET) and Java seem to be taking over the mainstream coding world. Languages such as Ruby and Python seem to be taking over the scripting world. For the most part, C and C&#43;&#43; seem to exist only in the gaming/entertainment, real-time and driver worlds.
+
+In many colleges and univerties C&#43;&#43; is no longer taught as a core subject (along with Assembly language) which I find quite galling. It&rsquo;s a great language to learn, even if you never use it again. But the purpose of this post is not to preach the virtues and failures of the C&#43;&#43; language, but instead to talk about something that might aid those people who are using C&#43;&#43;.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="/posts/the-magic-of-unity-builds/">
+        <link rel="stylesheet" href="/dist/styles.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300&subset=latin,cyrillic-ext,latin-ext,cyrillic">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+        
+        
+        
+    </head>
+    <body>
+        
+
+        <div id="wrapper">
+            <header class="site-header">
+                <div class="container">
+                    <div class="site-title-wrapper">
+                        
+                            <h1 class="site-title">
+                                <a title="OJ&#39;s Perspective" href="/">OJ&#39;s Perspective</a>
+                            </h1>
+                        
+                        <a class="button-square" href="/index.xml"><i class="fa fa-rss"></i></a>
+                        
+                            <a class="button-square button-social hint--top" data-hint="Twitter" title="Twitter" href="https://twitter.com/TheColonial" rel="me">
+                                <i class="fa fa-twitter"></i>
+                            </a>
+                        
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Github" title="Github" href="https://github.com/OJ" rel="me">
+                                <i class="fa fa-github-alt"></i>
+                            </a>
+                        
+                        
+                        
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Email" title="Email" href="mailto:oj@buffered.io">
+                                <i class="fa fa-envelope"></i>
+                            </a>
+                        
+                    </div>
+
+                    <ul class="site-nav">
+                        
+    <li class="site-nav-item">
+        <a title="Home" href="/">Home</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Live Streaming" href="/streaming/">Live Streaming</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="About" href="/about/">About</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Contact" href="/contact/">Contact</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Tags" href="/tags/">Tags</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Categories" href="/categories/">Categories</a>
+    </li>
+
+                    </ul>
+                </div>
+            </header>
+
+            <div id="container">
+
+
+<div class="container">
+    <article class="post-container" itemscope="" itemtype="http://schema.org/BlogPosting">
+        <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">The Magic of Unity Builds</h1>
+    
+    <p class="post-date">
+        <span>Published <time datetime="2007-12-10" itemprop="datePublished">2007-12-10</time></span>
+        <span>by</span>
+        <span itemscope="" itemprop="author" itemtype="https://schema.org/Person">
+            <span itemprop="name">
+                <a href="#" itemprop="url" rel="author">OJ Reeves</a>
+            </span>
+        </span>
+    </p>
+    
+        <p class="post-reading post-line">
+            <span>Read time: 9 min</span>
+        </p>
+    
+</header>
+
+        <div class="post-content clearfix" itemprop="articleBody">
+    
+
+    <p>I realise that as time goes by, people are using my beloved <a href="http://en.wikipedia.org/wiki/C++" title="C++">C++</a> less and less. <a href="http://en.wikipedia.org/wiki/.NET_Framework" title=".NET Framework">.NET</a> (<a href="http://en.wikipedia.org/wiki/C_Sharp" title="C#">C#</a> and <a href="http://en.wikipedia.org/wiki/Visual_Basic_.NET" title="VB.NET">VB.NET</a>) and <a href="http://en.wikipedia.org/wiki/Java_%28programming_language%29" title="Java">Java</a> seem to be taking over the mainstream coding world. Languages such as <a href="http://en.wikipedia.org/wiki/Ruby_%28programming_language%29" title="Ruby">Ruby</a> and <a href="http://en.wikipedia.org/wiki/Python_%28programming_language%29" title="Python">Python</a> seem to be taking over the scripting world. For the most part, C and C++ seem to exist only in the gaming/entertainment, real-time and driver worlds.</p>
+
+<p>In many colleges and univerties C++ is no longer taught as a core subject (along with <a href="http://en.wikipedia.org/wiki/Assembly_language" title="Assembly Language">Assembly language</a>) which I find quite galling. It&rsquo;s a great language to learn, even if you never use it again. But the purpose of this post is not to preach the virtues and failures of the C++ language, but instead to talk about something that might aid those people who <em>are</em> using C++.</p>
+
+<p>Anyone who&rsquo;s worked on a large C++ (or C) application has felt the pain of long build times. The first &ldquo;big&rdquo; C++ system that I worked on took 10 minutes to build. This was much bigger than anything I had experienced up until that point. Later in my career when I joined the games industry I really felt the pain of rebuilding a <em>massive</em> code base. The game took just under an hour to build from start to finish without any distributed compiling mechanism in place. When I finally got a copy of <a href="http://www.xoreax.com/" title="Xoreax Incredibuild">Incredibuild</a> the build time dropped noticably, but not to a point where recompilation was an option every time I wanted it.</p>
+
+<p>The solution that we implement: <strong>Unity builds</strong> (which I&rsquo;ll refer to as UB from now on because I&rsquo;m lazy).</p>
+
+<p>Now, a lot of C and C++ that have used these before might consider the idea of a UB to be a bit of a hack. I&rsquo;m not sure if I agree or disagree. There is an air of &ldquo;hackyness&rdquo; about it, but it solves the problem of huge compile times on most platforms with most compilers.</p>
+
+<p>Before I go into the definition, and give instructions on how to set up a UB, let me just state for the record that this isn&rsquo;t designed to replace normal builds for releasing code. The idea behind these is to dramatically reduce the build times for developers who are spending 8 hours a day modifying the code. Fixing bugs and adding enhancements generally means that a developer is constantly recompiling. Every time you compile, you have to wait (or perhaps <a href="http://xkcd.com/303/" title="Compiling">entertain yourself in some way</a>), and in waiting you are wasting precious time. Wasting time means a reduction in productivity. This can only be a bad thing. It&rsquo;s bad enough with short build times, but with long build times it becomes a huge problem. So please bear in mind that the normal release and product builds, builds that happen on automated build servers, etc, do <em>not</em> need to have a UB in place, they can continue to use normal builds.</p>
+
+<p>The principle behind a UB is quite simple. It&rsquo;s all about reducing&hellip;<ol><li>&hellip; the number of times a file is opened.</li><li>&hellip; the number of files that are opened.</li></ol>In esssence, we&rsquo;re going to abuse the power of the <a href="http://en.wikipedia.org/wiki/Preprocessor" title="Preprocessor">preprocessor</a> to do the above.</p>
+
+<p>Every source file (.c, .cxx, .cc, .cpp, etc) that is compiled results in the creation of an <a href="http://en.wikipedia.org/wiki/Object_files" title="Object File">object file</a>. When all of the source files are compiled into object files, the <a href="http://en.wikipedia.org/wiki/Linker" title="Linker">linker</a> then collects up all these object files and links them together into an executable application. For those of you who don&rsquo;t know: reading/writing to/from disk is the slowest thing you can do on a computer. Actually, it isn&rsquo;t so much the reading and writing, it&rsquo;s more the <a href="http://en.wikipedia.org/wiki/Seeking" title="Seeking">seeking</a>. But the point remains the same. Disks are the only core parts of your system that have moving parts, so they&rsquo;re going to be slow! So if you want to speed things up, a good place to start is reducing I/O.</p>
+
+<p>I don&rsquo;t want to turn this into a lesson on how C and C++ programs are compiled, so I&rsquo;m going to cut to the chase. We know that the preprocessor parses each file before it&rsquo;s compiled which means that each file is going to be opened. When those parsed source files are then compiled, they&rsquo;re essentially opened again. Each of those files requires another seek. When the object file is generated, that&rsquo;s another seek. When the file is linked, that&rsquo;s another seek. There&rsquo;s lots of disk activity going on here!</p>
+
+<p>If you haven&rsquo;t caught on yet, let me give you another hint. Each source file results in a couple of new files and a stack of seeks. We also have a neat preprocessor statement at our disposal (<em><em>cough</em></em> <a href="http://en.wikipedia.org/wiki/Header_file" title="Header File">include</a> <em><em>cough</em></em>).</p>
+
+<p>That&rsquo;s right guys, we don&rsquo;t actually compile every file individually. We instead create a master file (or set of master files, depending on how big your source base is), which <em>includes</em> all of the other source files. This file (or set of files) is compiled instead.</p>
+
+<p><a href="/uploads/2007/12/unitybuild-01.png" rel="lightbox[unitybuild]" title="Sample Project"><img src="/uploads/2007/12/unitybuild-01.thumbnail.png" class="InlineImageLeft" alt="Sample Project" /></a>To make it clear I&rsquo;m going to show you the principle in action on a fake project in Visual Studio 2008. However, the principle can be applied regardless of the compiler and platform. Check out the screenshot on the left. This shows a standard C++ with a few files in it. Ordinarily each of those files will be compiled individually, and hence slowly.</p>
+
+<p>The first step in creating a UB is to make a new project configuration which you can play with. Doing so will allow you to set up an area you can modify without breaking the &ldquo;normal&rdquo; project which will continue to be built as usual. So let&rsquo;s do that now. Create a new project configuration based on the debug build. See the following screenies:
+<a href="/uploads/2007/12/unitybuild-02.png" rel="lightbox[unitybuild]" title="Configuration Manager - New Config"><img src="/uploads/2007/12/unitybuild-02.thumbnail.png" class="InlineImageLeft" alt="Configuration Manager - New Config" /></a>
+<a href="/uploads/2007/12/unitybuild-03.png" rel="lightbox[unitybuild]" title="New Solution Configuration"><img src="/uploads/2007/12/unitybuild-03.thumbnail.png" class="InlineImageLeft" alt="New Solution Configuration" /></a>
+<a href="/uploads/2007/12/unitybuild-04.png" rel="lightbox[unitybuild]" title="Configuration Manager - Config Added and Selected"><img src="/uploads/2007/12/unitybuild-04.thumbnail.png" class="InlineImageLeft" alt="Configuration Manager - Config Added and Selected" /></a>
+<div style="float: none; clear: both;"></div>
+<a href="/uploads/2007/12/unitybuild-05.png" rel="lightbox[unitybuild]" title="Build Toolbar - Config Selected"><img src="/uploads/2007/12/unitybuild-05.thumbnail.png" class="InlineImageRight" alt="Build Toolbar - Config Selected" /></a>When you&rsquo;ve created the new configuration, make sure you have it set as the active configuration as shown on the right.</p>
+
+<p><a href="/uploads/2007/12/unitybuild-06.png" rel="lightbox[unitybuild]" title="Solution with Unity Build File"><img src="/uploads/2007/12/unitybuild-06.thumbnail.png" class="InlineImageLeft" alt="Solution with Unity Build File" /></a>Then, you need to add a new file which will be the master UB file. I usually create a sub-folder in the project and add the file there. Both folder and file I tend to call UnityBuild.</p>
+
+<p><a href="/uploads/2007/12/unitybuild-07.png" rel="lightbox[unitybuild]" title="Unity Build File Contents"><img src="/uploads/2007/12/unitybuild-07.thumbnail.png" class="InlineImageRight" alt="Unity Build File Contents" /></a>When the file is created, the first thing we need to do is make sure that we edit the UnityBuild.cpp so that it includes <em>all</em> of the other files in the project. Check out the image for the example.</p>
+
+<p>If we attempted to compile at this point, we have all kinds of issues. Everything right now is being included twice. So we need to fix that so that we don&rsquo;t have issues in <em>every</em> configuration. Let&rsquo;s start by fixing up the Unity build project. Select all of the source files <em>except</em> UnityBuild.cpp, and <strong>exclude them</strong> from the project (right-click on them to see the properties). Check out the pics below to see how it&rsquo;s done.
+<a href="/uploads/2007/12/unitybuild-08.png" rel="lightbox[unitybuild]" title="Files selected"><img src="/uploads/2007/12/unitybuild-08.thumbnail.png" class="InlineImageLeft" alt="Files selected" /></a>
+<a href="/uploads/2007/12/unitybuild-09.png" rel="lightbox[unitybuild]" title="Exclude from build"><img src="/uploads/2007/12/unitybuild-09.thumbnail.png" class="InlineImageLeft" alt="Exclude from build" /></a>
+<a href="/uploads/2007/12/unitybuild-10.png" rel="lightbox[unitybuild]" title="Solution with files excluded"><img src="/uploads/2007/12/unitybuild-10.thumbnail.png" class="InlineImageLeft" alt="Solution with files excluded" /></a>
+<div style="float: none; clear: both;"></div>
+So that this point you&rsquo;ve excluded the files from the UnityDebug configuration, and hence the unity configuration <em>should</em> build.</p>
+
+<p><strong>Note:</strong> if you&rsquo;re implementing this in a large existing source base you may find that the UB doesn&rsquo;t actually compile. You need to bear in mind that the preprocessor is making <strong>one large file</strong> out of all of your source files. Which means global variables, static variables, global functions, etc that appear more than once in the source code will now tread all over each other. Technically you shouldn&rsquo;t have this problem if you&rsquo;re writing &ldquo;proper&rdquo; code :) But the harsh reality is that lots of devs copy and paste code, duplicate function names, and all kinds of other horrible things. To get it working, you&rsquo;re going to have to do a bit of housekeeping! But since this is going to affect the source in a positive way, it can only be a good thing!</p>
+
+<p><a href="/uploads/2007/12/unitybuild-11.png" rel="lightbox[unitybuild]" title="Unity build file excluded"><img src="/uploads/2007/12/unitybuild-11.thumbnail.png" class="InlineImageLeft" alt="Unity build file excluded" /></a>OK, next up let&rsquo;s get the other builds working again. You need to exclude the UnityBuild.cpp file from the build in both the Debug and Release builds (not the UnityDebug configuration). I won&rsquo;t show you how to do that, as it should be obvious. When you&rsquo;re done, you should see similar to the image on the left when you use the Debug or Release configurations from this point on.</p>
+
+<p>You&rsquo;re done! The old builds should work just fine because your UB file isn&rsquo;t included in the configuration. Once you&rsquo;ve sorted out the code duplication issues with the UB configuration, you should have a perfectly working configuration.</p>
+
+<p>You may find that the whole process is much easier if you&rsquo;re building from the command line, especially using <a href="http://en.wikipedia.org/wiki/Make_%28software%29" title="make">make</a> on <a href="http://en.wikipedia.org/wiki/%2Anix" title="Unix-like">*nix</a> machines, as you don&rsquo;t have to worry about excluding things from configurations. Instead, you just simply need to pass in a single file to the compiler - the UB file!</p>
+
+<p>So after all that, what kind of improvements should expect to find? Well let me give you a few stats. When the UB was implemented at the game company I worked for, the build time dropped from 55 minutes to <strong>just over 6 minutes</strong>. When I implemented UB in a previous job the build time dropped from 10 minutes to <strong>less than 3 minutes</strong>. When I put them in place at home the build times dropped on average by <strong>60%</strong>.</p>
+
+<p>I&rsquo;d be very surprised if you didn&rsquo;t notice a huge improvement in your build times if you use this mechanism.</p>
+
+<p>Before I finish up, I need to highlight a few issues around housekeeping. As already stated, these builds are not used to replace the normal compilations. They should sit alongside to make it faster for the developer to do his or her work. This means that you need to make sure that both types of builds are <em>working all the time</em>. Keep your automatic builds using the normal build type, and you&rsquo;ll soon find out if you&rsquo;ve not been maintaining your configurations properly.</p>
+
+<p>Make sure that every time you add a new source file you <strong>exclude it from the UB configuration</strong>, and that you <strong>add it to the content of the UnityBuild.cpp file</strong> otherwise it won&rsquo;t be compiled and included in the build properly.</p>
+
+<p>On the whole, UBs have really improved the speed in which I&rsquo;ve been able to do things. My wait time for compilations is generally a third of what it was. That, in my view, is worth the &ldquo;hack&rdquo; :)</p>
+
+<p>Thanks for reading!</p>
+
+<p>PS. Please let me know of any typos, grammar errors, etc. It was a hefty post to put together and I might have missed a couple of obvious stuff-ups!</p>
+
+<p><em>EDIT: I have fixed up a few grammar and spelling errors. Thank you Yoann and Bryce :)</em>
+<hr/>
+<strong>This post is a bit old, and some of the images are missing. While it&rsquo;s still got a valid description of Unity Builds it&rsquo;s not really complete without the piccies. So I&rsquo;ve created a full screencast and posted that <a href="/posts/screencast-setting-up-unity-builds/" title="Screencast - Setting up Unity Builds">over here</a> to clear up any confusion. Cheers!</strong></p>
+</div>
+
+        <footer class="post-footer clearfix">
+    
+        <p class="post-tags">
+            <span>Tagged:</span>
+            
+            
+                <a href="/tags/unity-builds/">unity builds</a>
+            
+        </p>
+    
+
+    <div class="share">
+        
+            <a class="icon-twitter" href="https://twitter.com/share?text=The%20Magic%20of%20Unity%20Builds&url=%2fposts%2fthe-magic-of-unity-builds%2f"
+                onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                <i class="fa fa-twitter"></i>
+                <span class="hidden">Twitter</span>
+            </a>
+        
+
+        
+            <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=%2fposts%2fthe-magic-of-unity-builds%2f"
+                onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                <i class="fa fa-facebook"></i>
+                <span class="hidden">Facebook</span>
+            </a>
+        
+
+        
+            <a class="icon-google-plus" href="https://plus.google.com/share?url=%2fposts%2fthe-magic-of-unity-builds%2f"
+              onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+              <i class="fa fa-google-plus"></i>
+                <span class="hidden">Google+</span>
+            </a>
+        
+        
+    </div>
+</footer>
+
+        
+    <div class="comments">
+        
+    </div>
+
+    </article>
+</div>
+
+            </div>
+        </div>
+
+        <footer class="footer">
+            <div class="container">
+                <div class="site-title-wrapper">
+                    <h1 class="site-title">
+                        <a title="OJ&#39;s Perspective" href="/">OJ&#39;s Perspective</a>
+                    </h1>
+                    <a class="button-square button-jump-top js-jump-top" href="#">
+                        <i class="fa fa-angle-up"></i>
+                    </a>
+                </div>
+
+                <p class="footer-copyright">
+                    <span>&copy; 2019 / Powered by <a href="https://gohugo.io/">Hugo</a></span>
+                </p>
+                <p class="footer-copyright">
+                    <span><a href="https://github.com/roryg/ghostwriter">Ghostwriter theme</a> By <a href="http://jollygoodthemes.com">JollyGoodThemes</a></span>
+                    <span>/ <a href="https://github.com/jbub/ghostwriter">Ported</a> to Hugo By <a href="https://github.com/jbub">jbub</a></span>
+                </p>
+            </div>
+        </footer>
+
+        <script src="/js/jquery-1.11.3.min.js"></script>
+        <script src="/js/jquery.fitvids.js"></script>
+        
+        
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        
+        
+        <script src="/js/scripts.js"></script>
+    </body>
+</html>
+

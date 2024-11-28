@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns#">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>bin2json CTF Challenge &middot; OJ Reeves</title>
+        <meta name="description" content="At the beginning of this year I agreed to help a good friend out and build a challenge for the BSidesCbr 2016 CTF. The aim was to:
+ Create a fun binary pwnable. Avoid the typical exploitation paths (eg. stack/heap buffer overflows, format strings, etc). Include a couple of code related issues that are close to my heart. Design it so that multiple issues needed to be abused in order to gain code execution.">
+        <meta name="HandheldFriendly" content="True">
+        <meta name="MobileOptimized" content="320">
+        <meta name="generator" content="Hugo 0.55.6" />
+        <meta name="robots" content="index,follow">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta property="og:title" content="bin2json CTF Challenge">
+<meta property="og:description" content="At the beginning of this year I agreed to help a good friend out and build a challenge for the BSidesCbr 2016 CTF. The aim was to:
+ Create a fun binary pwnable. Avoid the typical exploitation paths (eg. stack/heap buffer overflows, format strings, etc). Include a couple of code related issues that are close to my heart. Design it so that multiple issues needed to be abused in order to gain code execution.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="/posts/bin2json-ctf-challenge/">
+        <link rel="stylesheet" href="/dist/styles.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300&subset=latin,cyrillic-ext,latin-ext,cyrillic">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+        
+        
+        
+    </head>
+    <body>
+        
+
+        <div id="wrapper">
+            <header class="site-header">
+                <div class="container">
+                    <div class="site-title-wrapper">
+                        
+                            <h1 class="site-title">
+                                <a title="OJ&#39;s Perspective" href="/">OJ&#39;s Perspective</a>
+                            </h1>
+                        
+                        <a class="button-square" href="/index.xml"><i class="fa fa-rss"></i></a>
+                        
+                            <a class="button-square button-social hint--top" data-hint="Twitter" title="Twitter" href="https://twitter.com/TheColonial" rel="me">
+                                <i class="fa fa-twitter"></i>
+                            </a>
+                        
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Github" title="Github" href="https://github.com/OJ" rel="me">
+                                <i class="fa fa-github-alt"></i>
+                            </a>
+                        
+                        
+                        
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Email" title="Email" href="mailto:oj@buffered.io">
+                                <i class="fa fa-envelope"></i>
+                            </a>
+                        
+                    </div>
+
+                    <ul class="site-nav">
+                        
+    <li class="site-nav-item">
+        <a title="Home" href="/">Home</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Live Streaming" href="/streaming/">Live Streaming</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="About" href="/about/">About</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Contact" href="/contact/">Contact</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Tags" href="/tags/">Tags</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Categories" href="/categories/">Categories</a>
+    </li>
+
+                    </ul>
+                </div>
+            </header>
+
+            <div id="container">
+
+
+<div class="container">
+    <article class="post-container" itemscope="" itemtype="http://schema.org/BlogPosting">
+        <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">bin2json CTF Challenge</h1>
+    
+    <p class="post-date">
+        <span>Published <time datetime="2016-11-21" itemprop="datePublished">2016-11-21</time></span>
+        <span>by</span>
+        <span itemscope="" itemprop="author" itemtype="https://schema.org/Person">
+            <span itemprop="name">
+                <a href="#" itemprop="url" rel="author">OJ Reeves</a>
+            </span>
+        </span>
+    </p>
+    
+        <p class="post-reading post-line">
+            <span>Read time: 5 min</span>
+        </p>
+    
+</header>
+
+        <div class="post-content clearfix" itemprop="articleBody">
+    
+
+    
+
+<p>At the beginning of this year I agreed to help a <a href="https://twitter.com/0x42424242">good friend</a> out and build a challenge for the <a href="http://www.bsidesau.com.au/">BSidesCbr</a> 2016 CTF. The aim was to:</p>
+
+<ul>
+<li>Create a fun binary pwnable.</li>
+<li>Avoid the typical exploitation paths (eg. stack/heap buffer overflows, format strings, etc).</li>
+<li>Include a couple of code related issues that are close to my heart.</li>
+<li>Design it so that multiple issues needed to be abused in order to gain code execution.</li>
+<li>Have it considered at least an &ldquo;intermediate&rdquo; level challenge.</li>
+</ul>
+
+<p>The result: <a href="/uploads/2016/11/bin2json-bin.tar.gz">bin2json</a>, a pwnable 64-bit Linux binary.</p>
+
+<p>I had another good mate, <a href="https://twitter.com/justinsteven">Justin Steven</a>, play-test the binary for me to make sure it was reasonable, usable and pwnable, and after ignoring all the feedback he gave me, I handed it over to <a href="https://twitter.com/0x42424242">Peleus</a>.</p>
+
+<p>Unfortunately, nobody managed to crack it during the BSides CTF. I didn&rsquo;t want to just throw it out to the masses immediately, and so I hit up the wonderful CTF crew at <a href="https://kiwicon.org/">Kiwicon</a>, headed up by <a href="https://twitter.com/hyprwired">Hyprwired</a>, and offered them to chance to include it in this year&rsquo;s Kiwicon CTF. They graciously accepted.</p>
+
+<p>The binary made it through the second CTF un-pwned, though I do think that it was due to lack of sufficient time rather than difficulty. After two CTFs, it&rsquo;s time for <a href="/uploads/2016/11/bin2json-bin.tar.gz">bin2json</a> to retire. So, I am opening it up to the Internet (yes, that&rsquo;s you!) so that you can give it a crack. I&rsquo;d love to see people spend some time and nail it.</p>
+
+<p>For those who don&rsquo;t want to, or who don&rsquo;t yet feel that they&rsquo;re ready for it, you&rsquo;ll be pleased to know that <a href="https://twitter.com/justinsteven">Justin Steven</a> is going to be streaming the process of pwnage <a href="https://www.twitch.tv/thejustinsteven">live on his Twitch stream</a> on Wednesday 23rd November 2016, at 7:30pm AEST (GMT+10). I highly recommend viewing, he&rsquo;s an entertaining bugger and does a great job of explaining stuff. He&rsquo;s recently got himself a new mic, so his dulcet tones sound all the more saucy.</p>
+
+<p>I have decided, at this point, to not release the <a href="/uploads/2016/11/bin2json-bin.tar.gz">bin2json</a> source. For now, you will just get:</p>
+
+<ul>
+<li>The binary.</li>
+<li>The readme.</li>
+<li>A sample script that shows how to interact with it.</li>
+</ul>
+
+<p>That&rsquo;s it. I may share the source later. The rest of this post contains the official readme for the challenge, so have at it!</p>
+
+<p>Peace.</p>
+
+<hr />
+
+<h1 id="the-scenario">The Scenario</h1>
+
+<p>Back in the days of <em>quality</em> Enterprise software, a company called Totes McPants Pty Ltd had a proprietary solution for tracking various entities within a business or team. This application, Simple Human Instance Tracker, was a market leader until it unfortunately went EOL in 1999.</p>
+
+<p>Stalwart users refused to give up on it. Instead of moving over to a more appropriate solution, they continued using that which was defunct, and over a very long period of time managed to accumulate more data than they ever though possible.</p>
+
+<p>In 2015, one of the application&rsquo;s long-term users and proponents of S.H.I.T. found themselves in a position where they needed to integrate with external RESTful services. Needless to say, there was no REST-compatible interface available and so one had to be built.</p>
+
+<p>This web-scale integration solution was built and deployed to great success, and has been made available as a service at <em>server:port</em>. It will happily translate S.H.I.T.&rsquo;s proprietary data format to (relatively) clean JSON for use externally.</p>
+
+<h1 id="the-format">The Format</h1>
+
+<p>S.H.I.T.&rsquo;s format is actually very simple, and the transition layer extends it slightly by providing a very simple command style interface. Once connected, the system waits for a binary blob to be sent which contains a number of actions. There are two actions:</p>
+
+<ul>
+<li><code>CREATE PERSON</code> (action value of <code>0</code>: This action is intended to create an instance of a person using the S.H.I.T. binary person format.</li>
+<li><code>PRINT</code> (action value of <code>1</code>): This action prints all the &ldquo;created&rdquo; people in a nice JSON format.</li>
+</ul>
+
+<p>Action values are a single-byte in length.</p>
+
+<h2 id="create-person">CREATE PERSON</h2>
+
+<p>There are 3 types of person available:</p>
+
+<ol>
+<li><code>ENGINEER</code> (type value of <code>1</code>) - This person type has a single value that represents how humourous the person is (as we all know, engineers have a great sense of humour). This value is an integer value 4 bytes in length. A sample byte sequence may look like:
+
+<ul>
+<li><code>[0x01][&quot;Uncle Bob&quot; (padded to 512 chars)][0xFF,0x00,0x00,0x00]</code></li>
+</ul></li>
+<li><code>HACKER</code> (type value of <code>0</code>) - This is an extension of the <code>ENGINEER</code> but has an extra field called <code>Handle</code> at the end which is <code>256</code> characters long.
+
+<ul>
+<li><code>[0x00][&quot;Rob Fuller&quot; (padded to 512 chars)][0xFF,0xAB,0x00,0x00][&quot;Mubix&quot; (padded to 256 chars)]</code></li>
+</ul></li>
+<li>MANAGER (type value of <code>2</code>) - This is a person with a single extra 4-byte integer value that represents how much of an asshole the manager is.
+
+<ul>
+<li><code>[0x02][&quot;Larry Ellison&quot; (padded to 512 chars)][0x7F,0xFF,0xFF,0xFF]</code></li>
+</ul></li>
+</ol>
+
+<p>To create a person, each of these byte streams must be prefixed with 2 other bytes that represent:</p>
+
+<ol>
+<li>The <code>CREATE PERSON</code> action (<code>0x00</code>).</li>
+<li>A flag that indicates whether the entry should be added to the head (<code>0x01</code>) or tail (<code>0x00</code>) of the internal list.</li>
+</ol>
+
+<p>Therefore to create a manager at the head of the list, the following byte stream is used:</p>
+
+<pre><code>[0x00][0x01][0x02][&quot;Larry Ellison&quot; (padded to 512 chars)][0x7F,0xFF,0xFF,0xFF]
+</code></pre>
+
+<p>And this constitutes a single <code>CREATE PERSON</code> action.</p>
+
+<h2 id="print">PRINT</h2>
+
+<p>Printing is very simple, it is a single byte action represented by the value <code>0x01</code>.</p>
+
+<h1 id="payloads">Payloads</h1>
+
+<p>Once connected to the integration service, the client sends a series of translation payloads. Each payload contains a 4-byte size header, followed by the payload length. Each payload comes in the form of an action. A typical payload looks like the following:</p>
+
+<pre><code>[4-byte length][[create person 0][create person 1]...[create person N][print]]
+</code></pre>
+
+<p>See the attached <code>sample.py</code> file which shows the application in action.</p>
+
+<h1 id="notes">Notes</h1>
+
+<p>The system assumes that every team and business has at least one Hacker. If no hacker is present in the list, printing won&rsquo;t do much!</p>
+
+<h1 id="goal">Goal</h1>
+
+<p>Shell the target, get the flag from the file system. ASLR is not enabled.</p>
+
+<hr />
+
+</div>
+
+        <footer class="post-footer clearfix">
+    
+
+    <div class="share">
+        
+            <a class="icon-twitter" href="https://twitter.com/share?text=bin2json%20CTF%20Challenge&url=%2fposts%2fbin2json-ctf-challenge%2f"
+                onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                <i class="fa fa-twitter"></i>
+                <span class="hidden">Twitter</span>
+            </a>
+        
+
+        
+            <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=%2fposts%2fbin2json-ctf-challenge%2f"
+                onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                <i class="fa fa-facebook"></i>
+                <span class="hidden">Facebook</span>
+            </a>
+        
+
+        
+            <a class="icon-google-plus" href="https://plus.google.com/share?url=%2fposts%2fbin2json-ctf-challenge%2f"
+              onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+              <i class="fa fa-google-plus"></i>
+                <span class="hidden">Google+</span>
+            </a>
+        
+        
+    </div>
+</footer>
+
+        
+    <div class="comments">
+        
+    </div>
+
+    </article>
+</div>
+
+            </div>
+        </div>
+
+        <footer class="footer">
+            <div class="container">
+                <div class="site-title-wrapper">
+                    <h1 class="site-title">
+                        <a title="OJ&#39;s Perspective" href="/">OJ&#39;s Perspective</a>
+                    </h1>
+                    <a class="button-square button-jump-top js-jump-top" href="#">
+                        <i class="fa fa-angle-up"></i>
+                    </a>
+                </div>
+
+                <p class="footer-copyright">
+                    <span>&copy; 2019 / Powered by <a href="https://gohugo.io/">Hugo</a></span>
+                </p>
+                <p class="footer-copyright">
+                    <span><a href="https://github.com/roryg/ghostwriter">Ghostwriter theme</a> By <a href="http://jollygoodthemes.com">JollyGoodThemes</a></span>
+                    <span>/ <a href="https://github.com/jbub/ghostwriter">Ported</a> to Hugo By <a href="https://github.com/jbub">jbub</a></span>
+                </p>
+            </div>
+        </footer>
+
+        <script src="/js/jquery-1.11.3.min.js"></script>
+        <script src="/js/jquery.fitvids.js"></script>
+        
+        
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        
+        
+        <script src="/js/scripts.js"></script>
+    </body>
+</html>
+

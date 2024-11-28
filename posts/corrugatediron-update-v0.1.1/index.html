@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns#">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>CorrugatedIron Update - v0.1.1 &middot; OJ Reeves</title>
+        <meta name="description" content="Last week JP and I released our first Open Source project, CorrugatedIron. The release seemed to be fairly well received by those people who gave it a spin. We&rsquo;ve had some good feedback along the way which we&rsquo;ll be evaluating, and no doubt those suggestions and comments will be influencing the future of the library.
+
+In the interim, we wanted to get another version out which sorts out two main issues and that changes the perceived &ldquo;norm&rdquo; when building applications with CorrugatedIron. Those issues are listed below. We&rsquo;ve also go the first pass of our Map/Reduce documentation ready.
+
+If you&rsquo;re not interested in the detail, head on over to the download page to find out the many ways in which you can get access to the release. Otherwise, please read on!">
+        <meta name="HandheldFriendly" content="True">
+        <meta name="MobileOptimized" content="320">
+        <meta name="generator" content="Hugo 0.55.6" />
+        <meta name="robots" content="index,follow">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta property="og:title" content="CorrugatedIron Update - v0.1.1">
+<meta property="og:description" content="Last week JP and I released our first Open Source project, CorrugatedIron. The release seemed to be fairly well received by those people who gave it a spin. We&rsquo;ve had some good feedback along the way which we&rsquo;ll be evaluating, and no doubt those suggestions and comments will be influencing the future of the library.
+
+In the interim, we wanted to get another version out which sorts out two main issues and that changes the perceived &ldquo;norm&rdquo; when building applications with CorrugatedIron. Those issues are listed below. We&rsquo;ve also go the first pass of our Map/Reduce documentation ready.
+
+If you&rsquo;re not interested in the detail, head on over to the download page to find out the many ways in which you can get access to the release. Otherwise, please read on!">
+<meta property="og:type" content="article">
+<meta property="og:url" content="/posts/corrugatediron-update-v0.1.1/">
+        <link rel="stylesheet" href="/dist/styles.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300&subset=latin,cyrillic-ext,latin-ext,cyrillic">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+        
+        
+        
+    </head>
+    <body>
+        
+
+        <div id="wrapper">
+            <header class="site-header">
+                <div class="container">
+                    <div class="site-title-wrapper">
+                        
+                            <h1 class="site-title">
+                                <a title="OJ&#39;s Perspective" href="/">OJ&#39;s Perspective</a>
+                            </h1>
+                        
+                        <a class="button-square" href="/index.xml"><i class="fa fa-rss"></i></a>
+                        
+                            <a class="button-square button-social hint--top" data-hint="Twitter" title="Twitter" href="https://twitter.com/TheColonial" rel="me">
+                                <i class="fa fa-twitter"></i>
+                            </a>
+                        
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Github" title="Github" href="https://github.com/OJ" rel="me">
+                                <i class="fa fa-github-alt"></i>
+                            </a>
+                        
+                        
+                        
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Email" title="Email" href="mailto:oj@buffered.io">
+                                <i class="fa fa-envelope"></i>
+                            </a>
+                        
+                    </div>
+
+                    <ul class="site-nav">
+                        
+    <li class="site-nav-item">
+        <a title="Home" href="/">Home</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Live Streaming" href="/streaming/">Live Streaming</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="About" href="/about/">About</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Contact" href="/contact/">Contact</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Tags" href="/tags/">Tags</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Categories" href="/categories/">Categories</a>
+    </li>
+
+                    </ul>
+                </div>
+            </header>
+
+            <div id="container">
+
+
+<div class="container">
+    <article class="post-container" itemscope="" itemtype="http://schema.org/BlogPosting">
+        <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">CorrugatedIron Update - v0.1.1</h1>
+    
+    <p class="post-date">
+        <span>Published <time datetime="2011-08-03" itemprop="datePublished">2011-08-03</time></span>
+        <span>by</span>
+        <span itemscope="" itemprop="author" itemtype="https://schema.org/Person">
+            <span itemprop="name">
+                <a href="#" itemprop="url" rel="author">OJ Reeves</a>
+            </span>
+        </span>
+    </p>
+    
+        <p class="post-reading post-line">
+            <span>Read time: 4 min</span>
+        </p>
+    
+</header>
+
+        <div class="post-content clearfix" itemprop="articleBody">
+    
+
+    <p>Last week <a href="http://facility9.com/" title="Jeremiah Peschka">JP</a> and I released our first Open Source project, <a href="http://corrugatediron.org/" title="CorrugatedIron">CorrugatedIron</a>. The release seemed to be fairly well received by those people who gave it a spin. We&rsquo;ve had some good feedback along the way which we&rsquo;ll be evaluating, and no doubt those suggestions and comments will be influencing the future of the library.</p>
+
+<p>In the interim, we wanted to get another version out which sorts out two main issues and that changes the <em>perceived</em> &ldquo;norm&rdquo; when building applications with CorrugatedIron. Those issues are listed below. We&rsquo;ve also go the first pass of our <a href="http://corrugatediron.org/documentation/MapReduce.html" title="Map/Reduce">Map/Reduce</a> documentation ready.</p>
+
+<p>If you&rsquo;re not interested in the detail, head on over to the <a href="http://corrugatediron.org/downloads.html" title="Downloads page">download page</a> to find out the many ways in which you can get access to the release. Otherwise, please read on!</p>
+
+<h2 id="removal-of-ioc">Removal of IoC</h2>
+
+<p>When we first put together the sample applications we thought that it&rsquo;d be a good idea to show how these things can be done using what the mainstream .NET developers would use. That is, we decided to wire everything in with IoC. This wasn&rsquo;t because we felt that this is how it <strong>had</strong> to be done, but more to try and give people a level of familiarity. The library that we chose to use for the samples was Unity, for no other reason that &ldquo;it was there&rdquo;.</p>
+
+<p>This small mistake seemed to give off the impression that we felt that Unity was the best choice of all the IoC containers out there.</p>
+
+<p>This is most definitely <strong>not the case</strong>. We are in no way advocating the use of one IoC container over the other. We honestly don&rsquo;t care which one you want to use. You should use whichever works for you.</p>
+
+<p>To avoid this perception we decided that it would be best to remove references to any IoC container in all samples except for the <a href="https://github.com/DistributedNonsense/CorrugatedIron.Samples/tree/master/VisualStudio2010/Sample" title="IoC Sample Project">one sample</a> which shows how to use <em>lots</em> of different containers to do the same thing. Hence you should see a <em>lack</em> of IoC containers in our examples from now on. Sorry for any confusion.</p>
+
+<h2 id="handling-of-client-ids">Handling of Client IDs</h2>
+
+<p>Our first implementation of Client ID generation in CorrugatedIron wasn&rsquo;t a great implementation. We made the decision early on to generate IDs based on some details of the machine that the client was running on (ie. The MAC address of the first functioning NIC on the machine). Our thinking was that we wanted to uniquely identify a client while still allowing the ID to be reused across instances of the application. This might make sense for rich-client applications, but certainly doesn&rsquo;t work well in the web world. In a web environment, each request could come from a different user.</p>
+
+<p>Almost immediately after releasing v0.1.0, <a href="http://facility9.com/" title="Jeremiah Peschka">JP</a> and I read an email on the [Riak mailing list][mailinglist] which made us rethink our approach. After a bit of discussion, we decided to go with an idea of Jeremiah&rsquo;s which involves the generation of the Client ID when the RiakClient instance is created. This generation can be controlled by the user of the library by specifying a <code>seed</code> value.</p>
+
+<p>This gives the user the flexibility of not being concerned about the Client ID if they don&rsquo;t want to be, but can have some control if they do.</p>
+
+<h2 id="ease-of-configuration">Ease of Configuration</h2>
+
+<p>The only bit of &ldquo;constructive criticism&rdquo; that we received on-masse was via <a href="http://news.ycombinator.com/item?id=2799823" title="CI on Hacker News">Hacker News</a> and revolved around configuration. The general feeling was that the effort required to configure the library was higher than expected, especially when compared to other libraries. I&rsquo;d suggest reading the full discussion over on the <a href="http://news.ycombinator.com/item?id=2799823" title="CI on Hacker News">Hacker News</a> site to read some of the reasons behind the design decisions. But, if you&rsquo;re too lazy (I don&rsquo;t blame you if you are), the short version is this: CorrugatedIron is a .NET library connecting to a clustered, distributed key-value store. A library that does this, while attempting to manage load-balancing across all nodes in the cluster, is going to require some configuration.</p>
+
+<p>One concern in particular resonated with me, and that was the difficulty in getting CorrugatedIron running inside a REPL, such as <a href="http://www.fsharphelp.com/Interactive.aspx" title="F# interactive">FSI</a>. The two issues with getting a REPL to work from configuration are:</p>
+
+<ul>
+<li>The ability to specify the location of the configuration file.</li>
+<li>The number of lines of code it takes to wire things in.</li>
+</ul>
+
+<p>The XML that&rsquo;s required is not going to be changing in the short term. The values that are specified in that configuration are required to make the most of Riak and that&rsquo;s not something we&rsquo;re prepared to compromise on. However, the .NET code required to access it has changed, though the old way of wiring things in still exists for those people who want that level of flexibility.</p>
+
+<p>In short, you can wire-in CorrugatedIron&rsquo;s XML configuration as simply as:</p>
+
+<pre><code>var cluster = RiakCluster.FromConfig(&quot;riakConfig&quot;);
+var client = cluster.CreateClient();
+</code></pre>
+
+<h2 id="that-s-it">That&rsquo;s it!</h2>
+
+<p>Hopefully this will make your life a little easier while getting CorrugatedIron up and running. We&rsquo;re always keen to hear your feedback, so please <a href="https://github.com/DistributedNonsense/CorrugatedIron" title="CorrugatedIron @ Github">drop us a line</a> if you have any thoughts, suggestions or issues.</p>
+
+<p>Enjoy!</p>
+</div>
+
+        <footer class="post-footer clearfix">
+    
+        <p class="post-tags">
+            <span>Tagged:</span>
+            
+            
+                <a href="/tags/corrugatediron/">corrugatediron</a>, 
+            
+                <a href="/tags/dotnet/">dotnet</a>, 
+            
+                <a href="/tags/csharp/">csharp</a>, 
+            
+                <a href="/tags/clr/">clr</a>, 
+            
+                <a href="/tags/mono/">mono</a>, 
+            
+                <a href="/tags/riak/">riak</a>
+            
+        </p>
+    
+
+    <div class="share">
+        
+            <a class="icon-twitter" href="https://twitter.com/share?text=CorrugatedIron%20Update%20-%20v0.1.1&url=%2fposts%2fcorrugatediron-update-v0.1.1%2f"
+                onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                <i class="fa fa-twitter"></i>
+                <span class="hidden">Twitter</span>
+            </a>
+        
+
+        
+            <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=%2fposts%2fcorrugatediron-update-v0.1.1%2f"
+                onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                <i class="fa fa-facebook"></i>
+                <span class="hidden">Facebook</span>
+            </a>
+        
+
+        
+            <a class="icon-google-plus" href="https://plus.google.com/share?url=%2fposts%2fcorrugatediron-update-v0.1.1%2f"
+              onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+              <i class="fa fa-google-plus"></i>
+                <span class="hidden">Google+</span>
+            </a>
+        
+        
+    </div>
+</footer>
+
+        
+    <div class="comments">
+        
+    </div>
+
+    </article>
+</div>
+
+            </div>
+        </div>
+
+        <footer class="footer">
+            <div class="container">
+                <div class="site-title-wrapper">
+                    <h1 class="site-title">
+                        <a title="OJ&#39;s Perspective" href="/">OJ&#39;s Perspective</a>
+                    </h1>
+                    <a class="button-square button-jump-top js-jump-top" href="#">
+                        <i class="fa fa-angle-up"></i>
+                    </a>
+                </div>
+
+                <p class="footer-copyright">
+                    <span>&copy; 2019 / Powered by <a href="https://gohugo.io/">Hugo</a></span>
+                </p>
+                <p class="footer-copyright">
+                    <span><a href="https://github.com/roryg/ghostwriter">Ghostwriter theme</a> By <a href="http://jollygoodthemes.com">JollyGoodThemes</a></span>
+                    <span>/ <a href="https://github.com/jbub/ghostwriter">Ported</a> to Hugo By <a href="https://github.com/jbub">jbub</a></span>
+                </p>
+            </div>
+        </footer>
+
+        <script src="/js/jquery-1.11.3.min.js"></script>
+        <script src="/js/jquery.fitvids.js"></script>
+        
+        
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        
+        
+        <script src="/js/scripts.js"></script>
+    </body>
+</html>
+
